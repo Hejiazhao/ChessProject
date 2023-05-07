@@ -79,11 +79,19 @@ public class GameController implements GameListener {
                 component.setSelected(true);
                 component.repaint();
             }
-        } else if (selectedPoint.equals(point)) {
+        }
+        else if (selectedPoint.equals(point)) {
             selectedPoint = null;
             component.setSelected(false);
             component.repaint();
         }
-        // TODO: Implement capture function
+        else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(point).equals(currentPlayer)){
+            model.captureChessPiece(point,selectedPoint);
+            component.setSelected(true);
+            component.repaint();
+        }
+
+
+        // TODO: Implement capture function；加入了未de
     }
 }

@@ -17,7 +17,6 @@ public class CellComponent extends JPanel {
         setSize(size, size);
         this.background = background;
     }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponents(g);
