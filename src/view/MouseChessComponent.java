@@ -2,31 +2,15 @@ package view;
 
 import model.PlayerColor;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class MouseChessComponent extends JComponent {
-    private PlayerColor owner;
-
-    private boolean selected;
-
-    public MouseChessComponent(PlayerColor owner, int size) {
-        this.owner = owner;
-        this.selected = false;
-        setSize(size/2, size/2);
+//“鼠”棋子的代码
+public class MouseChessComponent extends AnimalChessComponent{
+    public MouseChessComponent(PlayerColor owner, int size){
+        super(owner,size);
         setLocation(0,1);
-        setVisible(true);
+        this.animalType=AnimalType.Mouse;
     }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -37,7 +21,7 @@ public class MouseChessComponent extends JComponent {
         g2.setColor(owner.getColor());
         g2.drawString("鼠", getWidth() / 4, getHeight() * 5 / 8); // FIXME: Use library to find the correct offset.
         if (isSelected()) { // Highlights the model if selected.
-            g.setColor(Color.RED);
+            g.setColor(owner.getColor());
             g.drawOval(0, 0, getWidth() , getHeight());
         }
     }

@@ -26,6 +26,7 @@ public class Chessboard {
     private void initPieces() {
         grid[0][0].setPiece(new ChessPiece(PlayerColor.BLUE, "Elephant",8));
         grid[8][6].setPiece(new ChessPiece(PlayerColor.RED, "Elephant",8));
+
     }
 
     private ChessPiece getChessPieceAt(ChessboardPoint point) {
@@ -76,9 +77,10 @@ public class Chessboard {
     }
 
     public boolean isValidMove(ChessboardPoint src, ChessboardPoint dest) {
-        if (getChessPieceAt(src) == null || getChessPieceAt(dest) != null) {
+        if (getChessPieceAt(src) == null || (getChessPieceAt(dest) != null)&&!getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
             return false;
         }
+
         return calculateDistance(src, dest) == 1;
     }
 

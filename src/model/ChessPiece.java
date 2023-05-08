@@ -14,6 +14,8 @@ public class ChessPiece {
         this.name = name;
         this.rank = rank;
     }
+    public int getRank(){return rank;}
+
 
     public boolean canCapture(ChessPiece target) {
         // TODO: Finish this method!

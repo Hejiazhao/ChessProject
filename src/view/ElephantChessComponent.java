@@ -1,36 +1,18 @@
 package view;
 
-
 import model.PlayerColor;
 
-import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Type;
 
-/**
- * This is the equivalent of the ChessPiece class,
- * but this class only cares how to draw Chess on ChessboardComponent
- */
-public class ElephantChessComponent extends JComponent {
-    private PlayerColor owner;
+//将原来“象”棋子的公有功能拆分后，私有的功能
+public class ElephantChessComponent extends AnimalChessComponent{
 
-    private boolean selected;
-
-    public ElephantChessComponent(PlayerColor owner, int size) {
-        this.owner = owner;
-        this.selected = false;
-        setSize(size/2, size/2);
+    public ElephantChessComponent(PlayerColor owner, int size){
+        super(owner,size);
         setLocation(0,0);
-        setVisible(true);
+        this.animalType=AnimalType.Elephant;
     }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -42,7 +24,7 @@ public class ElephantChessComponent extends JComponent {
         g2.setColor(owner.getColor());
         g2.drawString("象", getWidth() / 4, getHeight() * 5 / 8); // FIXME: Use library to find the correct offset.
         if (isSelected()) { // Highlights the model if selected.
-            g.setColor(Color.RED);
+            g.setColor(owner.getColor());
             g.drawOval(0, 0, getWidth() , getHeight());
         }
     }
