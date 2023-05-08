@@ -97,5 +97,6 @@ public class GameController implements GameListener {
 
 
         // TODO: Implement capture function；加入了未de
+
     }
 }
