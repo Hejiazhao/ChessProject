@@ -62,7 +62,7 @@ public class Chessboard {
     }
 
     public void captureChessPiece(ChessboardPoint src, ChessboardPoint dest) {
-        if (!isValidCapture(src, dest)) {
+        if (isValidCapture(src, dest)) {
             throw new IllegalArgumentException("Illegal chess capture!");
         }
         else {
@@ -82,7 +82,7 @@ public class Chessboard {
     }
 
     public boolean isValidMove(ChessboardPoint src, ChessboardPoint dest) {
-        if (getChessPieceAt(src) == null || (getChessPieceAt(dest) != null)&&!getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
+        if (getChessPieceAt(src) == null || ((getChessPieceAt(dest) != null)&&!isValidCapture(src,dest))) {
             return false;
         }
         //添加了&&后的判断
