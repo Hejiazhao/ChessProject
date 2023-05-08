@@ -40,6 +40,8 @@ public class GameController implements GameListener {
         view.repaint();
     }
 
+
+
     private void initialize() {
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {

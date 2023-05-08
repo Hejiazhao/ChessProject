@@ -26,6 +26,9 @@ public class Chessboard {
     private void initPieces() {
         grid[0][0].setPiece(new ChessPiece(PlayerColor.BLUE, "Elephant",8));
         grid[8][6].setPiece(new ChessPiece(PlayerColor.RED, "Elephant",8));
+        grid[0][1].setPiece(new ChessPiece(PlayerColor.BLUE,"Mouse",1));
+        grid[8][5].setPiece(new ChessPiece(PlayerColor.RED,"Mouse",1));
+        //在棋格中添加了鼠鼠
 
     }
 
@@ -66,7 +69,9 @@ public class Chessboard {
             setChessPiece(dest,getChessPieceAt(src));
             removeChessPiece(src);
         }
-        // TODO: Finish the method.已经加入未debug
+        //捕捉功能待添加
+        // TODO: Finish the method.
+
     }
 
     public Cell[][] getGrid() {
@@ -80,6 +85,7 @@ public class Chessboard {
         if (getChessPieceAt(src) == null || (getChessPieceAt(dest) != null)&&!getChessPieceAt(src).canCapture(getChessPieceAt(dest))) {
             return false;
         }
+        //添加了&&后的判断
 
         return calculateDistance(src, dest) == 1;
     }
@@ -87,6 +93,7 @@ public class Chessboard {
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
         return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
-        // TODO:Fix this method；已加入
+        //捕捉功能还没做好
+        // TODO:Fix this method；
     }
 }

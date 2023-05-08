@@ -58,6 +58,8 @@ public class ChessboardComponent extends JComponent {
                                         chessPiece.getOwner(),
                                         CHESS_SIZE));
                     }
+
+                    //通过区分不同rank添加不同棋子
                 }
             }
         }
@@ -107,12 +109,14 @@ public class ChessboardComponent extends JComponent {
 
     public AnimalChessComponent removeChessComponentAtGrid(ChessboardPoint point) {
         // Note re-validation is required after remove / removeAll.
-        AnimalChessComponent chess = (ElephantChessComponent) getGridComponentAt(point).getComponents()[0];
+        AnimalChessComponent chess = (AnimalChessComponent) getGridComponentAt(point).getComponents()[0];
+        //子类通用设定
         getGridComponentAt(point).removeAll();
         getGridComponentAt(point).revalidate();
         chess.setSelected(false);
         return chess;
-    }
+
+        }
 
 
     private CellComponent getGridComponentAt(ChessboardPoint point) {

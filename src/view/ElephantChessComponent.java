@@ -3,7 +3,7 @@ package view;
 import model.PlayerColor;
 
 import java.awt.*;
-import java.lang.reflect.Type;
+
 
 //将原来“象”棋子的公有功能拆分后，私有的功能
 public class ElephantChessComponent extends AnimalChessComponent{
