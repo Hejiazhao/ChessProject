@@ -96,11 +96,11 @@ public class GameController implements GameListener {
             view.repaint();
             component.setSelected(false);
             component.repaint();
-
         }
 
 
-        // TODO: Implement capture function；加入了未de
+        // TODO: Implement capture function；
+        // 正在debug
 
     }
 }
