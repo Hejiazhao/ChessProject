@@ -62,14 +62,14 @@ public class Chessboard {
     }
 
     public void captureChessPiece(ChessboardPoint src, ChessboardPoint dest) {
-        if (isValidCapture(src, dest)) {
+        if (!isValidCapture(src, dest)) {
             throw new IllegalArgumentException("Illegal chess capture!");
         }
         else {
             setChessPiece(dest,getChessPieceAt(src));
             removeChessPiece(src);
         }
-        //捕捉功能待添加
+        // 捕捉功能待添加
         // TODO: Finish the method.
 
     }
@@ -82,17 +82,21 @@ public class Chessboard {
     }
 
     public boolean isValidMove(ChessboardPoint src, ChessboardPoint dest) {
-        if (getChessPieceAt(src) == null || ((getChessPieceAt(dest) != null)&&!isValidCapture(src,dest))) {
+        if (getChessPieceAt(src) == null ) {
             return false;
         }
         //添加了&&后的判断
+        else if ((getChessPieceAt(dest) != null)&&!isValidCapture(src,dest)){
+            return false;
+        }
 
         return calculateDistance(src, dest) == 1;
     }
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
-        return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
+        if (getChessPieceAt(dest)!=null) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
+        else return true;
         //捕捉功能还没做好
         // TODO:Fix this method；
     }

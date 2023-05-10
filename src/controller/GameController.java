@@ -89,10 +89,14 @@ public class GameController implements GameListener {
             component.setSelected(false);
             component.repaint();
         }
-        else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(point).equals(currentPlayer)){
-            model.captureChessPiece(point,selectedPoint);
-            component.setSelected(true);
+        else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(selectedPoint).equals(currentPlayer)){
+            model.captureChessPiece(selectedPoint,point);
+            view.removeChessComponentAtGrid(point);
+            view.setChessComponentAtGrid(point,view.removeChessComponentAtGrid(selectedPoint) );
+            view.repaint();
+            component.setSelected(false);
             component.repaint();
+
         }
 
 
