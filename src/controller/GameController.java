@@ -9,7 +9,7 @@ import model.ChessboardPoint;
 import view.CellComponent;
 import view.AnimalChessComponent;
 import view.ChessboardComponent;
-import view.ElephantChessComponent;
+
 
 
 /**
@@ -33,7 +33,6 @@ public class GameController implements GameListener {
         this.view = view;
         this.model = model;
         this.currentPlayer = PlayerColor.BLUE;
-
         view.registerController(this);
         initialize();
         view.initiateChessComponent(model);
@@ -92,15 +91,20 @@ public class GameController implements GameListener {
         else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(selectedPoint).equals(currentPlayer)){
             model.captureChessPiece(selectedPoint,point);
             view.removeChessComponentAtGrid(point);
-            view.setChessComponentAtGrid(point,view.removeChessComponentAtGrid(selectedPoint) );
+            AnimalChessComponent component1=view.removeChessComponentAtGrid(selectedPoint);
+            view.setChessComponentAtGrid(point,component1);
+            component1.setSelected(false);
+            selectedPoint=null;
+            swapColor();
             view.repaint();
-            component.setSelected(false);
-            component.repaint();
+
+
         }
 
 
         // TODO: Implement capture function；
         // 正在debug
+        //debug完成
 
     }
 }
