@@ -1,18 +1,37 @@
 package model;
 
+import view.ChessboardComponent;
+import view.ChessboardComponent;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * This class store the real chess information.
  * The Chessboard has 9*7 cells, and each cell has a position for chess
  */
 public class Chessboard {
     private Cell[][] grid;
+    private final Set<ChessboardPoint> riverCell = new HashSet<>();
+
 
     public Chessboard() {
         this.grid =
                 new Cell[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];//19X19
-
         initGrid();
         initPieces();
+        riverCell.add(new ChessboardPoint(3,1));
+        riverCell.add(new ChessboardPoint(3,2));
+        riverCell.add(new ChessboardPoint(4,1));
+        riverCell.add(new ChessboardPoint(4,2));
+        riverCell.add(new ChessboardPoint(5,1));
+        riverCell.add(new ChessboardPoint(5,2));
+
+        riverCell.add(new ChessboardPoint(3,4));
+        riverCell.add(new ChessboardPoint(3,5));
+        riverCell.add(new ChessboardPoint(4,4));
+        riverCell.add(new ChessboardPoint(4,5));
+        riverCell.add(new ChessboardPoint(5,4));
+        riverCell.add(new ChessboardPoint(5,5));
     }
 
     private void initGrid() {
@@ -29,10 +48,11 @@ public class Chessboard {
         grid[0][1].setPiece(new ChessPiece(PlayerColor.BLUE,"Mouse",1));
         grid[8][5].setPiece(new ChessPiece(PlayerColor.RED,"Mouse",1));
         //在棋格中添加了鼠鼠
-
     }
 
-    private ChessPiece getChessPieceAt(ChessboardPoint point) {
+
+
+   private ChessPiece getChessPieceAt(ChessboardPoint point) {
         return getGridAt(point).getPiece();
     }
 
@@ -92,12 +112,22 @@ public class Chessboard {
 
         return calculateDistance(src, dest) == 1;
     }
+    public boolean inRiverCell(ChessPiece chessPiece){
+        boolean judge=false;
+        for (ChessboardPoint P:this.riverCell ){
+            if (chessPiece.equals(getChessPieceAt(P)))judge=true;
+        }
+        return judge;
+    }
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
-        if (getChessPieceAt(dest)!=null) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
-        else return true;
+      if (getChessPieceAt(dest)!=null&&(!inRiverCell(getChessPieceAt(dest))||getChessPieceAt(dest).getRank()!=1)) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
+      else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()!=1)return false;
+      else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()==1)return true;
+      else return true;
         //捕捉功能还没做好
         // TODO:Fix this method；
     }
+
 }

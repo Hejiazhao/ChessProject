@@ -2,10 +2,7 @@ package controller;
 
 
 import listener.GameListener;
-import model.Constant;
-import model.PlayerColor;
-import model.Chessboard;
-import model.ChessboardPoint;
+import model.*;
 import view.CellComponent;
 import view.AnimalChessComponent;
 import view.ChessboardComponent;

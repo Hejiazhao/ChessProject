@@ -12,6 +12,8 @@ import java.util.Set;
 
 import static model.Constant.CHESSBOARD_COL_SIZE;
 import static model.Constant.CHESSBOARD_ROW_SIZE;
+import model.ChessPiece;
+import model.ChessboardPoint;
 
 /**
  * This class represents the checkerboard component object on the panel
@@ -20,7 +22,6 @@ public class ChessboardComponent extends JComponent {
     private final CellComponent[][] gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
     private final int CHESS_SIZE;
     private final Set<ChessboardPoint> riverCell = new HashSet<>();
-
     private GameController gameController;
 
     public ChessboardComponent(int chessSize) {
