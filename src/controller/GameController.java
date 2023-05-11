@@ -7,6 +7,7 @@ import view.CellComponent;
 import view.AnimalChessComponent;
 import view.ChessboardComponent;
 
+import java.util.Set;
 
 
 /**
@@ -25,6 +26,8 @@ public class GameController implements GameListener {
 
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
+    private ChessboardPoint RedDen=new ChessboardPoint(8,3);
+    private ChessboardPoint BlueDen=new ChessboardPoint(0,3);
 
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
@@ -53,7 +56,8 @@ public class GameController implements GameListener {
 
     private boolean win() {
         // TODO: Check the board if there is a winner
-        return false;
+        if (model.getChessPieceOwner(RedDen).equals(PlayerColor.BLUE))return true;
+        else return model.getChessPieceOwner(BlueDen).equals(PlayerColor.RED);
     }
 
 

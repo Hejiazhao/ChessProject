@@ -1,7 +1,5 @@
 package model;
 
-import view.ChessboardComponent;
-import view.ChessboardComponent;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +10,8 @@ import java.util.Set;
 public class Chessboard {
     private Cell[][] grid;
     private final Set<ChessboardPoint> riverCell = new HashSet<>();
-
+    private final Set<ChessboardPoint> BlueTrap =new HashSet<>();
+    private final Set<ChessboardPoint> RedTrap =new HashSet<>();
 
     public Chessboard() {
         this.grid =
@@ -32,6 +31,12 @@ public class Chessboard {
         riverCell.add(new ChessboardPoint(4,5));
         riverCell.add(new ChessboardPoint(5,4));
         riverCell.add(new ChessboardPoint(5,5));
+        BlueTrap.add(new ChessboardPoint(0,2));
+        BlueTrap.add(new ChessboardPoint(1,3));
+        BlueTrap.add(new ChessboardPoint(0,4));
+        RedTrap.add(new ChessboardPoint(8,2));
+        RedTrap.add(new ChessboardPoint(8,4));
+        RedTrap.add(new ChessboardPoint(7,3));
     }
 
     private void initGrid() {
@@ -119,12 +124,27 @@ public class Chessboard {
         }
         return judge;
     }
+    public boolean inTrap(ChessPiece chessPiece){
+        boolean judge=false;
+        if (chessPiece.getOwner().equals(PlayerColor.BLUE))
+            for (ChessboardPoint P:this.RedTrap ){
+            if (chessPiece.equals(getChessPieceAt(P)))judge=true;
+        }
+        else if (chessPiece.getOwner().equals(PlayerColor.RED)) {
+            for (ChessboardPoint P:this.BlueTrap ){
+                if (chessPiece.equals(getChessPieceAt(P)))judge=true;
+            }
+        }
+        return judge;
+
+    }
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
       if (getChessPieceAt(dest)!=null&&(!inRiverCell(getChessPieceAt(dest))||getChessPieceAt(dest).getRank()!=1)) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()!=1)return false;
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()==1)return true;
+      else if (inTrap(getChessPieceAt(dest))){return true;}
       else return true;
         //捕捉功能还没做好
         // TODO:Fix this method；

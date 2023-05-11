@@ -21,7 +21,7 @@ public class ChessPiece {
         // TODO: Finish this method!
         if (this.rank==1&&target.rank==8 )   return true;
 
-        else return this.rank>target.rank;
+        else return this.rank>=target.rank;
         //已完成
     }
 
