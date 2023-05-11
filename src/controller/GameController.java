@@ -56,8 +56,8 @@ public class GameController implements GameListener {
 
     private boolean win() {
         // TODO: Check the board if there is a winner
-        if (model.getChessPieceOwner(RedDen).equals(PlayerColor.BLUE))return true;
-        else return model.getChessPieceOwner(BlueDen).equals(PlayerColor.RED);
+        if (PlayerColor.BLUE.equals(model.getChessPieceOwner(RedDen)))return true;
+        else return PlayerColor.RED.equals(model.getChessPieceOwner(BlueDen));
     }
 
 
@@ -98,10 +98,7 @@ public class GameController implements GameListener {
             selectedPoint=null;
             swapColor();
             view.repaint();
-
-
         }
-
 
         // TODO: Implement capture function；
         // 正在debug

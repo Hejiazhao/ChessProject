@@ -109,11 +109,11 @@ public class ChessboardComponent extends JComponent {
                     this.add(cell);
                 }
                 else if (temp.equals(RedDen)){
-                    cell=new CellComponent(Color.RED,calculatePoint(i,j),CHESS_SIZE);
+                    cell=new CellComponent(new Color(255,209,204),calculatePoint(i,j),CHESS_SIZE);
                     this.add(cell);
                 }
                 else if (temp.equals(BlueDen)){
-                    cell=new CellComponent(Color.BLUE,calculatePoint(i,j),CHESS_SIZE);
+                    cell=new CellComponent(new Color(204, 229, 255),calculatePoint(i,j),CHESS_SIZE);
                     this.add(cell);
                 }
                 else {
