@@ -12,6 +12,7 @@ public class Chessboard {
     private final Set<ChessboardPoint> riverCell = new HashSet<>();
     private final Set<ChessboardPoint> BlueTrap =new HashSet<>();
     private final Set<ChessboardPoint> RedTrap =new HashSet<>();
+    private final Set<ChessboardPoint> AroundRiverCell=new HashSet<>();
 
     public Chessboard() {
         this.grid =
@@ -31,12 +32,26 @@ public class Chessboard {
         riverCell.add(new ChessboardPoint(4,5));
         riverCell.add(new ChessboardPoint(5,4));
         riverCell.add(new ChessboardPoint(5,5));
+
         BlueTrap.add(new ChessboardPoint(0,2));
         BlueTrap.add(new ChessboardPoint(1,3));
         BlueTrap.add(new ChessboardPoint(0,4));
+
         RedTrap.add(new ChessboardPoint(8,2));
         RedTrap.add(new ChessboardPoint(8,4));
         RedTrap.add(new ChessboardPoint(7,3));
+
+        for (int i=3;i<6;i++){
+            AroundRiverCell.add(new ChessboardPoint(i,0));
+            AroundRiverCell.add(new ChessboardPoint(i,3));
+            AroundRiverCell.add(new ChessboardPoint(i,6));
+        }
+
+        for (int j=1;j<6;j++){
+            if (j==3) j++;
+            AroundRiverCell.add(new ChessboardPoint(2,j));
+            AroundRiverCell.add(new ChessboardPoint(6,j));
+        }
     }
 
     private void initGrid() {
@@ -54,6 +69,7 @@ public class Chessboard {
         grid[8][5].setPiece(new ChessPiece(PlayerColor.RED,"Mouse",1));
         //在棋格中添加了鼠鼠
     }
+
 
 
 
@@ -106,6 +122,10 @@ public class Chessboard {
         if (getChessPieceAt(point)==null) return null;
         else return getGridAt(point).getPiece().getOwner();
     }
+    private boolean aroundRiverCell(ChessboardPoint src, ChessboardPoint dest){
+        return (AroundRiverCell.contains(src))&& (AroundRiverCell.contains(dest))&&(src.getRow()==dest.getRow()||src.getCol()==dest.getCol())&&(calculateDistance(src, dest)<=4)&&(getChessPieceAt(src).getRank()==7||getChessPieceAt(src).getRank()==6);
+    }
+    //能否跳河判定
 
     public boolean isValidMove(ChessboardPoint src, ChessboardPoint dest) {
         if (getChessPieceAt(src) == null ) {
@@ -114,6 +134,9 @@ public class Chessboard {
         //添加了&&后的判断
         else if ((getChessPieceAt(dest) != null)&&!isValidCapture(src,dest)){
             return false;
+        }
+        else if (aroundRiverCell(src,dest)) {
+            return true;
         }
 
         return calculateDistance(src, dest) == 1;

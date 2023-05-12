@@ -69,16 +69,18 @@ public class GameController implements GameListener {
             view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
             selectedPoint = null;
             swapColor();
-            view.repaint();
-            // TODO: if the chess enter Dens or Traps and so on
+            view.repaint();// TODO: if the chess enter Dens or Traps and so on
+
+
         }
+
     }
 
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, AnimalChessComponent component) {
         if (selectedPoint == null) {
-            if (model.getChessPieceOwner(point).equals(currentPlayer)) {
+            if (currentPlayer.equals(model.getChessPieceOwner(point))) {
                 selectedPoint = point;
                 component.setSelected(true);
                 component.repaint();
