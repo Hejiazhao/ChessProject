@@ -12,7 +12,7 @@ public class Chessboard {
     private final Set<ChessboardPoint> riverCell = new HashSet<>();
     private final Set<ChessboardPoint> BlueTrap =new HashSet<>();
     private final Set<ChessboardPoint> RedTrap =new HashSet<>();
-    private final Set<ChessboardPoint> AroundRiverCell=new HashSet<>();
+    private final Set<ChessboardPoint[]> AroundRiverCell=new HashSet<>();
 
     public Chessboard() {
         this.grid =
@@ -42,15 +42,17 @@ public class Chessboard {
         RedTrap.add(new ChessboardPoint(7,3));
 
         for (int i=3;i<6;i++){
-            AroundRiverCell.add(new ChessboardPoint(i,0));
-            AroundRiverCell.add(new ChessboardPoint(i,3));
-            AroundRiverCell.add(new ChessboardPoint(i,6));
+            ChessboardPoint[]C={new ChessboardPoint(i,0),new ChessboardPoint(i,3)};
+            AroundRiverCell.add(C);
+            ChessboardPoint[]d={new ChessboardPoint(i,6),new ChessboardPoint(i,3)};
+            AroundRiverCell.add(d);
+
         }
 
         for (int j=1;j<6;j++){
             if (j==3) j++;
-            AroundRiverCell.add(new ChessboardPoint(2,j));
-            AroundRiverCell.add(new ChessboardPoint(6,j));
+            ChessboardPoint[]F={new ChessboardPoint(2,j),new ChessboardPoint(6,j)};
+            AroundRiverCell.add(F);
         }
     }
 
@@ -123,8 +125,16 @@ public class Chessboard {
         else return getGridAt(point).getPiece().getOwner();
     }
     private boolean aroundRiverCell(ChessboardPoint src, ChessboardPoint dest){
-        return (AroundRiverCell.contains(src))&& (AroundRiverCell.contains(dest))&&(src.getRow()==dest.getRow()||src.getCol()==dest.getCol())&&(calculateDistance(src, dest)<=4)&&(getChessPieceAt(src).getRank()==7||getChessPieceAt(src).getRank()==6);
-    }
+      boolean judge=false;
+        if (getChessPieceAt(src).getRank()==6||getChessPieceAt(src).getRank()==7){
+            for (ChessboardPoint[]C:AroundRiverCell){
+          if (C[0].equals(src)&&C[1].equals(dest)) judge=true;
+          else if (C[1].equals(src)&&C[0].equals(dest)) judge=true;
+          }
+        }
+      return judge;
+      }
+
     //能否跳河判定
 
     public boolean isValidMove(ChessboardPoint src, ChessboardPoint dest) {
@@ -165,11 +175,13 @@ public class Chessboard {
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
+
       if (getChessPieceAt(dest)!=null&&(!inRiverCell(getChessPieceAt(dest))||getChessPieceAt(dest).getRank()!=1)) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()!=1)return false;
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()==1)return true;
       else if (inTrap(getChessPieceAt(dest))){return true;}
-      else return true;
+      else return false;
+
         //捕捉功能还没做好
         // TODO:Fix this method；
     }
