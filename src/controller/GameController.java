@@ -2,14 +2,12 @@ package controller;
 
 
 import listener.GameListener;
-import model.Constant;
-import model.PlayerColor;
-import model.Chessboard;
-import model.ChessboardPoint;
+import model.*;
 import view.CellComponent;
 import view.AnimalChessComponent;
 import view.ChessboardComponent;
-import view.ElephantChessComponent;
+
+import java.util.Set;
 
 
 /**
@@ -28,12 +26,13 @@ public class GameController implements GameListener {
 
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
+    private ChessboardPoint RedDen=new ChessboardPoint(8,3);
+    private ChessboardPoint BlueDen=new ChessboardPoint(0,3);
 
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
         this.model = model;
         this.currentPlayer = PlayerColor.BLUE;
-
         view.registerController(this);
         initialize();
         view.initiateChessComponent(model);
@@ -57,7 +56,8 @@ public class GameController implements GameListener {
 
     private boolean win() {
         // TODO: Check the board if there is a winner
-        return false;
+        if (PlayerColor.BLUE.equals(model.getChessPieceOwner(RedDen)))return true;
+        else return PlayerColor.RED.equals(model.getChessPieceOwner(BlueDen));
     }
 
 
@@ -69,16 +69,18 @@ public class GameController implements GameListener {
             view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
             selectedPoint = null;
             swapColor();
-            view.repaint();
-            // TODO: if the chess enter Dens or Traps and so on
+            view.repaint();// TODO: if the chess enter Dens or Traps and so on
+
+
         }
+
     }
 
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, AnimalChessComponent component) {
         if (selectedPoint == null) {
-            if (model.getChessPieceOwner(point).equals(currentPlayer)) {
+            if (currentPlayer.equals(model.getChessPieceOwner(point))) {
                 selectedPoint = point;
                 component.setSelected(true);
                 component.repaint();
@@ -89,13 +91,20 @@ public class GameController implements GameListener {
             component.setSelected(false);
             component.repaint();
         }
-        else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(point).equals(currentPlayer)){
-            model.captureChessPiece(point,selectedPoint);
-            component.setSelected(true);
-            component.repaint();
+        else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(selectedPoint).equals(currentPlayer)&& model.isValidMove(selectedPoint,point)){
+            model.captureChessPiece(selectedPoint,point);
+            view.removeChessComponentAtGrid(point);
+            AnimalChessComponent component1=view.removeChessComponentAtGrid(selectedPoint);
+            view.setChessComponentAtGrid(point,component1);
+            component1.setSelected(false);
+            selectedPoint=null;
+            swapColor();
+            view.repaint();
         }
 
+        // TODO: Implement capture function；
+        // 正在debug
+        //debug完成
 
-        // TODO: Implement capture function；加入了未de
     }
 }

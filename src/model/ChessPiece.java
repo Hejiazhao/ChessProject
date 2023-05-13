@@ -19,7 +19,10 @@ public class ChessPiece {
 
     public boolean canCapture(ChessPiece target) {
         // TODO: Finish this method!
-        return this.rank >= target.rank;
+        if (this.rank==1&&target.rank==8&&this.getOwner()!=target.getOwner() )   return true;
+
+        else return (this.rank>=target.rank)&&(this.getOwner()!=target.getOwner());
+        //已完成
     }
 
     public String getName() {

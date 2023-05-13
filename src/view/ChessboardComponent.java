@@ -12,6 +12,8 @@ import java.util.Set;
 
 import static model.Constant.CHESSBOARD_COL_SIZE;
 import static model.Constant.CHESSBOARD_ROW_SIZE;
+import model.ChessPiece;
+import model.ChessboardPoint;
 
 /**
  * This class represents the checkerboard component object on the panel
@@ -20,6 +22,10 @@ public class ChessboardComponent extends JComponent {
     private final CellComponent[][] gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
     private final int CHESS_SIZE;
     private final Set<ChessboardPoint> riverCell = new HashSet<>();
+    private ChessboardPoint RedDen=new ChessboardPoint(8,3);
+    private ChessboardPoint BlueDen=new ChessboardPoint(0,3);
+    private final Set<ChessboardPoint> BlueTrap =new HashSet<>();
+    private final Set<ChessboardPoint> RedTrap =new HashSet<>();
 
     private GameController gameController;
 
@@ -74,14 +80,18 @@ public class ChessboardComponent extends JComponent {
         riverCell.add(new ChessboardPoint(4,2));
         riverCell.add(new ChessboardPoint(5,1));
         riverCell.add(new ChessboardPoint(5,2));
-
         riverCell.add(new ChessboardPoint(3,4));
         riverCell.add(new ChessboardPoint(3,5));
         riverCell.add(new ChessboardPoint(4,4));
         riverCell.add(new ChessboardPoint(4,5));
         riverCell.add(new ChessboardPoint(5,4));
         riverCell.add(new ChessboardPoint(5,5));
-
+        BlueTrap.add(new ChessboardPoint(0,2));
+        BlueTrap.add(new ChessboardPoint(1,3));
+        BlueTrap.add(new ChessboardPoint(0,4));
+        RedTrap.add(new ChessboardPoint(8,2));
+        RedTrap.add(new ChessboardPoint(8,4));
+        RedTrap.add(new ChessboardPoint(7,3));
         for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
                 ChessboardPoint temp = new ChessboardPoint(i, j);
@@ -89,7 +99,24 @@ public class ChessboardComponent extends JComponent {
                 if (riverCell.contains(temp)) {
                     cell = new CellComponent(Color.CYAN, calculatePoint(i, j), CHESS_SIZE);
                     this.add(cell);
-                } else {
+                }
+                else if (BlueTrap.contains(temp)) {
+                    cell=new CellComponent(new Color(0, 102, 204),calculatePoint(i,j),CHESS_SIZE);
+                    this.add(cell);
+                }
+                else if (RedTrap.contains(temp)) {
+                    cell=new CellComponent(Color.orange,calculatePoint(i,j),CHESS_SIZE);
+                    this.add(cell);
+                }
+                else if (temp.equals(RedDen)){
+                    cell=new CellComponent(new Color(255,209,204),calculatePoint(i,j),CHESS_SIZE);
+                    this.add(cell);
+                }
+                else if (temp.equals(BlueDen)){
+                    cell=new CellComponent(new Color(204, 229, 255),calculatePoint(i,j),CHESS_SIZE);
+                    this.add(cell);
+                }
+                else {
                     cell = new CellComponent(Color.LIGHT_GRAY, calculatePoint(i, j), CHESS_SIZE);
                     this.add(cell);
                 }
