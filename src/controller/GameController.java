@@ -87,10 +87,21 @@ public class GameController implements GameListener {
     private void ifWin(){
         String RedWin="红方获胜";
         String BlueWin="蓝方获胜";
-            if (Objects.equals(win(), PlayerColor.BLUE)){ JOptionPane.showMessageDialog(null, BlueWin);}
-            else if (Objects.equals(win(), PlayerColor.RED))JOptionPane.showMessageDialog(null, RedWin);
-
-
+        if (Objects.equals(win(), PlayerColor.BLUE)){
+            JOptionPane.showMessageDialog(null, BlueWin);this.currentPlayer = PlayerColor.BLUE;
+            restartGame();
+           }
+        else if (Objects.equals(win(), PlayerColor.RED)){
+            JOptionPane.showMessageDialog(null, RedWin);this.currentPlayer = PlayerColor.BLUE;
+            restartGame();
+        }
+    }
+    private void restartGame(){
+        Chessboard chessboard=new Chessboard();
+        view.registerController(this);
+        initialize();
+        view.initiateChessComponent(chessboard);
+        view.repaint();
     }
 
     // click a cell with a chess
@@ -106,7 +117,7 @@ public class GameController implements GameListener {
             }
         }
         else if (selectedPoint.equals(point)) {
-            ifWin();
+
             selectedPoint = null;
             component.setSelected(false);
             component.repaint();
