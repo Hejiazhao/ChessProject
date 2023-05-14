@@ -54,13 +54,37 @@ public class ChessboardComponent extends JComponent {
                 if (grid[i][j].getPiece() != null) {
                     ChessPiece chessPiece = grid[i][j].getPiece();
                     System.out.println(chessPiece.getOwner());
-                    if (grid[i][j].getPiece().getRank()==8)gridComponents[i][j].add(
-                            new ElephantChessComponent(
-                                    chessPiece.getOwner(),
-                                    CHESS_SIZE));
-                    else if (grid[i][j].getPiece().getRank()==1){
-                        gridComponents[i][j].add(
+                    switch (grid[i][j].getPiece().getRank()) {
+                        case 1 -> gridComponents[i][j].add(
                                 new MouseChessComponent(
+                                        chessPiece.getOwner(),
+                                        CHESS_SIZE));
+                        case 2 -> gridComponents[i][j].add(
+                                new CatChessComponent(
+                                        chessPiece.getOwner(),
+                                        CHESS_SIZE));
+                        case 3 -> gridComponents[i][j].add(
+                                new DogChessComponent(
+                                        chessPiece.getOwner(),
+                                        CHESS_SIZE));
+                        case 4 -> gridComponents[i][j].add(
+                                new WolfChessComponent(
+                                        chessPiece.getOwner(),
+                                        CHESS_SIZE));
+                        case 5 -> gridComponents[i][j].add(
+                                new LeopardChessComponent(
+                                        chessPiece.getOwner(),
+                                        CHESS_SIZE));
+                        case 6 -> gridComponents[i][j].add(
+                                new TigerChessComponent(
+                                        chessPiece.getOwner(),
+                                        CHESS_SIZE));
+                        case 7 -> gridComponents[i][j].add(
+                                new LionChessComponent(
+                                        chessPiece.getOwner(),
+                                        CHESS_SIZE));
+                        case 8 -> gridComponents[i][j].add(
+                                new ElephantChessComponent(
                                         chessPiece.getOwner(),
                                         CHESS_SIZE));
                     }
