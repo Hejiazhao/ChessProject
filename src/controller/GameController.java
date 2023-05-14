@@ -7,6 +7,8 @@ import view.CellComponent;
 import view.AnimalChessComponent;
 import view.ChessboardComponent;
 
+import javax.swing.*;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -26,8 +28,10 @@ public class GameController implements GameListener {
 
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
-    private ChessboardPoint RedDen=new ChessboardPoint(8,3);
-    private ChessboardPoint BlueDen=new ChessboardPoint(0,3);
+    private ChessboardPoint RedDen=new ChessboardPoint(0,3);
+    private ChessboardPoint BlueDen=new ChessboardPoint(8,3);
+    private int ValidRedChess=8;
+    private int ValidBlueChess=8;
 
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
@@ -54,10 +58,13 @@ public class GameController implements GameListener {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
     }
 
-    private boolean win() {
+    private PlayerColor win() {
         // TODO: Check the board if there is a winner
-        if (PlayerColor.BLUE.equals(model.getChessPieceOwner(RedDen)))return true;
-        else return PlayerColor.RED.equals(model.getChessPieceOwner(BlueDen));
+        if (model.getChessPieceAt(RedDen)!=null&&Objects.equals(PlayerColor.BLUE, model.getChessPieceAt(RedDen).getOwner())){System.out.println("Blue");return PlayerColor.BLUE;}
+        else if (model.getChessPieceAt(BlueDen)!=null&&Objects.equals(PlayerColor.RED,model.getChessPieceAt(BlueDen).getOwner())) return PlayerColor.RED;
+        else if (ValidBlueChess==0) return PlayerColor.RED;
+        else if (ValidRedChess==0) return PlayerColor.BLUE;
+        else return null;
     }
 
 
@@ -69,10 +76,20 @@ public class GameController implements GameListener {
             view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
             selectedPoint = null;
             swapColor();
-            view.repaint();// TODO: if the chess enter Dens or Traps and so on
+            view.repaint();
+            ifWin();
+            // TODO: if the chess enter Dens or Traps and so on
 
 
         }
+
+    }
+    private void ifWin(){
+        String RedWin="红方获胜";
+        String BlueWin="蓝方获胜";
+            if (Objects.equals(win(), PlayerColor.BLUE)){ JOptionPane.showMessageDialog(null, BlueWin);}
+            else if (Objects.equals(win(), PlayerColor.RED))JOptionPane.showMessageDialog(null, RedWin);
+
 
     }
 
@@ -82,24 +99,31 @@ public class GameController implements GameListener {
         if (selectedPoint == null) {
             if (currentPlayer.equals(model.getChessPieceOwner(point))) {
                 selectedPoint = point;
+                ifWin();
                 component.setSelected(true);
                 component.repaint();
+
             }
         }
         else if (selectedPoint.equals(point)) {
+            ifWin();
             selectedPoint = null;
             component.setSelected(false);
             component.repaint();
         }
         else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(selectedPoint).equals(currentPlayer)&& model.isValidMove(selectedPoint,point)){
             model.captureChessPiece(selectedPoint,point);
+            if (model.getChessPieceOwner(point).equals(PlayerColor.BLUE))ValidBlueChess--;
+            else if (model.getChessPieceOwner(point).equals(PlayerColor.RED)) ValidRedChess--;
             view.removeChessComponentAtGrid(point);
             AnimalChessComponent component1=view.removeChessComponentAtGrid(selectedPoint);
             view.setChessComponentAtGrid(point,component1);
             component1.setSelected(false);
             selectedPoint=null;
+            ifWin();
             swapColor();
             view.repaint();
+
         }
 
         // TODO: Implement capture function；
