@@ -8,7 +8,7 @@ import java.awt.*;
 public class MouseChessComponent extends AnimalChessComponent{
     public MouseChessComponent(PlayerColor owner, int size){
         super(owner,size);
-        setLocation(0,1);
+        setLocation(2,0);
         this.animalType=AnimalType.Mouse;
     }
     @Override

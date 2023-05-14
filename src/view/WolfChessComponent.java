@@ -4,16 +4,13 @@ import model.PlayerColor;
 
 import java.awt.*;
 
-
-//将原来“象”棋子的公有功能拆分后，私有的功能
-public class ElephantChessComponent extends AnimalChessComponent{
-
-    public ElephantChessComponent(PlayerColor owner, int size){
+//“鼠”棋子的代码
+public class WolfChessComponent extends AnimalChessComponent{
+    public WolfChessComponent(PlayerColor owner, int size){
         super(owner,size);
-        setLocation(2,6);
-        this.animalType=AnimalType.Elephant;
+        setLocation(2,4);
+        this.animalType=AnimalType.Mouse;
     }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -22,10 +19,11 @@ public class ElephantChessComponent extends AnimalChessComponent{
         Font font = new Font("楷体", Font.PLAIN, getWidth() / 2);
         g2.setFont(font);
         g2.setColor(owner.getColor());
-        g2.drawString("象", getWidth() / 4, getHeight() * 5 / 8); // FIXME: Use library to find the correct offset.
+        g2.drawString("狼", getWidth() / 4, getHeight() * 5 / 8); // FIXME: Use library to find the correct offset.
         if (isSelected()) { // Highlights the model if selected.
             g.setColor(owner.getColor());
             g.drawOval(0, 0, getWidth() , getHeight());
         }
     }
+
 }

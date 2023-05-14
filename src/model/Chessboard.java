@@ -65,10 +65,22 @@ public class Chessboard {
     }
 
     private void initPieces() {
-        grid[0][0].setPiece(new ChessPiece(PlayerColor.BLUE, "Elephant",8));
-        grid[8][6].setPiece(new ChessPiece(PlayerColor.RED, "Elephant",8));
-        grid[0][1].setPiece(new ChessPiece(PlayerColor.BLUE,"Mouse",1));
-        grid[8][5].setPiece(new ChessPiece(PlayerColor.RED,"Mouse",1));
+        grid[6][0].setPiece(new ChessPiece(PlayerColor.BLUE, "Elephant",8));
+        grid[2][6].setPiece(new ChessPiece(PlayerColor.RED, "Elephant",8));
+        grid[6][6].setPiece(new ChessPiece(PlayerColor.BLUE,"Mouse",1));
+        grid[2][0].setPiece(new ChessPiece(PlayerColor.RED,"Mouse",1));
+        grid[7][1].setPiece(new ChessPiece(PlayerColor.BLUE, "Cat",2));
+        grid[1][5].setPiece(new ChessPiece(PlayerColor.RED, "Cat",2));
+        grid[7][5].setPiece(new ChessPiece(PlayerColor.BLUE, "Dog",3));
+        grid[6][4].setPiece(new ChessPiece(PlayerColor.RED, "Dog",3));
+        grid[2][2].setPiece(new ChessPiece(PlayerColor.BLUE, "Leopard",5));
+        grid[8][6].setPiece(new ChessPiece(PlayerColor.RED, "Leopard",5));
+        grid[8][0].setPiece(new ChessPiece(PlayerColor.BLUE, "Tiger",6));
+        grid[0][6].setPiece(new ChessPiece(PlayerColor.RED, "Tiger",6));
+        grid[6][2].setPiece(new ChessPiece(PlayerColor.BLUE, "Wolf",4));
+        grid[2][4].setPiece(new ChessPiece(PlayerColor.RED, "Wolf",4));
+        grid[8][6].setPiece(new ChessPiece(PlayerColor.BLUE, "Lion",7));
+        grid[0][0].setPiece(new ChessPiece(PlayerColor.RED, "Lion",7));
         //在棋格中添加了鼠鼠
     }
 
