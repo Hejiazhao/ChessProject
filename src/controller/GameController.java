@@ -91,7 +91,7 @@ public class GameController implements GameListener {
             component.setSelected(false);
             component.repaint();
         }
-        else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(selectedPoint).equals(currentPlayer)&& model.isValidMove(selectedPoint,point)){
+        else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(selectedPoint).equals(currentPlayer)){
             model.captureChessPiece(selectedPoint,point);
             view.removeChessComponentAtGrid(point);
             AnimalChessComponent component1=view.removeChessComponentAtGrid(selectedPoint);
