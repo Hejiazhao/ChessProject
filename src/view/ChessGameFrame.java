@@ -81,21 +81,12 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
     }
-
-   public void addSaveButton(GameController gameController) {
-        JButton button = new JButton("存档");
-        button.addActionListener((e) -> {
-            JOptionPane.showMessageDialog(this, "游戏已暂停");
-            this.Name=JOptionPane.showInputDialog("请输入文件名");
-
-
-
-            try {
-
-                File newFile = new File("D:\\JAVA\\Demo\\ChessProject\\Save\\"+Name+".txt");
-                if (newFile.createNewFile()){
-                    FileWriter fileWriter = new FileWriter(newFile);
-                    BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
+    private void Save(GameController gameController,String name){
+        try {
+            File newFile = new File("D:\\JAVA\\Demo\\ChessProject\\Save\\"+name+".txt");
+            if (newFile.createNewFile()){
+                FileWriter fileWriter = new FileWriter(newFile);
+                BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
                 if (newFile.exists()) {
                     for (int i = 0; i < 9; i++) {
                         for (int j = 0; j < 7; j++) {
@@ -110,12 +101,18 @@ public class ChessGameFrame extends JFrame {
                     JOptionPane.showMessageDialog(null,"存档成功");
                 }
             }
-                else JOptionPane.showMessageDialog(this,"文件名已存在");
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            else JOptionPane.showMessageDialog(this,"文件名已存在");
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
-
+   public void addSaveButton(GameController gameController) {
+        JButton button = new JButton("存档");
+        button.addActionListener((e) -> {
+            JOptionPane.showMessageDialog(this, "游戏已暂停");
+            this.Name=JOptionPane.showInputDialog("请输入文件名");
+            Save(gameController,this.Name);
         });
         button.setLocation(HEIGHT, HEIGHT / 50 + 120);
         button.setSize(200, 60);

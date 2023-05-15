@@ -14,3 +14,4 @@
 7	5	Blue	Dog	3
 8	0	Blue	Tiger	6
 8	6	Blue	Lion	7
+Blue
