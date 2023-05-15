@@ -17,7 +17,11 @@ public class ChessGameFrame extends JFrame {
     private final int HEIGHT;
 
     private final int ONE_CHESS_SIZE;
+    private String Name1;
+    private String Name2;
     private String Name;
+
+
 
     private ChessboardComponent chessboardComponent;
     public ChessGameFrame(int width, int height) {
@@ -84,6 +88,7 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
     }
+
     private void Save(GameController gameController,String name){
         try {
             File newFile = new File("D:\\JAVA\\Demo\\ChessProject\\Save\\"+name+".txt");
@@ -114,7 +119,7 @@ public class ChessGameFrame extends JFrame {
         JButton button = new JButton("存档");
         button.addActionListener((e) -> {
             JOptionPane.showMessageDialog(this, "游戏已暂停");
-            this.Name=JOptionPane.showInputDialog("请输入文件名");
+            this.Name1=JOptionPane.showInputDialog("请输入文件名");
             Save(gameController,this.Name);
         });
         button.setLocation(HEIGHT, HEIGHT / 50 + 120);
@@ -122,6 +127,45 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
     }
+    public void Read(GameController gameController,String name){
+        try {
+            if (this.Name1.equals(this.Name2)){
+                FileReader fileReader=new FileReader("D://JAVA//Demo//ChessProject//Save//"+name+".txt");
+                BufferedReader bufferedReader=new BufferedReader(fileReader);
+                    for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 7; j++) {
+                            Cell cell = gameController.getModel().getGrid()[i][j];
+                            if (cell.getPiece() !=null) {
+                                bufferedReader.read((i + "\t" + j + "\t" + (cell.getPiece().getOwner().equals(PlayerColor.BLUE) ? "Blue":"Red" ) + "\t" + cell.getPiece().getName() + "\t" + cell.getPiece().getRank() + "\n").toCharArray());
+                            }
+                        }
+                    }
+                    bufferedReader.read((gameController.getCurrentPlayer().equals(PlayerColor.BLUE)?"Blue":"Red").toCharArray());
+                    bufferedReader.close();
+                    JOptionPane.showMessageDialog(null,"游戏继续");
+                }
+            else JOptionPane.showMessageDialog(this,"没有该文件");
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void addReadButton(GameController gameController) {
+        JButton button = new JButton("继续游戏");
+        button.addActionListener((e) -> {
+            JOptionPane.showMessageDialog(this, "游戏继续");
+            this.Name2 = JOptionPane.showInputDialog("请输入文件名");
+            Read(gameController, this.Name2);
+        });
+        button.setLocation(HEIGHT, HEIGHT / 50 + 120);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+    }
+}
+
+
+
 
 
 //    private void addLoadButton() {
@@ -139,4 +183,4 @@ public class ChessGameFrame extends JFrame {
 //    }
 
 
-}
+
