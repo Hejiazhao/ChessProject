@@ -37,6 +37,8 @@ public class ChessGameFrame extends JFrame {
 
 
     }
+
+
     public String getName(){
         return Name;
     }
@@ -58,11 +60,12 @@ public class ChessGameFrame extends JFrame {
         add(chessboardComponent);
     }
 
+
     /**
      * 在游戏面板中添加标签
      */
     private void addLabel() {
-        JLabel statusLabel = new JLabel("Function button");
+        JLabel statusLabel = new JLabel("功能");
         statusLabel.setLocation(HEIGHT, HEIGHT / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));

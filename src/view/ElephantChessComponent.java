@@ -10,6 +10,7 @@ public class ElephantChessComponent extends AnimalChessComponent{
 
     public ElephantChessComponent(PlayerColor owner, int size){
         super(owner,size);
+        System.out.printf("Elephant: size = %d\n", size);
         setLocation(2,6);
         this.animalType=AnimalType.Elephant;
     }
@@ -19,10 +20,14 @@ public class ElephantChessComponent extends AnimalChessComponent{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Font font = new Font("楷体", Font.PLAIN, getWidth() / 2);
+        System.out.println(getWidth()/2);
+        Font font = new Font("楷体", Font.PLAIN, getWidth()/2);
+
         g2.setFont(font);
         g2.setColor(owner.getColor());
-        g2.drawString("象", getWidth() / 4, getHeight() * 5 / 8); // FIXME: Use library to find the correct offset.
+        g2.drawString("象", getWidth() / 4, getHeight() * 5 / 8);
+
+        // FIXME: Use library to find the correct offset.
         if (isSelected()) { // Highlights the model if selected.
             g.setColor(owner.getColor());
             g.drawOval(0, 0, getWidth() , getHeight());

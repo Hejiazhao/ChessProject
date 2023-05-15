@@ -34,13 +34,13 @@ public class Chessboard  {
         riverCell.add(new ChessboardPoint(5,4));
         riverCell.add(new ChessboardPoint(5,5));
 
-        BlueTrap.add(new ChessboardPoint(0,2));
-        BlueTrap.add(new ChessboardPoint(1,3));
-        BlueTrap.add(new ChessboardPoint(0,4));
+        RedTrap.add(new ChessboardPoint(0,2));
+        RedTrap.add(new ChessboardPoint(1,3));
+        RedTrap.add(new ChessboardPoint(0,4));
 
-        RedTrap.add(new ChessboardPoint(8,2));
-        RedTrap.add(new ChessboardPoint(8,4));
-        RedTrap.add(new ChessboardPoint(7,3));
+        BlueTrap.add(new ChessboardPoint(8,2));
+        BlueTrap.add(new ChessboardPoint(8,4));
+        BlueTrap.add(new ChessboardPoint(7,3));
 
         for (int i=3;i<6;i++){
             ChessboardPoint[]C={new ChessboardPoint(i,0),new ChessboardPoint(i,3)};
@@ -127,7 +127,7 @@ public class Chessboard  {
             removeChessPiece(src);
         }
         // 捕捉功能待添加
-        // TODO: Finish the method.
+
 
     }
 
@@ -168,6 +168,7 @@ public class Chessboard  {
         if (getChessPieceAt(src) == null ) {
             return false;
         }
+        else if (inTrap(getChessPieceAt(dest))){System.out.println("eat\n");return true;}
         //添加了&&后的判断
         else if ((getChessPieceAt(dest) != null)&&!isValidCapture(src,dest)){
             return false;
@@ -176,7 +177,6 @@ public class Chessboard  {
         else if (aroundRiverCell(src,dest)) {
             return true;
         }
-
         return calculateDistance(src, dest) == 1;
     }
     public boolean inRiverCell(ChessPiece chessPiece){
@@ -189,26 +189,29 @@ public class Chessboard  {
         return judge;
     }
     public boolean inTrap(ChessPiece chessPiece){
-        boolean judge=false;
+        if (chessPiece==null)return false;
+        else{
+            boolean judge=false;
         if (chessPiece.getOwner().equals(PlayerColor.BLUE))
             for (ChessboardPoint P:this.RedTrap ){
-            if (chessPiece.equals(getChessPieceAt(P)))judge=true;
-        }
+                if (chessPiece.equals(getChessPieceAt(P)))judge=true;}
         else if (chessPiece.getOwner().equals(PlayerColor.RED)) {
             for (ChessboardPoint P:this.BlueTrap ){
                 if (chessPiece.equals(getChessPieceAt(P)))judge=true;
             }
         }
-        return judge;
+        if (judge) System.out.println("eat\n");
+        return judge;}
 
     }
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
-      if (getChessPieceAt(dest)!=null&&(!inRiverCell(getChessPieceAt(dest))||getChessPieceAt(dest).getRank()!=1)) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
+      if (getChessPieceAt(dest)!=null&&(!inTrap(getChessPieceAt(dest))||!inRiverCell(getChessPieceAt(dest))||getChessPieceAt(dest).getRank()!=1)) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()!=1)return false;
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()==1)return true;
       else return inTrap(getChessPieceAt(dest));
+
         //捕捉功能还没做好
         // TODO:Fix this method；
     }

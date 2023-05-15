@@ -24,8 +24,9 @@ public class AnimalChessComponent extends JComponent {
     public AnimalChessComponent(PlayerColor owner, int size) {
         this.owner = owner;
         this.selected = false;
-        setSize(size/2, size/2);
+        setSize(size, size);
         setVisible(true);
+        revalidate();
     }
 
     public boolean isSelected() {
