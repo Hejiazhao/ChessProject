@@ -85,7 +85,7 @@ public class ChessGameFrame extends JFrame {
    public void addSaveButton(GameController gameController) {
         JButton button = new JButton("存档");
         button.addActionListener((e) -> {
-            JOptionPane.showMessageDialog(this, "The game is stop");
+            JOptionPane.showMessageDialog(this, "游戏已暂停");
             this.Name=JOptionPane.showInputDialog("请输入文件名");
 
 
