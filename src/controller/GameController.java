@@ -39,8 +39,8 @@ public class GameController implements GameListener {
         this.model = model;
         this.currentPlayer = PlayerColor.BLUE;
         view.registerController(this);
-        initialize();
         view.initiateChessComponent(model);
+        initialize();
         view.repaint();
     }
 
@@ -49,7 +49,7 @@ public class GameController implements GameListener {
     private void initialize() {
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
-
+             this.view.getGridComponents()[i][j].repaint();
             }
         }
     }
@@ -94,18 +94,19 @@ public class GameController implements GameListener {
         String BlueWin="蓝方获胜";
         if (Objects.equals(win(), PlayerColor.BLUE)){
             JOptionPane.showMessageDialog(null, BlueWin);this.currentPlayer = PlayerColor.BLUE;
-           }
+            restartGame();
+        }
         else if (Objects.equals(win(), PlayerColor.RED)){
             JOptionPane.showMessageDialog(null, RedWin);this.currentPlayer = PlayerColor.BLUE;
-
+            restartGame();
         }
     }
     private void restartGame(){
         Chessboard chessboard=new Chessboard();
-        view.registerController(this);
+        this.model=chessboard;
+        this.view.initiateChessComponent(chessboard);
+        this.view.repaint();
         initialize();
-        view.initiateChessComponent(chessboard);
-        view.repaint();
     }
 
 
@@ -139,6 +140,7 @@ public class GameController implements GameListener {
             ifWin();
             swapColor();
             view.repaint();
+
 
         }
 

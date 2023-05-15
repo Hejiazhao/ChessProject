@@ -39,6 +39,7 @@ public class ChessboardComponent extends JComponent {
         System.out.printf("chessboard width, height = [%d : %d], chess size = %d\n", width, height, CHESS_SIZE);
         initiateGridComponents();
     }
+    public CellComponent[][] getGridComponents(){return gridComponents;}
 
 
     /**
@@ -49,6 +50,7 @@ public class ChessboardComponent extends JComponent {
         Cell[][] grid = chessboard.getGrid();
         for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
+                gridComponents[i][j].removeAll();
                 // TODO: Implement the initialization checkerboard
                 if (grid[i][j].getPiece() != null) {
                     ChessPiece chessPiece = grid[i][j].getPiece();
@@ -123,19 +125,19 @@ public class ChessboardComponent extends JComponent {
                     cell = new CellComponent(Color.CYAN, calculatePoint(i, j), CHESS_SIZE);
                     this.add(cell);
                 }
-                else if (BlueTrap.contains(temp)) {
+                else if (RedTrap.contains(temp)) {
                     cell=new CellComponent(new Color(0, 102, 204),calculatePoint(i,j),CHESS_SIZE);
                     this.add(cell);
                 }
-                else if (RedTrap.contains(temp)) {
+                else if (BlueTrap.contains(temp)) {
                     cell=new CellComponent(Color.orange,calculatePoint(i,j),CHESS_SIZE);
                     this.add(cell);
                 }
-                else if (temp.equals(RedDen)){
+                else if (temp.equals(BlueDen)){
                     cell=new CellComponent(new Color(255,209,204),calculatePoint(i,j),CHESS_SIZE);
                     this.add(cell);
                 }
-                else if (temp.equals(BlueDen)){
+                else if (temp.equals(RedDen)){
                     cell=new CellComponent(new Color(204, 229, 255),calculatePoint(i,j),CHESS_SIZE);
                     this.add(cell);
                 }
