@@ -1,9 +1,12 @@
 package view;
 
 import controller.GameController;
+import model.Cell;
+import model.PlayerColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
@@ -14,6 +17,7 @@ public class ChessGameFrame extends JFrame {
     private final int HEIGHT;
 
     private final int ONE_CHESS_SIZE;
+    private String Name;
 
     private ChessboardComponent chessboardComponent;
     public ChessGameFrame(int width, int height) {
@@ -30,8 +34,11 @@ public class ChessGameFrame extends JFrame {
         addChessboard();
         addLabel();
         addHelloButton();
-        addStopButton();
 
+
+    }
+    public String getName(){
+        return Name;
     }
 
     public ChessboardComponent getChessboardComponent() {
@@ -74,9 +81,41 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
     }
-    private void addStopButton(){
-        JButton button = new JButton("Stop");
-        button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "The game is stop"));
+
+   public void addSaveButton(GameController gameController) {
+        JButton button = new JButton("存档");
+        button.addActionListener((e) -> {
+            JOptionPane.showMessageDialog(this, "The game is stop");
+            this.Name=JOptionPane.showInputDialog("请输入文件名");
+
+
+
+            try {
+
+                File newFile = new File("D:\\JAVA\\Demo\\ChessProject\\Save\\"+Name+".txt");
+                if (newFile.createNewFile()){
+                    FileWriter fileWriter = new FileWriter(newFile);
+                    BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
+                if (newFile.exists()) {
+                    for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 7; j++) {
+                            Cell cell = gameController.getModel().getGrid()[i][j];
+                            if (cell.getPiece() !=null) {
+                                bufferedWriter.write(i + "\t" + j + "\t" + (cell.getPiece().getOwner().equals(PlayerColor.BLUE) ?  "Blue":"Red" ) + "\t" + cell.getPiece().getName() + "\t" + cell.getPiece().getRank() + "\n");
+                            }
+                        }
+                    }
+                    bufferedWriter.close();
+                    JOptionPane.showMessageDialog(null,"存档成功");
+                }
+            }
+                else JOptionPane.showMessageDialog(this,"文件名已存在");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+
+        });
         button.setLocation(HEIGHT, HEIGHT / 50 + 120);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));

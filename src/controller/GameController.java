@@ -9,7 +9,7 @@ import view.ChessboardComponent;
 
 import javax.swing.*;
 import java.util.Objects;
-import java.util.Set;
+
 
 
 /**
@@ -23,6 +23,7 @@ public class GameController implements GameListener {
 
 
     private Chessboard model;
+    public Chessboard getModel(){return model;}
     private ChessboardComponent view;
     private PlayerColor currentPlayer;
 
@@ -65,7 +66,13 @@ public class GameController implements GameListener {
         else if (ValidBlueChess==0) return PlayerColor.RED;
         else if (ValidRedChess==0) return PlayerColor.BLUE;
         else return null;
+
     }
+
+
+    public  void Save (Cell[][] grid,String name){
+
+        }
 
 
     // click an empty cell
@@ -89,11 +96,10 @@ public class GameController implements GameListener {
         String BlueWin="蓝方获胜";
         if (Objects.equals(win(), PlayerColor.BLUE)){
             JOptionPane.showMessageDialog(null, BlueWin);this.currentPlayer = PlayerColor.BLUE;
-            restartGame();
            }
         else if (Objects.equals(win(), PlayerColor.RED)){
             JOptionPane.showMessageDialog(null, RedWin);this.currentPlayer = PlayerColor.BLUE;
-            restartGame();
+
         }
     }
     private void restartGame(){
@@ -103,6 +109,8 @@ public class GameController implements GameListener {
         view.initiateChessComponent(chessboard);
         view.repaint();
     }
+
+
 
     // click a cell with a chess
     @Override
