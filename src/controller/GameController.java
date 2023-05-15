@@ -86,8 +86,6 @@ public class GameController implements GameListener {
             view.repaint();
             ifWin();
             // TODO: if the chess enter Dens or Traps and so on
-
-
         }
 
     }
@@ -125,7 +123,6 @@ public class GameController implements GameListener {
             }
         }
         else if (selectedPoint.equals(point)) {
-
             selectedPoint = null;
             component.setSelected(false);
             component.repaint();

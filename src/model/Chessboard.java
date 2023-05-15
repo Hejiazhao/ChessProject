@@ -159,6 +159,7 @@ public class Chessboard  {
         else if ((getChessPieceAt(dest) != null)&&!isValidCapture(src,dest)){
             return false;
         }
+        else if (riverCell.contains(dest)&&getChessPieceAt(src).getRank()!=6&&getChessPieceAt(src).getRank()!=7) return false;
         else if (aroundRiverCell(src,dest)) {
             return true;
         }
@@ -167,9 +168,11 @@ public class Chessboard  {
     }
     public boolean inRiverCell(ChessPiece chessPiece){
         boolean judge=false;
+
         for (ChessboardPoint P:this.riverCell ){
             if (chessPiece.equals(getChessPieceAt(P)))judge=true;
         }
+
         return judge;
     }
     public boolean inTrap(ChessPiece chessPiece){
