@@ -105,6 +105,7 @@ public class ChessGameFrame extends JFrame {
                             }
                         }
                     }
+                    bufferedWriter.write(gameController.getCurrentPlayer().equals(PlayerColor.BLUE)?"Blue":"Red");
                     bufferedWriter.close();
                     JOptionPane.showMessageDialog(null,"存档成功");
                 }

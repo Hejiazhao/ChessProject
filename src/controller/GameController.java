@@ -70,9 +70,9 @@ public class GameController implements GameListener {
     }
 
 
-    public  void Save (Cell[][] grid,String name){
-
-        }
+   public PlayerColor getCurrentPlayer(){
+        return currentPlayer;
+   }
 
 
     // click an empty cell
