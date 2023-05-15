@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,7 +8,7 @@ import java.util.Set;
  * This class store the real chess information.
  * The Chessboard has 9*7 cells, and each cell has a position for chess
  */
-public class Chessboard {
+public class Chessboard  {
     private Cell[][] grid;
     private final Set<ChessboardPoint> riverCell = new HashSet<>();
     private final Set<ChessboardPoint> BlueTrap =new HashSet<>();
@@ -72,7 +73,7 @@ public class Chessboard {
         grid[7][1].setPiece(new ChessPiece(PlayerColor.BLUE, "Cat",2));
         grid[1][5].setPiece(new ChessPiece(PlayerColor.RED, "Cat",2));
         grid[7][5].setPiece(new ChessPiece(PlayerColor.BLUE, "Dog",3));
-        grid[1][1].setPiece(new ChessPiece(PlayerColor.RED, "Dog",3));
+        grid[1][1].setPiece(new ChessPiece(PlayerColor.RED,"Dog",3));
         grid[6][4].setPiece(new ChessPiece(PlayerColor.BLUE, "Leopard",5));
         grid[2][2].setPiece(new ChessPiece(PlayerColor.RED, "Leopard",5));
         grid[8][6].setPiece(new ChessPiece(PlayerColor.RED, "Leopard",5));
