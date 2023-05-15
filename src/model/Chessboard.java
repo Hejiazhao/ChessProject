@@ -143,8 +143,21 @@ public class Chessboard  {
         boolean judge=false;
         if (getChessPieceAt(src).getRank()==6||getChessPieceAt(src).getRank()==7){
             for (ChessboardPoint[]C:AroundRiverCell){
-                if (C[0].equals(src)&&C[1].equals(dest)) judge=true;
-                else if (C[1].equals(src)&&C[0].equals(dest)) judge=true;
+                if ((C[0].equals(src)&&C[1].equals(dest))||(C[1].equals(src)&&C[0].equals(dest))) {
+                    if (C[0].getRow()==C[1].getRow()){
+                        judge=true;
+                    for (ChessboardPoint D:riverCell){
+                        if (D.getRow()==C[0].getRow()&&getChessPieceAt(D)!=null) judge=false;
+                    }
+                    }
+                    if (C[0].getCol()==C[1].getCol()){
+                        judge=true;
+                        for (ChessboardPoint D:riverCell){
+                            if (D.getCol()==C[0].getCol()&&getChessPieceAt(D)!=null) judge=false;
+                        }
+                    }
+                }
+
             }
         }
         return judge;
@@ -159,7 +172,7 @@ public class Chessboard  {
         else if ((getChessPieceAt(dest) != null)&&!isValidCapture(src,dest)){
             return false;
         }
-        else if (riverCell.contains(dest)&&getChessPieceAt(src).getRank()!=6&&getChessPieceAt(src).getRank()!=7) return false;
+        else if (riverCell.contains(dest)&&getChessPieceAt(src).getRank()!=1) return false;
         else if (aroundRiverCell(src,dest)) {
             return true;
         }
