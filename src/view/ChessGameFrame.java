@@ -130,7 +130,7 @@ public class ChessGameFrame extends JFrame {
     public void Read(GameController gameController,String name){
         try {
             if (this.Name1.equals(this.Name2)){
-                FileReader fileReader=new FileReader("D://JAVA//Demo//ChessProject//Save//"+name+".txt");
+                FileReader fileReader=new FileReader("Save"+name+".txt");
                 BufferedReader bufferedReader=new BufferedReader(fileReader);
                     for (int i = 0; i < 9; i++) {
                         for (int j = 0; j < 7; j++) {
