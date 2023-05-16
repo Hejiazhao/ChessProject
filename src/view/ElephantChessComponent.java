@@ -10,7 +10,6 @@ public class ElephantChessComponent extends AnimalChessComponent{
 
     public ElephantChessComponent(PlayerColor owner, int size){
         super(owner,size);
-        System.out.printf("Elephant: size = %d\n", size);
         setLocation(2,6);
         this.animalType=AnimalType.Elephant;
     }

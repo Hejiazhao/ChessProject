@@ -91,7 +91,7 @@ public class ChessGameFrame extends JFrame {
 
     private void Save(GameController gameController,String name){
         try {
-            File newFile = new File("D:\\JAVA\\Demo\\ChessProject\\Save\\"+name+".txt");
+            File newFile = new File("Save/"+name+".txt");
             if (newFile.createNewFile()){
                 FileWriter fileWriter = new FileWriter(newFile);
                 BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
