@@ -33,7 +33,7 @@ public class ChessGameFrame extends JFrame {
 
         addChessboard();
         addLabel();
-        addHelloButton();
+
 
 
     }
@@ -68,7 +68,7 @@ public class ChessGameFrame extends JFrame {
         JLabel statusLabel = new JLabel("功能");
         statusLabel.setLocation(HEIGHT, HEIGHT / 10);
         statusLabel.setSize(200, 60);
-        statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
+        statusLabel.setFont(new Font("宋体", Font.BOLD, 20));
         add(statusLabel);
     }
 
@@ -76,12 +76,19 @@ public class ChessGameFrame extends JFrame {
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
      */
 
-    private void addHelloButton() {
-        JButton button = new JButton("Show Project Here");
-        button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "new project"));
+    public void addUndoButton(GameController gameController) {
+        JButton button = new JButton("悔棋");
+        button.addActionListener((e) -> {
+            int value=JOptionPane.showConfirmDialog(this,"是否悔棋");
+            switch (value){
+                case JOptionPane.YES_OPTION -> gameController.UndoMove();
+                case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION,JOptionPane.CANCEL_OPTION ->JOptionPane.showMessageDialog(this,"取消悔棋");
+
+            }
+        });
         button.setLocation(HEIGHT, HEIGHT / 10 + 120);
         button.setSize(200, 60);
-        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
     private void Save(GameController gameController,String name){
@@ -119,7 +126,7 @@ public class ChessGameFrame extends JFrame {
         });
         button.setLocation(HEIGHT, HEIGHT / 50 + 120);
         button.setSize(200, 60);
-        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
 

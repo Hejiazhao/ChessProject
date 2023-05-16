@@ -33,6 +33,11 @@ public class GameController implements GameListener {
     private ChessboardPoint BlueDen=new ChessboardPoint(8,3);
     private int ValidRedChess=8;
     private int ValidBlueChess=8;
+    private ChessboardPoint BeforeMove;
+    private ChessboardPoint AfterMove;
+    private ChessPiece ChessBeforeMove;
+    private ChessPiece ChessAfterMove;
+    private AnimalChessComponent ateAnimal;
 
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
@@ -79,6 +84,7 @@ public class GameController implements GameListener {
     @Override
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
         if (selectedPoint != null && model.isValidMove(selectedPoint, point)) {
+            beforeMove(selectedPoint,point);
             model.moveChessPiece(selectedPoint, point);
             view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
             selectedPoint = null;
@@ -108,7 +114,34 @@ public class GameController implements GameListener {
         this.view.repaint();
         initialize();
     }
+    public void UndoMove(){
+        if (ateAnimal!=null){
+        AnimalChessComponent animalChessComponent1=view.removeChessComponentAtGrid(AfterMove);
+        view.setChessComponentAtGrid(BeforeMove,animalChessComponent1);
+        view.setChessComponentAtGrid(AfterMove,ateAnimal);
+        model.setChessPiece(AfterMove,ChessAfterMove);
+        model.setChessPiece(BeforeMove,ChessBeforeMove);
+        animalChessComponent1.setSelected(false);
+        swapColor();
+        selectedPoint=null;
+        view.repaint();}
+        else {
+            model.moveChessPiece(AfterMove,BeforeMove);
+            view.setChessComponentAtGrid(BeforeMove,view.removeChessComponentAtGrid(AfterMove));
+            swapColor();
+            selectedPoint=null;
+            view.repaint();
+        }
 
+
+    }
+    private void beforeMove(ChessboardPoint selectedPoint,ChessboardPoint point){
+            BeforeMove=selectedPoint;
+            AfterMove=point;
+            ChessBeforeMove=model.getChessPieceAt(selectedPoint);
+            ChessAfterMove=model.getChessPieceAt(point);
+            view.repaint();
+    }
 
 
     // click a cell with a chess
@@ -129,10 +162,12 @@ public class GameController implements GameListener {
             component.repaint();
         }
         else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(selectedPoint).equals(currentPlayer)&& model.isValidMove(selectedPoint,point)){
+            beforeMove(selectedPoint,point);
+
             model.captureChessPiece(selectedPoint,point);
             if (model.getChessPieceOwner(point).equals(PlayerColor.BLUE))ValidBlueChess--;
             else if (model.getChessPieceOwner(point).equals(PlayerColor.RED)) ValidRedChess--;
-            view.removeChessComponentAtGrid(point);
+            ateAnimal=view.removeChessComponentAtGrid(point);
             AnimalChessComponent component1=view.removeChessComponentAtGrid(selectedPoint);
             view.setChessComponentAtGrid(point,component1);
             component1.setSelected(false);
