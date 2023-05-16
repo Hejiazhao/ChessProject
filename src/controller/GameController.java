@@ -122,16 +122,14 @@ public class GameController implements GameListener {
         model.setChessPiece(AfterMove,ChessAfterMove);
         model.setChessPiece(BeforeMove,ChessBeforeMove);
         animalChessComponent1.setSelected(false);
-        swapColor();
-        selectedPoint=null;
-        view.repaint();}
+        }
         else {
             model.moveChessPiece(AfterMove,BeforeMove);
             view.setChessComponentAtGrid(BeforeMove,view.removeChessComponentAtGrid(AfterMove));
-            swapColor();
-            selectedPoint=null;
-            view.repaint();
         }
+        swapColor();
+        selectedPoint=null;
+        view.repaint();
 
 
     }
