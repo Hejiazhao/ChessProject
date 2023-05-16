@@ -72,7 +72,7 @@ public class ChessGameFrame extends JFrame {
         JLabel statusLabel = new JLabel("功能");
         statusLabel.setLocation(HEIGHT, HEIGHT / 10);
         statusLabel.setSize(200, 60);
-        statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
+        statusLabel.setFont(new Font("宋体", Font.BOLD, 20));
         add(statusLabel);
     }
 
