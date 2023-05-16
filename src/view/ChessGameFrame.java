@@ -124,7 +124,7 @@ public class ChessGameFrame extends JFrame {
         });
         button.setLocation(HEIGHT, HEIGHT / 50 + 120);
         button.setSize(200, 60);
-        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
     public void Read(GameController gameController,String name){
@@ -157,9 +157,9 @@ public class ChessGameFrame extends JFrame {
             this.Name2 = JOptionPane.showInputDialog("请输入文件名");
             Read(gameController, this.Name2);
         });
-        button.setLocation(HEIGHT, HEIGHT / 50 + 120);
+        button.setLocation(HEIGHT, HEIGHT / 3+120);
         button.setSize(200, 60);
-        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
 }
