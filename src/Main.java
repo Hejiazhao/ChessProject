@@ -11,7 +11,8 @@ public class Main {
             GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard());
             mainFrame.setVisible(true);
             mainFrame.addSaveButton(gameController);
-            mainFrame.addReadButton(gameController);
+            mainFrame.addUndoButton(gameController);
+            mainFrame.addRestartButton(gameController);
         });
     }
 }

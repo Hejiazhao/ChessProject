@@ -19,7 +19,6 @@ public class ElephantChessComponent extends AnimalChessComponent{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        System.out.println(getWidth()/2);
         Font font = new Font("楷体", Font.PLAIN, getWidth()/2);
 
         g2.setFont(font);
