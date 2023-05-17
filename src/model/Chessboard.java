@@ -205,7 +205,7 @@ public class Chessboard {
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
-      if (getChessPieceAt(dest)!=null&&(!inTrap(getChessPieceAt(dest))&&!inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()!=1)) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
+      if (getChessPieceAt(dest)!=null&&(!inTrap(getChessPieceAt(dest))&&!inRiverCell(getChessPieceAt(dest)))) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
       else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest))){return true;}
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()!=1)return false;
       else return inRiverCell(getChessPieceAt(dest)) && getChessPieceAt(dest).getRank() == 1 && getChessPieceAt(src).getRank() == 1;
