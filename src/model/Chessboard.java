@@ -1,6 +1,5 @@
 package model;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -211,9 +210,7 @@ public class Chessboard {
       if (getChessPieceAt(dest)!=null&&(!inTrap(getChessPieceAt(dest))&&!inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()!=1)) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
       else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest))){System.out.println("eat");return true;}
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()!=1)return false;
-      else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()==1)return true;
-
-      else return false;
+      else return inRiverCell(getChessPieceAt(dest)) && getChessPieceAt(dest).getRank() == 1 && getChessPieceAt(src).getRank() == 1;
 
         //捕捉功能还没做好
         // TODO:Fix this method；
