@@ -12,6 +12,7 @@ public class Main {
             mainFrame.setVisible(true);
             mainFrame.addSaveButton(gameController);
             mainFrame.addUndoButton(gameController);
+            mainFrame.addRestartButton(gameController);
         });
     }
 }

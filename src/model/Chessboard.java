@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -163,34 +164,35 @@ public class Chessboard {
     //能否跳河判定
 
     public boolean isValidMove(ChessboardPoint src, ChessboardPoint dest) {
-        if (getChessPieceAt(dest) != null && inTrap(getChessPieceAt(dest))) {
-            System.out.println("eat\n");
-            return true;
-        }
-        else if (getChessPieceAt(src) == null) {
+        System.out.println("move");
+        if (getChessPieceAt(dest)==null)System.out.println("null");
+        else if (getChessPieceAt(dest)!=null)System.out.println("full");
+        if (getChessPieceAt(src) == null) {
             return false;
         }
 
         //添加了&&后的判断
         else if ((getChessPieceAt(dest) != null) && !isValidCapture(src, dest)) {
             return false;
-        } else if (riverCell.contains(dest) && getChessPieceAt(src).getRank() != 1) return false;
+        }
+
+        else if (riverCell.contains(dest) && getChessPieceAt(src).getRank() != 1) return false;
         else if (aroundRiverCell(src, dest)) {
             return true;
         }
+       else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest)))return true;
         return calculateDistance(src, dest) == 1;
+
     }
 
     public boolean inRiverCell(ChessPiece chessPiece) {
         boolean judge = false;
-        for (ChessboardPoint P : this.riverCell) {
-            if (chessPiece.equals(getChessPieceAt(P))) judge = true;
-        }
-
+        for (ChessboardPoint P : this.riverCell) if (Objects.equals(chessPiece, getChessPieceAt(P))) judge = true;
         return judge;
     }
 
     public boolean inTrap(ChessPiece chessPiece) {
+        System.out.println(chessPiece.getOwner());
         boolean judge = false;
         if (chessPiece.getOwner().equals(PlayerColor.BLUE))
             for (ChessboardPoint P : this.RedTrap) {
@@ -200,18 +202,18 @@ public class Chessboard {
             for (ChessboardPoint P : this.BlueTrap) {
                 if (chessPiece.equals(getChessPieceAt(P))) judge = true;
             }
-
-
         }
         return judge;
     }
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
-      if (getChessPieceAt(dest)!=null&&(!inTrap(getChessPieceAt(dest))||!inRiverCell(getChessPieceAt(dest))||getChessPieceAt(dest).getRank()!=1)) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
+      if (getChessPieceAt(dest)!=null&&(!inTrap(getChessPieceAt(dest))&&!inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()!=1)) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
+      else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest))){System.out.println("eat");return true;}
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()!=1)return false;
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()==1)return true;
-      else return inTrap(getChessPieceAt(dest));
+
+      else return false;
 
         //捕捉功能还没做好
         // TODO:Fix this method；

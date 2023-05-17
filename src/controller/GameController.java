@@ -48,6 +48,12 @@ public class GameController implements GameListener {
         initialize();
         view.repaint();
     }
+    public ChessboardPoint getBeforeMove(){
+        return BeforeMove;
+    }
+    public ChessboardPoint getAfterMove(){return AfterMove;}
+    public ChessPiece getChessBeforeMove(){return ChessBeforeMove;}
+    public ChessPiece getChessAfterMove(){return ChessAfterMove;}
 
 
 
@@ -99,15 +105,16 @@ public class GameController implements GameListener {
         String RedWin="红方获胜";
         String BlueWin="蓝方获胜";
         if (Objects.equals(win(), PlayerColor.BLUE)){
-            JOptionPane.showMessageDialog(null, BlueWin);this.currentPlayer = PlayerColor.BLUE;
+            JOptionPane.showMessageDialog(null, BlueWin);
             restartGame();
         }
         else if (Objects.equals(win(), PlayerColor.RED)){
-            JOptionPane.showMessageDialog(null, RedWin);this.currentPlayer = PlayerColor.BLUE;
+            JOptionPane.showMessageDialog(null, RedWin);
             restartGame();
         }
     }
-    private void restartGame(){
+    public void restartGame(){
+        this.currentPlayer=PlayerColor.BLUE;
         Chessboard chessboard=new Chessboard();
         this.model=chessboard;
         this.view.initiateChessComponent(chessboard);
@@ -161,7 +168,6 @@ public class GameController implements GameListener {
         }
         else if (model.isValidCapture(selectedPoint,point)&&model.getChessPieceOwner(selectedPoint).equals(currentPlayer)&& model.isValidMove(selectedPoint,point)){
             beforeMove(selectedPoint,point);
-
             model.captureChessPiece(selectedPoint,point);
             if (model.getChessPieceOwner(point).equals(PlayerColor.BLUE))ValidBlueChess--;
             else if (model.getChessPieceOwner(point).equals(PlayerColor.RED)) ValidRedChess--;
@@ -173,8 +179,6 @@ public class GameController implements GameListener {
             ifWin();
             swapColor();
             view.repaint();
-
-
         }
 
         // TODO: Implement capture function；

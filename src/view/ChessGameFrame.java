@@ -65,8 +65,8 @@ public class ChessGameFrame extends JFrame {
      * 在游戏面板中添加标签
      */
     private void addLabel() {
-        JLabel statusLabel = new JLabel("功能");
-        statusLabel.setLocation(HEIGHT, HEIGHT / 10);
+        JLabel statusLabel = new JLabel("功能按键");
+        statusLabel.setLocation(HEIGHT, HEIGHT /10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("宋体", Font.BOLD, 20));
         add(statusLabel);
@@ -91,6 +91,21 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
+    public void addRestartButton(GameController gameController) {
+        JButton button = new JButton("重新开始");
+        button.addActionListener((e) -> {
+            int value=JOptionPane.showConfirmDialog(this,"是否重新开始");
+            switch (value){
+                case JOptionPane.YES_OPTION -> gameController.restartGame();
+                case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION,JOptionPane.CANCEL_OPTION ->JOptionPane.showMessageDialog(this,"游戏继续");
+
+            }
+        });
+        button.setLocation(HEIGHT, 2*HEIGHT/11 +120);
+        button.setSize(200, 60);
+        button.setFont(new Font("宋体", Font.BOLD, 20));
+        add(button);
+    }
     private void Save(GameController gameController,String name){
         try {
             File newFile = new File("Save/"+name+".txt");
@@ -107,6 +122,7 @@ public class ChessGameFrame extends JFrame {
                         }
                     }
                     bufferedWriter.write(gameController.getCurrentPlayer().equals(PlayerColor.BLUE)?"Blue":"Red");
+                    if (gameController.getBeforeMove()!=null) bufferedWriter.write("\n(" + gameController.getBeforeMove().getRow()+","+gameController.getBeforeMove().getCol()+") ->"+"("+gameController.getAfterMove().getRow()+","+gameController.getAfterMove().getCol()+") "+gameController.getChessBeforeMove().getName());
                     bufferedWriter.close();
                     JOptionPane.showMessageDialog(null,"存档成功");
                 }
