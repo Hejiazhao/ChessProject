@@ -163,9 +163,7 @@ public class Chessboard {
     //能否跳河判定
 
     public boolean isValidMove(ChessboardPoint src, ChessboardPoint dest) {
-        System.out.println("move");
-        if (getChessPieceAt(dest)==null)System.out.println("null");
-        else if (getChessPieceAt(dest)!=null)System.out.println("full");
+
         if (getChessPieceAt(src) == null) {
             return false;
         }
@@ -208,7 +206,7 @@ public class Chessboard {
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
       if (getChessPieceAt(dest)!=null&&(!inTrap(getChessPieceAt(dest))&&!inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()!=1)) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
-      else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest))){System.out.println("eat");return true;}
+      else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest))){return true;}
       else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()!=1)return false;
       else return inRiverCell(getChessPieceAt(dest)) && getChessPieceAt(dest).getRank() == 1 && getChessPieceAt(src).getRank() == 1;
 
