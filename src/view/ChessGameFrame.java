@@ -4,6 +4,7 @@ import controller.GameController;
 import model.Cell;
 import model.PlayerColor;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -54,6 +55,7 @@ public class ChessGameFrame extends JFrame {
     public void setChessboardComponent(ChessboardComponent chessboardComponent) {
         this.chessboardComponent = chessboardComponent;
     }
+
 
     /**
      * 在游戏面板中添加棋盘
@@ -185,8 +187,50 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
+    private Clip clip;
+
+    public void actionPerformed(GameController ignoredGameController) {
+        try {
+            if (clip == null || !clip.isOpen()) {
+                InputStream is = new BufferedInputStream(new FileInputStream("C:\\Users\\蔡卓茜\\IdeaProjects\\ChessProject\\resource\\王十三 - 兰亭序 (粤语).wav"));
+                AudioInputStream ais = AudioSystem.getAudioInputStream(is);
+                AudioFormat baseFormat = ais.getFormat();
+                AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(), baseFormat.getChannels() * 2, baseFormat.getSampleRate(), false);
+                AudioInputStream converted = AudioSystem.getAudioInputStream(targetFormat, ais);
+                clip = AudioSystem.getClip();
+                clip.open(converted);
+                clip.addLineListener(event -> {
+                    if(event.getType()==LineEvent.Type.STOP){
+                        clip.close();
+                        clip=null;
+                }});
+                clip.start();
+            } else {
+                clip.stop();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    public void addMusicButton(GameController gameController) {
+        JButton MusicButton = new JButton("Music");
+        MusicButton.addActionListener((e) -> actionPerformed(gameController));
+        MusicButton.setLocation(HEIGHT, HEIGHT / 4+ 133);
+        MusicButton.setSize(200, 60);
+        MusicButton.setFont(new Font("宋体", Font.BOLD, 20));
+        add(MusicButton);
+    }
+
+
+
+
+
+
+
+
 
 }
+
 
 
 
