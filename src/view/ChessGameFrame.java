@@ -131,7 +131,7 @@ public class ChessGameFrame extends JFrame {
                         }
                     }
                     bufferedWriter.write(gameController.getCurrentPlayer().equals(PlayerColor.BLUE)?"Blue":"Red");
-                    if (gameController.getBeforeMove()!=null) bufferedWriter.write("\n" + gameController.getBeforeMove().getRow()+","+gameController.getBeforeMove().getCol()+","+gameController.getAfterMove().getRow()+","+gameController.getAfterMove().getCol()+","+gameController.getAteAnimal().getName()+(gameController.getChessAfterMove()==null?null:gameController.getChessAfterMove().getOwner()));
+                    if (gameController.getBeforeMove()!=null) bufferedWriter.write("\n" + gameController.getBeforeMove().getRow()+","+gameController.getBeforeMove().getCol()+","+gameController.getAfterMove().getRow()+","+gameController.getAfterMove().getCol()+","+gameController.getAteAnimal().getName()+","+(gameController.getChessAfterMove()==null?null:gameController.getChessAfterMove().getOwner()));
                     bufferedWriter.close();
                     JOptionPane.showMessageDialog(null,"存档成功");
                 }

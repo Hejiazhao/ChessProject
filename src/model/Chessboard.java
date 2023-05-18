@@ -48,7 +48,6 @@ public class Chessboard {
             ChessboardPoint[] d = {new ChessboardPoint(i, 6), new ChessboardPoint(i, 3)};
             AroundRiverCell.add(d);
         }
-
         for (int j = 1; j < 6; j++) {
             if (j == 3) j++;
             ChessboardPoint[] F = {new ChessboardPoint(2, j), new ChessboardPoint(6, j)};
