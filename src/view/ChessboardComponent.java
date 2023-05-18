@@ -2,7 +2,10 @@ package view;
 
 
 import controller.GameController;
-import model.*;
+import model.Cell;
+import model.ChessPiece;
+import model.Chessboard;
+import model.ChessboardPoint;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +15,6 @@ import java.util.Set;
 
 import static model.Constant.CHESSBOARD_COL_SIZE;
 import static model.Constant.CHESSBOARD_ROW_SIZE;
-import model.ChessPiece;
-import model.ChessboardPoint;
 
 /**
  * This class represents the checkerboard component object on the panel

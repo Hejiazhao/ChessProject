@@ -54,10 +54,18 @@ public class GameController implements GameListener {
     public ChessboardPoint getAfterMove(){return AfterMove;}
     public ChessPiece getChessBeforeMove(){return ChessBeforeMove;}
     public ChessPiece getChessAfterMove(){return ChessAfterMove;}
+    public AnimalChessComponent getAteAnimal(){return ateAnimal;}
+    public void setModel(Chessboard model){
+        this.model=model;
+    }
+    public void setView(ChessboardComponent view){
+        this.view=view;
+    }
+    public ChessboardComponent getView(){return view;}
 
 
 
-    private void initialize() {
+    public void initialize() {
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
              this.view.getGridComponents()[i][j].repaint();
@@ -84,6 +92,11 @@ public class GameController implements GameListener {
    public PlayerColor getCurrentPlayer(){
         return currentPlayer;
    }
+   public void  setCurrentPlayer(PlayerColor currentPlayer){
+        this.currentPlayer=currentPlayer;
+   }
+   public int getValidRedChess(){return ValidRedChess;}
+    public  int getValidBlueChess(){return ValidBlueChess;}
 
 
     // click an empty cell
@@ -145,6 +158,7 @@ public class GameController implements GameListener {
             AfterMove=point;
             ChessBeforeMove=model.getChessPieceAt(selectedPoint);
             ChessAfterMove=model.getChessPieceAt(point);
+            if (model.getChessPieceAt(point)==null) ateAnimal=null;
             view.repaint();
     }
 
