@@ -131,7 +131,7 @@ public class ChessGameFrame extends JFrame {
                         }
                     }
                     bufferedWriter.write(gameController.getCurrentPlayer().equals(PlayerColor.BLUE)?"Blue":"Red");
-                    if (gameController.getBeforeMove()!=null) bufferedWriter.write("\n(" + gameController.getBeforeMove().getRow()+","+gameController.getBeforeMove().getCol()+") ->"+"("+gameController.getAfterMove().getRow()+","+gameController.getAfterMove().getCol()+") "+gameController.getChessBeforeMove().getName());
+                    if (gameController.getBeforeMove()!=null) bufferedWriter.write("\n" + gameController.getBeforeMove().getRow()+","+gameController.getBeforeMove().getCol()+","+gameController.getAfterMove().getRow()+","+gameController.getAfterMove().getCol()+","+gameController.getAteAnimal().getName()+(gameController.getChessAfterMove()==null?null:gameController.getChessAfterMove().getOwner()));
                     bufferedWriter.close();
                     JOptionPane.showMessageDialog(null,"存档成功");
                 }
@@ -168,7 +168,7 @@ public class ChessGameFrame extends JFrame {
                 }
             for(int i=0;i<ValidNumber;i++){
                     String[]Read=bufferedReader.readLine().split(",",5);
-                    for (String s:Read)System.out.print(s);
+                    for (String s:Read)System.out.print(s+" ");
                     ChessboardPoint chessboardPoint=new ChessboardPoint(Read[0].equals("0")?0:Integer.parseInt(Read[0]),Read[1].equals("0")?0:Integer.parseInt(Read[1]));
                     gameController.getModel().setChessPiece(chessboardPoint,new ChessPiece(Read[2].equals("Red")?PlayerColor.RED:PlayerColor.BLUE,Read[3],Integer.parseInt(Read[4])));
                 }

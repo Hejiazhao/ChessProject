@@ -54,6 +54,7 @@ public class GameController implements GameListener {
     public ChessboardPoint getAfterMove(){return AfterMove;}
     public ChessPiece getChessBeforeMove(){return ChessBeforeMove;}
     public ChessPiece getChessAfterMove(){return ChessAfterMove;}
+    public AnimalChessComponent getAteAnimal(){return ateAnimal;}
     public void setModel(Chessboard model){
         this.model=model;
     }
