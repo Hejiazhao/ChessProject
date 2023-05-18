@@ -1,10 +1,10 @@
 package view;
 
 import controller.GameController;
-import model.Cell;
-import model.PlayerColor;
+import model.*;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.*;
 
@@ -17,9 +17,8 @@ public class ChessGameFrame extends JFrame {
     private final int HEIGHT;
 
     private final int ONE_CHESS_SIZE;
-    private String Name1;
-    private String Name2;
-    private String Name;
+
+    private String SaveName;
 
 
 
@@ -37,14 +36,11 @@ public class ChessGameFrame extends JFrame {
 
         addChessboard();
         addLabel();
-
-
-
     }
 
 
     public String getName(){
-        return Name;
+        return SaveName;
     }
 
     public ChessboardComponent getChessboardComponent() {
@@ -80,6 +76,10 @@ public class ChessGameFrame extends JFrame {
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
      */
 
+    public void musicPlayer(){
+        File file=new File("resource/刘德华-吴京-细水长流.mp3");
+
+    }
     public void addUndoButton(GameController gameController) {
         JButton button = new JButton("悔棋");
         button.addActionListener((e) -> {
@@ -95,6 +95,7 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
+
     public void addRestartButton(GameController gameController) {
         JButton button = new JButton("重新开始");
         button.addActionListener((e) -> {
@@ -113,16 +114,19 @@ public class ChessGameFrame extends JFrame {
 
     private void Save(GameController gameController,String name){
         try {
-            File newFile = new File("Save"+name+".txt");
+
+            File newFile = new File("Save/"+name+".txt");
             if (newFile.createNewFile()){
                 FileWriter fileWriter = new FileWriter(newFile);
                 BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
                 if (newFile.exists()) {
+                    int ValidChess=gameController.getValidBlueChess()+gameController.getValidRedChess();
+                    bufferedWriter.write(ValidChess+"\n");
                     for (int i = 0; i < 9; i++) {
                         for (int j = 0; j < 7; j++) {
                             Cell cell = gameController.getModel().getGrid()[i][j];
                             if (cell.getPiece() !=null) {
-                                bufferedWriter.write(i + "\t" + j + "\t" + (cell.getPiece().getOwner().equals(PlayerColor.BLUE) ?  "Blue":"Red" ) + "\t" + cell.getPiece().getName() + "\t" + cell.getPiece().getRank() + "\n");
+                                bufferedWriter.write(i+"," + j +"," + (cell.getPiece().getOwner().equals(PlayerColor.BLUE) ?  "Blue":"Red" ) + "," + cell.getPiece().getName() + "," + cell.getPiece().getRank() + "\n");
                             }
                         }
                     }
@@ -142,45 +146,82 @@ public class ChessGameFrame extends JFrame {
         JButton button = new JButton("存档");
         button.addActionListener((e) -> {
             JOptionPane.showMessageDialog(this, "游戏已暂停");
-            this.Name1=JOptionPane.showInputDialog("请输入文件名");
-            Save(gameController,this.Name);
+            this.SaveName =JOptionPane.showInputDialog("请输入文件名");
+            Save(gameController,this.SaveName);
         });
         button.setLocation(HEIGHT, HEIGHT / 50 + 120);
         button.setSize(200, 60);
         button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
-    public void Read(GameController gameController,String name){
-        try {
-            if (this.Name1.equals(this.Name2)){
-                FileReader fileReader=new FileReader("Save"+name+".txt");
+    public void Read(GameController gameController){
+        File ReadFile=chooseFile();
+        if (ReadFile!=null){try {
+                FileReader fileReader=new FileReader(ReadFile);
                 BufferedReader bufferedReader=new BufferedReader(fileReader);
-                    for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 7; j++) {
-                            Cell cell = gameController.getModel().getGrid()[i][j];
-                            if (cell.getPiece() !=null) {
-                                bufferedReader.read((i + "\t" + j + "\t" + (cell.getPiece().getOwner().equals(PlayerColor.BLUE) ? "Blue":"Red" ) + "\t" + cell.getPiece().getName() + "\t" + cell.getPiece().getRank() + "\n").toCharArray());
-                            }
-                        }
+                int ValidNumber= Integer.parseInt(bufferedReader.readLine());
+                for (int i=0;i<9;i++){
+                    for (int j=0;j<7;j++){
+                        ChessboardPoint chessboardPoint=new ChessboardPoint(i,j);
+                        if (gameController.getModel().getChessPieceAt(chessboardPoint)!=null) gameController.getModel().removeChessPiece(chessboardPoint);
                     }
-                    bufferedReader.read((gameController.getCurrentPlayer().equals(PlayerColor.BLUE)?"Blue":"Red").toCharArray());
-                    bufferedReader.close();
-                    JOptionPane.showMessageDialog(null,"游戏继续");
                 }
-            else JOptionPane.showMessageDialog(this,"没有该文件");
+            for(int i=0;i<ValidNumber;i++){
+                    String[]Read=bufferedReader.readLine().split(",",5);
+                    for (String s:Read)System.out.print(s);
+                    ChessboardPoint chessboardPoint=new ChessboardPoint(Read[0].equals("0")?0:Integer.parseInt(Read[0]),Read[1].equals("0")?0:Integer.parseInt(Read[1]));
+                    gameController.getModel().setChessPiece(chessboardPoint,new ChessPiece(Read[2].equals("Red")?PlayerColor.RED:PlayerColor.BLUE,Read[3],Integer.parseInt(Read[4])));
+                }
+                gameController.getView().initiateChessComponent(gameController.getModel());
+                gameController.initialize();
+                gameController.getView().repaint();
+                gameController.setCurrentPlayer(bufferedReader.readLine().equals("Red")?PlayerColor.RED:PlayerColor.BLUE);
+                bufferedReader.close();
+                JOptionPane.showMessageDialog(null,"读档成功！");
         } catch (IOException ex) {
             throw new RuntimeException(ex);
+        }
+        }
+        else JOptionPane.showMessageDialog(null,"读档取消");
+    }
+    public File chooseFile() {
+        // 创建一个JFileChooser对象
+        JFileChooser fileChooser = new JFileChooser();
+        // 设置文件选择器的标题
+        fileChooser.setDialogTitle("请选择一个文件");
+        // 设置文件选择器的当前目录，可以根据需要更改
+        fileChooser.setCurrentDirectory(new File("Save/"));
+        // 设置文件选择器的选择模式，只能选择文件
+        fileChooser.setAcceptAllFileFilterUsed(false);
+       //设置不能全选
+        fileChooser.setMultiSelectionEnabled(false);
+        //禁止多选
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        // 弹出文件选择器对话框，并获取用户的操作结果
+        fileChooser.setFileFilter(new FileNameExtensionFilter("*.txt","txt"));
+        //设置可选文件
+        int result = fileChooser.showOpenDialog(null);
+        // 如果用户点击了确定按钮
+        if (result == JFileChooser.APPROVE_OPTION) {
+            // 获取用户选择的文件，并返回
+            return fileChooser.getSelectedFile();
+        }
+        // 否则，返回null
+        else {
+            return null;
         }
     }
 
     public void addReadButton(GameController gameController) {
-        JButton button = new JButton("继续游戏");
+        JButton button = new JButton("读档" );
         button.addActionListener((e) -> {
-            JOptionPane.showMessageDialog(this, "游戏继续");
-            this.Name2 = JOptionPane.showInputDialog("请输入文件名");
-            Read(gameController, this.Name2);
+            int Confirm= JOptionPane.showConfirmDialog(this, "读档后将丢失当前进度，是否读档？");
+            switch (Confirm){
+                case JOptionPane.YES_OPTION ->  Read(gameController);
+                case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION,JOptionPane.CANCEL_OPTION-> JOptionPane.showMessageDialog(this,"读档取消");
+            }
         });
-        button.setLocation(HEIGHT, HEIGHT / 3+120);
+        button.setLocation(HEIGHT, 15*HEIGHT /56+120);
         button.setSize(200, 60);
         button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);

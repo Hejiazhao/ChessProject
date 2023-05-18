@@ -99,7 +99,7 @@ public class Chessboard {
         return Math.abs(src.getRow() - dest.getRow()) + Math.abs(src.getCol() - dest.getCol());
     }
 
-    private ChessPiece removeChessPiece(ChessboardPoint point) {
+    public ChessPiece removeChessPiece(ChessboardPoint point) {
         ChessPiece chessPiece = getChessPieceAt(point);
         getGridAt(point).removePiece();
         return chessPiece;
@@ -174,9 +174,7 @@ public class Chessboard {
         }
 
         else if (riverCell.contains(dest) && getChessPieceAt(src).getRank() != 1) return false;
-        else if (aroundRiverCell(src, dest)) {
-            return true;
-        }
+        else if (aroundRiverCell(src, dest)) {return true;}
        else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest)))return true;
         return calculateDistance(src, dest) == 1;
 

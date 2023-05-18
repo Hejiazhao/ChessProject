@@ -13,6 +13,7 @@ public class Main {
             mainFrame.addSaveButton(gameController);
             mainFrame.addUndoButton(gameController);
             mainFrame.addRestartButton(gameController);
+            mainFrame.addReadButton(gameController);
         });
     }
 }
