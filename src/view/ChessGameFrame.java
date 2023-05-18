@@ -192,7 +192,7 @@ public class ChessGameFrame extends JFrame {
     public void actionPerformed(GameController ignoredGameController) {
         try {
             if (clip == null || !clip.isOpen()) {
-                InputStream is = new BufferedInputStream(new FileInputStream("C:\\Users\\蔡卓茜\\IdeaProjects\\ChessProject\\resource\\王十三 - 兰亭序 (粤语).wav"));
+                InputStream is = new BufferedInputStream(new FileInputStream("resource/王十三 - 兰亭序 (粤语).wav"));
                 AudioInputStream ais = AudioSystem.getAudioInputStream(is);
                 AudioFormat baseFormat = ais.getFormat();
                 AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(), baseFormat.getChannels() * 2, baseFormat.getSampleRate(), false);
