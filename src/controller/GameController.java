@@ -38,6 +38,7 @@ public class GameController implements GameListener {
     private ChessPiece ChessBeforeMove;
     private ChessPiece ChessAfterMove;
     private AnimalChessComponent ateAnimal;
+    private boolean canUndo=false;
 
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
@@ -133,8 +134,11 @@ public class GameController implements GameListener {
         this.view.initiateChessComponent(chessboard);
         this.view.repaint();
         initialize();
+        canUndo=false;
     }
     public void UndoMove(){
+        if (canUndo){
+            canUndo=false;
         if (ateAnimal!=null){
         AnimalChessComponent animalChessComponent1=view.removeChessComponentAtGrid(AfterMove);
         view.setChessComponentAtGrid(BeforeMove,animalChessComponent1);
@@ -149,11 +153,11 @@ public class GameController implements GameListener {
         }
         swapColor();
         selectedPoint=null;
-        view.repaint();
-
-
+        view.repaint();}
+        else JOptionPane.showMessageDialog(null,"现在不能悔棋！");
     }
     private void beforeMove(ChessboardPoint selectedPoint,ChessboardPoint point){
+            canUndo=true;
             BeforeMove=selectedPoint;
             AfterMove=point;
             ChessBeforeMove=model.getChessPieceAt(selectedPoint);
