@@ -1,13 +1,17 @@
 package view;
 
 import controller.GameController;
-import model.*;
+import model.Cell;
+import model.ChessPiece;
+import model.ChessboardPoint;
+import model.PlayerColor;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.*;
+import java.util.regex.Pattern;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
@@ -20,6 +24,7 @@ public class ChessGameFrame extends JFrame {
     private final int ONE_CHESS_SIZE;
 
     private String SaveName;
+    private String[]Animal=new String[]{"Elephant","Cat","Leopard","Mouse","Lion","Tiger","Wolf","Dog"};
 
 
 
@@ -78,10 +83,7 @@ public class ChessGameFrame extends JFrame {
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
      */
 
-    public void musicPlayer(){
-        File file=new File("resource/刘德华-吴京-细水长流.mp3");
 
-    }
     public void addUndoButton(GameController gameController) {
         JButton button = new JButton("悔棋");
         button.addActionListener((e) -> {
@@ -156,6 +158,10 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
+    public boolean isNumeric(String string){
+        Pattern pattern = Pattern.compile("[0-9]*");
+        return !pattern.matcher(string).matches();
+    }
     public void Read(GameController gameController){
         File ReadFile=chooseFile();
         if (ReadFile!=null){try {
@@ -168,18 +174,35 @@ public class ChessGameFrame extends JFrame {
                         if (gameController.getModel().getChessPieceAt(chessboardPoint)!=null) gameController.getModel().removeChessPiece(chessboardPoint);
                     }
                 }
+                boolean judge=true;
             for(int i=0;i<ValidNumber;i++){
                     String[]Read=bufferedReader.readLine().split(",",5);
-                    for (String s:Read)System.out.print(s+" ");
+                    if (Read.length!=5){JOptionPane.showMessageDialog(this,"间隔符录入错误");judge=false;break;}
+                    boolean NameJudge=false;
+                    for (String s:Animal){
+                        if (s.equals(Read[3])) {
+                            NameJudge = true;
+                            break;
+                        }
+                    }
+                    if (isNumeric(Read[0]) || isNumeric(Read[1])){JOptionPane.showMessageDialog(this,"坐标输入错误");judge=false;break;}
+                    else if (Integer.parseInt(Read[0])>8||Integer.parseInt(Read[0])<0||Integer.parseInt(Read[1])>6||Integer.parseInt(Read[1])<0){JOptionPane.showMessageDialog(this,"坐标输入错误");judge=false;break;}
+                    else if (!Read[2].equals("Blue")&&!Read[2].equals("Red")){JOptionPane.showMessageDialog(this,"棋子颜色设置错误");judge=false;break;}
+                    else if (!NameJudge){JOptionPane.showMessageDialog(this,"棋子名字设置错误");judge=false;break;}
+                    else if (isNumeric(Read[4]) ||Integer.parseInt(Read[4])>8||Integer.parseInt(Read[4])<0){JOptionPane.showMessageDialog(this,"Rank输入错误");judge=false;break;}
                     ChessboardPoint chessboardPoint=new ChessboardPoint(Read[0].equals("0")?0:Integer.parseInt(Read[0]),Read[1].equals("0")?0:Integer.parseInt(Read[1]));
                     gameController.getModel().setChessPiece(chessboardPoint,new ChessPiece(Read[2].equals("Red")?PlayerColor.RED:PlayerColor.BLUE,Read[3],Integer.parseInt(Read[4])));
                 }
-                gameController.getView().initiateChessComponent(gameController.getModel());
+                if (judge){gameController.getView().initiateChessComponent(gameController.getModel());
                 gameController.initialize();
                 gameController.getView().repaint();
-                gameController.setCurrentPlayer(bufferedReader.readLine().equals("Red")?PlayerColor.RED:PlayerColor.BLUE);
-                bufferedReader.close();
-                JOptionPane.showMessageDialog(null,"读档成功！");
+            String color=bufferedReader.readLine();
+            if (color.equals("Red")) gameController.setCurrentPlayer(PlayerColor.RED);
+            else if (color.equals("Blue"))gameController.setCurrentPlayer(PlayerColor.BLUE);
+            else {JOptionPane.showMessageDialog(this,"行动方未指定");
+            judge=false;}
+            bufferedReader.close();}
+                if (judge)JOptionPane.showMessageDialog(null,"读档成功！");
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -213,6 +236,34 @@ public class ChessGameFrame extends JFrame {
             return null;
         }
     }
+    public File chooseMusicFile() {
+        // 创建一个JFileChooser对象
+        JFileChooser fileChooser = new JFileChooser();
+        // 设置文件选择器的标题
+        fileChooser.setDialogTitle("请选择一个文件");
+        // 设置文件选择器的当前目录，可以根据需要更改
+        fileChooser.setCurrentDirectory(new File("resource/"));
+        // 设置文件选择器的选择模式，只能选择文件
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        //设置不能全选
+        fileChooser.setMultiSelectionEnabled(false);
+        //禁止多选
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        // 弹出文件选择器对话框，并获取用户的操作结果
+        fileChooser.setFileFilter(new FileNameExtensionFilter("*.wav","wav"));
+        //设置可选文件
+        int result = fileChooser.showOpenDialog(null);
+        // 如果用户点击了确定按钮
+        if (result == JFileChooser.APPROVE_OPTION) {
+            // 获取用户选择的文件，并返回
+            return fileChooser.getSelectedFile();
+        }
+        // 否则，返回null
+        else {
+            return null;
+        }
+    }
+
 
     public void addReadButton(GameController gameController) {
         JButton button = new JButton("读档" );
@@ -233,7 +284,15 @@ public class ChessGameFrame extends JFrame {
     public void actionPerformed(GameController ignoredGameController) {
         try {
             if (clip == null || !clip.isOpen()) {
-                InputStream is = new BufferedInputStream(new FileInputStream("resource/刘德华-吴京-细水长流.wav"));
+
+                int choose=JOptionPane.showConfirmDialog(this,"是否手动选择");
+                File newfile= new File("resource/刘德华-吴京-细水长流.wav");
+                if (choose == JOptionPane.YES_OPTION) {
+                    newfile = chooseMusicFile();
+
+                }
+                JOptionPane.showMessageDialog(this, "已播放");
+                InputStream is = new BufferedInputStream(new FileInputStream(newfile));
                 AudioInputStream ais = AudioSystem.getAudioInputStream(is);
                 clip = AudioSystem.getClip();
                 clip.open(ais);
