@@ -83,10 +83,7 @@ public class ChessGameFrame extends JFrame {
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
      */
 
-    public void musicPlayer(){
-        File file=new File("resource/刘德华-吴京-细水长流.mp3");
 
-    }
     public void addUndoButton(GameController gameController) {
         JButton button = new JButton("悔棋");
         button.addActionListener((e) -> {
@@ -239,6 +236,34 @@ public class ChessGameFrame extends JFrame {
             return null;
         }
     }
+    public File chooseMusicFile() {
+        // 创建一个JFileChooser对象
+        JFileChooser fileChooser = new JFileChooser();
+        // 设置文件选择器的标题
+        fileChooser.setDialogTitle("请选择一个文件");
+        // 设置文件选择器的当前目录，可以根据需要更改
+        fileChooser.setCurrentDirectory(new File("resource/"));
+        // 设置文件选择器的选择模式，只能选择文件
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        //设置不能全选
+        fileChooser.setMultiSelectionEnabled(false);
+        //禁止多选
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        // 弹出文件选择器对话框，并获取用户的操作结果
+        fileChooser.setFileFilter(new FileNameExtensionFilter("*.wav","wav"));
+        //设置可选文件
+        int result = fileChooser.showOpenDialog(null);
+        // 如果用户点击了确定按钮
+        if (result == JFileChooser.APPROVE_OPTION) {
+            // 获取用户选择的文件，并返回
+            return fileChooser.getSelectedFile();
+        }
+        // 否则，返回null
+        else {
+            return null;
+        }
+    }
+
 
     public void addReadButton(GameController gameController) {
         JButton button = new JButton("读档" );
@@ -259,7 +284,8 @@ public class ChessGameFrame extends JFrame {
     public void actionPerformed(GameController ignoredGameController) {
         try {
             if (clip == null || !clip.isOpen()) {
-                InputStream is = new BufferedInputStream(new FileInputStream("resource/刘德华-吴京-细水长流.wav"));
+                File file=chooseMusicFile();
+                InputStream is = new BufferedInputStream(new FileInputStream(file));
                 AudioInputStream ais = AudioSystem.getAudioInputStream(is);
                 clip = AudioSystem.getClip();
                 clip.open(ais);
