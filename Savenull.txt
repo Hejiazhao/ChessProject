@@ -1,0 +1,17 @@
+0	0	Red	Lion	7
+0	6	Red	Tiger	6
+1	1	Red	Dog	3
+1	5	Red	Cat	2
+2	0	Red	Mouse	1
+2	2	Red	Leopard	5
+2	4	Red	Wolf	4
+2	6	Red	Elephant	8
+6	0	Blue	Elephant	8
+6	2	Blue	Wolf	4
+6	3	Blue	Leopard	5
+6	6	Blue	Mouse	1
+7	1	Blue	Cat	2
+7	5	Blue	Dog	3
+8	0	Blue	Tiger	6
+8	6	Blue	Lion	7
+Red

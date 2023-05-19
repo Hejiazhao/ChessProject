@@ -14,6 +14,7 @@ public class Main {
             mainFrame.addUndoButton(gameController);
             mainFrame.addRestartButton(gameController);
             mainFrame.addReadButton(gameController);
+            mainFrame.addMusicButton(gameController);
         });
     }
 }

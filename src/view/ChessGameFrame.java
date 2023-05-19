@@ -6,6 +6,7 @@ import model.ChessPiece;
 import model.ChessboardPoint;
 import model.PlayerColor;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -55,6 +56,7 @@ public class ChessGameFrame extends JFrame {
     public void setChessboardComponent(ChessboardComponent chessboardComponent) {
         this.chessboardComponent = chessboardComponent;
     }
+
 
     /**
      * 在游戏面板中添加棋盘
@@ -252,8 +254,48 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
+    private Clip clip;
+
+    public void actionPerformed(GameController ignoredGameController) {
+        try {
+            if (clip == null || !clip.isOpen()) {
+                InputStream is = new BufferedInputStream(new FileInputStream("resource/刘德华-吴京-细水长流.wav"));
+                AudioInputStream ais = AudioSystem.getAudioInputStream(is);
+                clip = AudioSystem.getClip();
+                clip.open(ais);
+                clip.addLineListener(event -> {
+                    if(event.getType()==LineEvent.Type.STOP){
+                        clip.close();
+                        clip=null;
+                }});
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                clip.start();
+            } else {
+                clip.stop();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    public void addMusicButton(GameController gameController) {
+        JButton MusicButton = new JButton("Music");
+        MusicButton.addActionListener((e) -> actionPerformed(gameController));
+        MusicButton.setLocation(HEIGHT, HEIGHT / 3+160);
+        MusicButton.setSize(200, 60);
+        MusicButton.setFont(new Font("宋体", Font.BOLD, 20));
+        add(MusicButton);
+    }
+
+
+
+
+
+
+
+
 
 }
+
 
 
 
