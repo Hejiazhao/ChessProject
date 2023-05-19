@@ -235,11 +235,8 @@ public class ChessGameFrame extends JFrame {
             if (clip == null || !clip.isOpen()) {
                 InputStream is = new BufferedInputStream(new FileInputStream("resource/刘德华-吴京-细水长流.wav"));
                 AudioInputStream ais = AudioSystem.getAudioInputStream(is);
-                AudioFormat baseFormat = ais.getFormat();
-                AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(), baseFormat.getChannels() * 2, baseFormat.getSampleRate(), false);
-                AudioInputStream converted = AudioSystem.getAudioInputStream(targetFormat, ais);
                 clip = AudioSystem.getClip();
-                clip.open(converted);
+                clip.open(ais);
                 clip.addLineListener(event -> {
                     if(event.getType()==LineEvent.Type.STOP){
                         clip.close();
