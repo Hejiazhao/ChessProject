@@ -1,12 +1,16 @@
 package view;
 
 import controller.GameController;
-import model.*;
+import model.Cell;
+import model.ChessPiece;
+import model.ChessboardPoint;
+import model.PlayerColor;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.*;
+import java.util.regex.Pattern;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
@@ -19,6 +23,7 @@ public class ChessGameFrame extends JFrame {
     private final int ONE_CHESS_SIZE;
 
     private String SaveName;
+    private String[]Animal=new String[]{"Elephant","Cat","Leopard","Mouse","Lion","Tiger","Wolf","Dog"};
 
 
 
@@ -154,6 +159,10 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("宋体", Font.BOLD, 20));
         add(button);
     }
+    public boolean isNumeric(String string){
+        Pattern pattern = Pattern.compile("[0-9]*");
+        return !pattern.matcher(string).matches();
+    }
     public void Read(GameController gameController){
         File ReadFile=chooseFile();
         if (ReadFile!=null){try {
@@ -166,18 +175,35 @@ public class ChessGameFrame extends JFrame {
                         if (gameController.getModel().getChessPieceAt(chessboardPoint)!=null) gameController.getModel().removeChessPiece(chessboardPoint);
                     }
                 }
+                boolean judge=true;
             for(int i=0;i<ValidNumber;i++){
                     String[]Read=bufferedReader.readLine().split(",",5);
-                    for (String s:Read)System.out.print(s+" ");
+                    if (Read.length!=5){JOptionPane.showMessageDialog(this,"间隔符录入错误");judge=false;break;}
+                    boolean NameJudge=false;
+                    for (String s:Animal){
+                        if (s.equals(Read[3])) {
+                            NameJudge = true;
+                            break;
+                        }
+                    }
+                    if (isNumeric(Read[0]) || isNumeric(Read[1])){JOptionPane.showMessageDialog(this,"坐标输入错误");judge=false;break;}
+                    else if (Integer.parseInt(Read[0])>8||Integer.parseInt(Read[0])<0||Integer.parseInt(Read[1])>6||Integer.parseInt(Read[1])<0){JOptionPane.showMessageDialog(this,"坐标输入错误");judge=false;break;}
+                    else if (!Read[2].equals("Blue")&&!Read[2].equals("Red")){JOptionPane.showMessageDialog(this,"棋子颜色设置错误");judge=false;break;}
+                    else if (!NameJudge){JOptionPane.showMessageDialog(this,"棋子名字设置错误");judge=false;break;}
+                    else if (isNumeric(Read[4]) ||Integer.parseInt(Read[4])>8||Integer.parseInt(Read[4])<0){JOptionPane.showMessageDialog(this,"Rank输入错误");judge=false;break;}
                     ChessboardPoint chessboardPoint=new ChessboardPoint(Read[0].equals("0")?0:Integer.parseInt(Read[0]),Read[1].equals("0")?0:Integer.parseInt(Read[1]));
                     gameController.getModel().setChessPiece(chessboardPoint,new ChessPiece(Read[2].equals("Red")?PlayerColor.RED:PlayerColor.BLUE,Read[3],Integer.parseInt(Read[4])));
                 }
-                gameController.getView().initiateChessComponent(gameController.getModel());
+                if (judge){gameController.getView().initiateChessComponent(gameController.getModel());
                 gameController.initialize();
                 gameController.getView().repaint();
-                gameController.setCurrentPlayer(bufferedReader.readLine().equals("Red")?PlayerColor.RED:PlayerColor.BLUE);
-                bufferedReader.close();
-                JOptionPane.showMessageDialog(null,"读档成功！");
+            String color=bufferedReader.readLine();
+            if (color.equals("Red")) gameController.setCurrentPlayer(PlayerColor.RED);
+            else if (color.equals("Blue"))gameController.setCurrentPlayer(PlayerColor.BLUE);
+            else {JOptionPane.showMessageDialog(this,"行动方未指定");
+            judge=false;}
+            bufferedReader.close();}
+                if (judge)JOptionPane.showMessageDialog(null,"读档成功！");
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
