@@ -254,7 +254,7 @@ public class ChessGameFrame extends JFrame {
     public void addMusicButton(GameController gameController) {
         JButton MusicButton = new JButton("Music");
         MusicButton.addActionListener((e) -> actionPerformed(gameController));
-        MusicButton.setLocation(HEIGHT, HEIGHT / 3+160);
+        MusicButton.setLocation(HEIGHT, HEIGHT / 3+135);
         MusicButton.setSize(200, 60);
         MusicButton.setFont(new Font("宋体", Font.BOLD, 20));
         add(MusicButton);
