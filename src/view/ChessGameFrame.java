@@ -233,7 +233,7 @@ public class ChessGameFrame extends JFrame {
     public void actionPerformed(GameController ignoredGameController) {
         try {
             if (clip == null || !clip.isOpen()) {
-                InputStream is = new BufferedInputStream(new FileInputStream("resource/王十三 - 兰亭序 (粤语).wav"));
+                InputStream is = new BufferedInputStream(new FileInputStream("resource/刘德华-吴京-细水长流.wav"));
                 AudioInputStream ais = AudioSystem.getAudioInputStream(is);
                 AudioFormat baseFormat = ais.getFormat();
                 AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(), baseFormat.getChannels() * 2, baseFormat.getSampleRate(), false);
@@ -245,6 +245,7 @@ public class ChessGameFrame extends JFrame {
                         clip.close();
                         clip=null;
                 }});
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
                 clip.start();
             } else {
                 clip.stop();
@@ -256,7 +257,7 @@ public class ChessGameFrame extends JFrame {
     public void addMusicButton(GameController gameController) {
         JButton MusicButton = new JButton("Music");
         MusicButton.addActionListener((e) -> actionPerformed(gameController));
-        MusicButton.setLocation(HEIGHT, HEIGHT / 4+ 133);
+        MusicButton.setLocation(HEIGHT, HEIGHT / 3+160);
         MusicButton.setSize(200, 60);
         MusicButton.setFont(new Font("宋体", Font.BOLD, 20));
         add(MusicButton);
