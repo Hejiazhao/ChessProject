@@ -3,11 +3,13 @@ package controller;
 
 import listener.GameListener;
 import model.*;
-import view.CellComponent;
 import view.AnimalChessComponent;
+import view.CellComponent;
 import view.ChessboardComponent;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
+import java.io.*;
 import java.util.Objects;
 
 
@@ -39,6 +41,9 @@ public class GameController implements GameListener {
     private ChessPiece ChessAfterMove;
     private AnimalChessComponent ateAnimal;
     private boolean canUndo=false;
+    private boolean PlayEffect=false;
+
+    private Clip clip;
 
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
@@ -48,6 +53,57 @@ public class GameController implements GameListener {
         view.initiateChessComponent(model);
         initialize();
         view.repaint();
+    }
+    public void PlayEat() {
+        if (PlayEffect) {
+            try {
+                if (clip == null || !clip.isOpen()) {
+                    File newfile = new File("resource/音效2.wav");
+                    PlayInBoard(newfile);
+                    clip = null;
+                } else {
+                    clip.stop();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    private void PlayInBoard(File newfile) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        InputStream is = new BufferedInputStream(new FileInputStream(newfile));
+        AudioInputStream ais = AudioSystem.getAudioInputStream(is);
+        clip = AudioSystem.getClip();
+        clip.open(ais);
+        clip.addLineListener(event -> {
+            if(event.getType()== LineEvent.Type.STOP){
+                clip.close();
+                clip=null;
+            }});
+        clip.start();
+    }
+
+    public boolean isPlayEffect() {
+        return PlayEffect;
+    }
+
+    public void setPlayEffect(boolean playEffect) {
+        PlayEffect = playEffect;
+    }
+
+    public void PlayWin() {
+        if (PlayEffect) {
+            try {
+                if (clip == null || !clip.isOpen()) {
+                    File newfile = new File("resource/音效1.wav");
+                    PlayInBoard(newfile);
+                    clip = null;
+                } else {
+                    clip.stop();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
     public ChessboardPoint getBeforeMove(){
         return BeforeMove;
@@ -113,18 +169,20 @@ public class GameController implements GameListener {
             ifWin();
             // TODO: if the chess enter Dens or Traps and so on
         }
-
     }
+
     private void ifWin(){
         String RedWin="红方获胜";
         String BlueWin="蓝方获胜";
         if (Objects.equals(win(), PlayerColor.BLUE)){
             JOptionPane.showMessageDialog(null, BlueWin);
             restartGame();
+            PlayWin();
         }
         else if (Objects.equals(win(), PlayerColor.RED)){
             JOptionPane.showMessageDialog(null, RedWin);
             restartGame();
+            PlayWin();
         }
     }
     public void restartGame(){
@@ -194,9 +252,11 @@ public class GameController implements GameListener {
             view.setChessComponentAtGrid(point,component1);
             component1.setSelected(false);
             selectedPoint=null;
+            PlayEat();
             ifWin();
             swapColor();
             view.repaint();
+
         }
 
         // TODO: Implement capture function；

@@ -10,6 +10,7 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.regex.Pattern;
 
@@ -280,16 +281,18 @@ public class ChessGameFrame extends JFrame {
         add(button);
     }
     private Clip clip;
+    
+
+
+
 
     public void actionPerformed(GameController ignoredGameController) {
         try {
             if (clip == null || !clip.isOpen()) {
-
                 int choose=JOptionPane.showConfirmDialog(this,"是否手动选择");
                 File newfile= new File("resource/刘德华-吴京-细水长流.wav");
                 if (choose == JOptionPane.YES_OPTION) {
                     newfile = chooseMusicFile();
-
                 }
                 JOptionPane.showMessageDialog(this, "已播放");
                 InputStream is = new BufferedInputStream(new FileInputStream(newfile));
@@ -310,13 +313,33 @@ public class ChessGameFrame extends JFrame {
             ex.printStackTrace();
         }
     }
+
     public void addMusicButton(GameController gameController) {
-        JButton MusicButton = new JButton("Music");
+        JButton MusicButton = new JButton("音乐");
         MusicButton.addActionListener((e) -> actionPerformed(gameController));
-        MusicButton.setLocation(HEIGHT, HEIGHT / 3+160);
+        MusicButton.setLocation(HEIGHT, 31*HEIGHT /80+160);
         MusicButton.setSize(200, 60);
         MusicButton.setFont(new Font("宋体", Font.BOLD, 20));
         add(MusicButton);
+    }
+    public void addMusicEffectButton(GameController gameController){
+        JButton MusicButton = new JButton("音效");
+        MusicButton.addActionListener((ActionEvent e) ->{
+            if (gameController.isPlayEffect()){ gameController.setPlayEffect(false);JOptionPane.showMessageDialog(this,"音效关闭");}
+            else {gameController.setPlayEffect(true);JOptionPane.showMessageDialog(this,"音效开启");}
+        });
+        MusicButton.setLocation(HEIGHT, 3*HEIGHT /10+160);
+        MusicButton.setSize(200, 60);
+        MusicButton.setFont(new Font("宋体", Font.BOLD, 20));
+        add(MusicButton);
+    }
+    public void addButton(GameController gameController){
+        addSaveButton(gameController);
+        addUndoButton(gameController);
+        addRestartButton(gameController);
+        addReadButton(gameController);
+        addMusicButton(gameController);
+        addMusicEffectButton(gameController);
     }
 
 
