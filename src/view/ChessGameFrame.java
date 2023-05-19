@@ -284,8 +284,15 @@ public class ChessGameFrame extends JFrame {
     public void actionPerformed(GameController ignoredGameController) {
         try {
             if (clip == null || !clip.isOpen()) {
-                File file=chooseMusicFile();
-                InputStream is = new BufferedInputStream(new FileInputStream(file));
+
+                int choose=JOptionPane.showConfirmDialog(this,"是否手动选择");
+                File newfile= new File("resource/刘德华-吴京-细水长流.wav");
+                if (choose == JOptionPane.YES_OPTION) {
+                    newfile = chooseMusicFile();
+
+                }
+                JOptionPane.showMessageDialog(this, "已播放");
+                InputStream is = new BufferedInputStream(new FileInputStream(newfile));
                 AudioInputStream ais = AudioSystem.getAudioInputStream(is);
                 clip = AudioSystem.getClip();
                 clip.open(ais);
