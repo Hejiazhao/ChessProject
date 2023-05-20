@@ -6,7 +6,10 @@ import model.ChessPiece;
 import model.ChessboardPoint;
 import model.PlayerColor;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -31,7 +34,7 @@ public class ChessGameFrame extends JFrame {
 
     private ChessboardComponent chessboardComponent;
     public ChessGameFrame(int width, int height) {
-        setTitle("2023 CS109 Project Demo"); //设置标题
+        setTitle("斗兽棋Demo"); //设置标题
         this.WIDTH = width;
         this.HEIGHT = height;
         this.ONE_CHESS_SIZE = (HEIGHT * 4 / 5) / 9;
@@ -40,6 +43,8 @@ public class ChessGameFrame extends JFrame {
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //设置程序关闭按键，如果点击右上方的叉就游戏全部关闭了
         setLayout(null);
+        setBackground();
+
 
         addChessboard();
         addLabel();
@@ -69,16 +74,29 @@ public class ChessGameFrame extends JFrame {
     }
 
 
+
     /**
      * 在游戏面板中添加标签
      */
     private void addLabel() {
-        JLabel statusLabel = new JLabel("功能按键");
-        statusLabel.setLocation(HEIGHT, HEIGHT /10);
-        statusLabel.setSize(200, 60);
-        statusLabel.setFont(new Font("宋体", Font.BOLD, 20));
+        JLabel statusLabel = new JLabel();
+        statusLabel.setLocation(HEIGHT+12, HEIGHT /20);
+        ImageIcon image= new ImageIcon("resource/原神图标.jpg");
+        statusLabel.setSize(image.getIconWidth(), image.getIconHeight()/2);
+        statusLabel.setIcon(image);
         add(statusLabel);
     }
+    private void setBackground(){
+        ImageIcon icon = new ImageIcon ("resource/背景3.gif"); // 创建一个图标对象，使用缩放后的图片
+        JLabel background = new JLabel (icon); // 创建一个标签对象，使用图标对象
+        background.setLayout (null); // 给标签对象设置一个布局管理器
+        background.setSize(WIDTH,HEIGHT);
+// 您可以将JFrame的内容面板设置为标签对象，并继续正常工作，向JFrame添加组件
+        setContentPane (background);
+// 或者，直接向标签对象添加组件，就像其他容器一样
+
+    }
+
 
     /**
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
