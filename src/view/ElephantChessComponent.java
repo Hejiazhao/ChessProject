@@ -24,8 +24,8 @@ protected void paintComponent(Graphics g){
     Graphics2D g2 = (Graphics2D) g;
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setColor(owner.getColor());
-    g2.drawImage(elephantImage1,0,0,null);
-    g2.drawImage(elephantImage2,0,0,null);
+    if (owner.equals(PlayerColor.BLUE)) g2.drawImage(elephantImage1,0,0,72,72,null);
+    else g2.drawImage(elephantImage2,0,0,72,72,null);
 
     if (isSelected()) { // Highlights the model if selected.
         g.setColor(owner.getColor());
