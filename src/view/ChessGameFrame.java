@@ -87,7 +87,7 @@ public class ChessGameFrame extends JFrame {
         add(statusLabel);
     }
     private void setBackground(){
-        ImageIcon icon = new ImageIcon ("resource/背景3.gif"); // 创建一个图标对象，使用缩放后的图片
+        ImageIcon icon = new ImageIcon ("resource/背景最终版.gif"); // 创建一个图标对象，使用缩放后的图片
         JLabel background = new JLabel (icon); // 创建一个标签对象，使用图标对象
         background.setLayout (null); // 给标签对象设置一个布局管理器
         background.setSize(WIDTH,HEIGHT);
