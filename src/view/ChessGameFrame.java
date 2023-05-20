@@ -136,7 +136,7 @@ public class ChessGameFrame extends JFrame {
                         }
                     }
                     bufferedWriter.write(gameController.getCurrentPlayer().equals(PlayerColor.BLUE)?"Blue":"Red");
-                    if (gameController.getBeforeMove()!=null) bufferedWriter.write("\n" + gameController.getBeforeMove().getRow()+","+gameController.getBeforeMove().getCol()+","+gameController.getAfterMove().getRow()+","+gameController.getAfterMove().getCol()+","+gameController.getAteAnimal().getName()+","+(gameController.getChessAfterMove()==null?null:gameController.getChessAfterMove().getOwner()));
+                    if (gameController.getBeforeMove()!=null) bufferedWriter.write("\n" + gameController.getBeforeMove().getRow()+","+gameController.getBeforeMove().getCol()+","+gameController.getAfterMove().getRow()+","+gameController.getAfterMove().getCol()+","+(gameController.getAteAnimal()==null?null:gameController.getAteAnimal().getName())+","+(gameController.getChessAfterMove()==null?null:gameController.getChessAfterMove().getOwner()));
                     bufferedWriter.close();
                     JOptionPane.showMessageDialog(null,"存档成功");
                 }
@@ -152,7 +152,8 @@ public class ChessGameFrame extends JFrame {
         button.addActionListener((e) -> {
             JOptionPane.showMessageDialog(this, "游戏已暂停");
             this.SaveName =JOptionPane.showInputDialog("请输入文件名");
-            Save(gameController,this.SaveName);
+            if (this.SaveName==null){JOptionPane.showMessageDialog(this,"文件名不能为空");}
+            else Save(gameController,this.SaveName);
         });
         button.setLocation(HEIGHT, HEIGHT / 50 + 120);
         button.setSize(200, 60);
