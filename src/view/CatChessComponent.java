@@ -9,7 +9,7 @@ public class CatChessComponent extends AnimalChessComponent{
     public CatChessComponent(PlayerColor owner, int size){
         super(owner,size);
         setLocation(1,5);
-        this.animalType=AnimalType.Mouse;
+        this.animalType=AnimalType.Cat;
     }
     @Override
     protected void paintComponent(Graphics g) {

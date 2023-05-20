@@ -144,7 +144,7 @@ public class Chessboard {
                     if (C[0].getRow() == C[1].getRow()) {
                         judge = true;
                         for (ChessboardPoint D : riverCell) {
-                            if (D.getRow() == C[0].getRow() && getChessPieceAt(D) != null) judge = false;
+                            if (D.getRow() == C[0].getRow() && getChessPieceAt(D) != null&&(((D.getCol()<C[0].getCol())&&(D.getCol()>C[1].getCol()))||((D.getCol()>C[0].getCol())&&(D.getCol()<C[1].getCol())))) judge = false;
                         }
                     }
                     if (C[0].getCol() == C[1].getCol()) {

@@ -4,7 +4,6 @@ package view;
 import model.PlayerColor;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * This is the equivalent of the ChessPiece class,
@@ -13,7 +12,7 @@ import java.awt.*;
 //改成了父类
 public class AnimalChessComponent extends JComponent {
     public enum AnimalType{
-    Elephant,Mouse
+    Elephant,Mouse,Lion,Cat,Dog,Leopard,Tiger,Wolf
     }
     //添加动物类型用于识别
     PlayerColor owner;
