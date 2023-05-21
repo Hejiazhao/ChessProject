@@ -45,6 +45,16 @@ public class GameController implements GameListener {
 
     private Clip clip;
 
+    public AnimalChessComponent getSelectedComponent() {
+        return selectedComponent;
+    }
+
+    public void setSelectedComponent(AnimalChessComponent selectedComponent) {
+        this.selectedComponent = selectedComponent;
+    }
+
+    private AnimalChessComponent selectedComponent;
+
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
         this.model = model;
@@ -234,8 +244,16 @@ public class GameController implements GameListener {
                 ifWin();
                 component.setSelected(true);
                 component.repaint();
-
+                setSelectedComponent(component);
             }
+        }
+        else if (!selectedPoint.equals(point)&&currentPlayer.equals(model.getChessPieceOwner(point))){
+            selectedPoint=point;
+            getSelectedComponent().setSelected(false);
+            component.setSelected(true);
+            getSelectedComponent().repaint();
+            component.repaint();
+            setSelectedComponent(component);
         }
         else if (selectedPoint.equals(point)) {
             selectedPoint = null;
