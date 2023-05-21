@@ -14,6 +14,11 @@ public class AnimalChessComponent extends JComponent {
     public enum AnimalType{
     Elephant,Mouse,Lion,Cat,Dog,Leopard,Tiger,Wolf
     }
+
+    public PlayerColor getOwner() {
+        return owner;
+    }
+
     //添加动物类型用于识别
     PlayerColor owner;
     public AnimalType animalType;
