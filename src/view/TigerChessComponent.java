@@ -13,8 +13,8 @@ public class TigerChessComponent extends AnimalChessComponent{
         super(owner,size);
         setLocation(0,6);
         this.animalType=AnimalType.Tiger;
-        this.tigerImage1=new ImageIcon("resource/Blue-lion.jpg").getImage();
-        this.tigerImage2=new ImageIcon("resource/Red-lion.jpg").getImage();
+        this.tigerImage1=new ImageIcon("resource/Blue-tight.jpg").getImage();
+        this.tigerImage2=new ImageIcon("resource/Red-tight.jpg").getImage();
 
     }
     @Override
