@@ -14,6 +14,8 @@ public class Chessboard {
     private final Set<ChessboardPoint> BlueTrap = new HashSet<>();
     private final Set<ChessboardPoint> RedTrap = new HashSet<>();
     private final Set<ChessboardPoint[]> AroundRiverCell = new HashSet<>();
+    private ChessboardPoint RedDen=new ChessboardPoint(0,3);
+    private ChessboardPoint BlueDen=new ChessboardPoint(8,3);
 
     public Chessboard() {
         this.grid =
@@ -166,6 +168,7 @@ public class Chessboard {
         if (getChessPieceAt(src) == null) {
             return false;
         }
+        else if ((dest.equals(RedDen)&&getChessPieceAt(src).getOwner().equals(PlayerColor.RED))||(dest.equals(BlueDen)&&getChessPieceAt(src).getOwner().equals(PlayerColor.BLUE))) return false;
 
         //添加了&&后的判断
         else if ((getChessPieceAt(dest) != null) && !isValidCapture(src, dest)) {
