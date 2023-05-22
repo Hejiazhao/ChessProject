@@ -253,10 +253,12 @@ public class GameController implements GameListener {
                 model.setChessPiece(AfterMove, ChessAfterMove);
                 model.setChessPiece(BeforeMove, ChessBeforeMove);
                 animalChessComponent1.setSelected(false);
+                System.out.println(ateAnimal.getOwner()==PlayerColor.BLUE?"Blue":"Red");
                 switch (ateAnimal.getOwner()) {
-                    case BLUE -> ValidBlueChess++;
-                    case RED -> ValidRedChess++;
-                }
+                    case RED -> ValidBlueChess++;
+                    case BLUE-> ValidRedChess++;
+              }
+                System.out.println("BLUE: "+ValidBlueChess+"RED: "+ValidRedChess);
             } else {
                 model.moveChessPiece(AfterMove, BeforeMove);
                 view.setChessComponentAtGrid(BeforeMove, view.removeChessComponentAtGrid(AfterMove));
