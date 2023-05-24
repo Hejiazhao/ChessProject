@@ -98,6 +98,13 @@ public class ChessGameFrame extends JFrame {
 // 或者，直接向标签对象添加组件，就像其他容器一样
 
     }
+    public static void waitFor(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**
@@ -195,8 +202,11 @@ public class ChessGameFrame extends JFrame {
                 }
                 boolean judge = true;
                gameController.restartGame();
-               gameController.getView().initiateGridComponents();
+
+
                 for (int i=0; i<Round-1;i++){
+
+                    System.out.println(i);
                     String[] Read = bufferedReader.readLine().split(",", 4);
                     System.out.println(i);
                     if (Read.length!=4){JOptionPane.showMessageDialog(this,"坐标不够");break;}
@@ -221,65 +231,29 @@ public class ChessGameFrame extends JFrame {
                     ChessboardPoint dest=new ChessboardPoint(Integer.parseInt(Read[2]),Integer.parseInt(Read[3]));
                     if (gameController.getModel().getChessPieceAt(src).getOwner().equals(gameController.getCurrentPlayer())){
                         if ( gameController.getModel().isValidMove(src,dest)&&gameController.getModel().getChessPieceAt(dest)==null){
+                            System.out.println("OK");
+                            gameController.beforeMove(src, dest);
                             gameController.setSelectedPoint(src);
-
+                            gameController.getModel().setChessPiece(dest,gameController.getModel().getChessPieceAt(src));
+                            gameController.getModel().removeChessPiece(src);
+                            gameController.getView().initiateChessComponent(gameController.getModel());
+                            gameController.initialize();
+                            gameController.getView().repaint();
+                            gameController.setSelectedPoint(null);
+                            gameController.swapColor();
                     }
                         else if (gameController.getModel().getChessPieceAt(dest)!=null&&gameController.getModel().isValidMove(src,dest)&&gameController.getModel().isValidMove(src,dest)){
                             gameController.setSelectedPoint(src);
+                            AnimalChessComponent component1 = gameController.getView().removeChessComponentAtGrid(dest);
+                            gameController.getView().setChessComponentAtGrid(dest, component1);
+                            gameController.onPlayerClickChessPiece(dest, component1);
+                            gameController.setSelectedPoint(null);
                         }
-                        else JOptionPane.showMessageDialog(this,"输入了非法移动");
-                    }else JOptionPane.showMessageDialog(this,"本回合行动棋子设置错误");
-                }
-                /*for (int i = 0; i < 9; i++) {
-                    for (int j = 0; j < 7; j++) {
-                        ChessboardPoint chessboardPoint = new ChessboardPoint(i, j);
-                        if (gameController.getModel().getChessPieceAt(chessboardPoint) != null)
-                            gameController.getModel().removeChessPiece(chessboardPoint);
-                    }
+                        else {JOptionPane.showMessageDialog(this,"输入了非法移动");break;}
+                    }else {JOptionPane.showMessageDialog(this,"本回合行动棋子设置错误");break;}
                 }
 
-                for (int i = 0; i < ValidNumber; i++) {
-                    String[] Read = bufferedReader.readLine().split(",", 5);
-                    if (Read.length != 5) {
-                        JOptionPane.showMessageDialog(this, "间隔符录入错误或录入数据不足");
-                        judge = false;
-                        break;
-                    }
-                    boolean NameJudge = false;
-                    for (String s : Animal) {
-                        if (s.equals(Read[3])) {
-                            NameJudge = true;
-                            break;
-                        }
-                    }
-                    if (isNotNumeric(Read[0]) || isNotNumeric(Read[1])) {
-                        JOptionPane.showMessageDialog(this, "坐标输入错误");
-                        judge = false;
-                        break;
-                    } else if (Integer.parseInt(Read[0]) > 8 || Integer.parseInt(Read[0]) < 0 || Integer.parseInt(Read[1]) > 6 || Integer.parseInt(Read[1]) < 0) {
-                        JOptionPane.showMessageDialog(this, "坐标输入错误");
-                        judge = false;
-                        break;
-                    } else if (!Read[2].equals("Blue") && !Read[2].equals("Red")) {
-                        JOptionPane.showMessageDialog(this, "棋子颜色设置错误");
-                        judge = false;
-                        break;
-                    } else if (!NameJudge) {
-                        JOptionPane.showMessageDialog(this, "棋子名字设置错误");
-                        judge = false;
-                        break;
-                    } else if (isNotNumeric(Read[4]) || Integer.parseInt(Read[4]) > 8 || Integer.parseInt(Read[4]) < 0) {
-                        JOptionPane.showMessageDialog(this, "Rank输入错误");
-                        judge = false;
-                        break;
-                    }
-                    ChessboardPoint chessboardPoint = new ChessboardPoint(Read[0].equals("0") ? 0 : Integer.parseInt(Read[0]), Read[1].equals("0") ? 0 : Integer.parseInt(Read[1]));
-                    gameController.getModel().setChessPiece(chessboardPoint, new ChessPiece(Read[2].equals("Red") ? PlayerColor.RED : PlayerColor.BLUE, Read[3], Integer.parseInt(Read[4])));
-                }*/
                 if (judge) {
-                    gameController.getView().initiateChessComponent(gameController.getModel());
-                    gameController.initialize();
-                    gameController.getView().repaint();
                     String color = bufferedReader.readLine();
                     if (color.equals("Red")) gameController.setCurrentPlayer(PlayerColor.RED);
                     else if (color.equals("Blue")) gameController.setCurrentPlayer(PlayerColor.BLUE);
