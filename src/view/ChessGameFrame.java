@@ -1,8 +1,6 @@
 package view;
 
 import controller.GameController;
-import model.Cell;
-import model.ChessPiece;
 import model.ChessboardPoint;
 import model.PlayerColor;
 
@@ -149,19 +147,12 @@ public class ChessGameFrame extends JFrame {
                 FileWriter fileWriter = new FileWriter(newFile);
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                 if (newFile.exists()) {
-                    int ValidChess = gameController.getValidBlueChess() + gameController.getValidRedChess();
-                    bufferedWriter.write(ValidChess + "\n");
-                    for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 7; j++) {
-                            Cell cell = gameController.getModel().getGrid()[i][j];
-                            if (cell.getPiece() != null) {
-                                bufferedWriter.write(i + "," + j + "," + (cell.getPiece().getOwner().equals(PlayerColor.BLUE) ? "Blue" : "Red") + "," + cell.getPiece().getName() + "," + cell.getPiece().getRank() + "\n");
-                            }
-                        }
+                    bufferedWriter.write(gameController.getCount()+"\n");
+                    bufferedWriter.write( gameController.getValidBlueChess()+"," + gameController.getValidRedChess()+ "\n");
+                    for (int i = 0; i < gameController.getBeforeMove().size(); i++) {
+                                bufferedWriter.write(gameController.getBeforeMove().get(i).getRow()+","+gameController.getBeforeMove().get(i).getCol()+","+gameController.getAfterMove().get(i).getRow()+","+gameController.getAfterMove().get(i).getCol()+"\n");
                     }
                     bufferedWriter.write(gameController.getCurrentPlayer().equals(PlayerColor.BLUE) ? "Blue" : "Red");
-                    if (gameController.getBeforeMove() != null)
-                        bufferedWriter.write("\n" + gameController.getBeforeMove().getRow() + "," + gameController.getBeforeMove().getCol() + "," + gameController.getAfterMove().getRow() + "," + gameController.getAfterMove().getCol() + "," + (gameController.getAteAnimal() == null ? null : gameController.getAteAnimal().getName()) + "," + (gameController.getChessAfterMove() == null ? null : gameController.getChessAfterMove().getOwner()));
                     bufferedWriter.close();
                     JOptionPane.showMessageDialog(null, "存档成功");
                 }
@@ -186,7 +177,7 @@ public class ChessGameFrame extends JFrame {
         add(button);
     }
 
-    public boolean isNumeric(String string) {
+    public boolean isNotNumeric(String string) {
         Pattern pattern = Pattern.compile("[0-9]*");
         return !pattern.matcher(string).matches();
     }
@@ -197,15 +188,56 @@ public class ChessGameFrame extends JFrame {
             try {
                 FileReader fileReader = new FileReader(ReadFile);
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
-                int ValidNumber = Integer.parseInt(bufferedReader.readLine());
-                for (int i = 0; i < 9; i++) {
+                int Round = Integer.parseInt(bufferedReader.readLine());
+                String []validNumber=bufferedReader.readLine().split(",",2);
+                if (validNumber.length!=2){
+                    JOptionPane.showMessageDialog(this,"存活数量未指定或分隔符错误");
+                }
+                boolean judge = true;
+               gameController.restartGame();
+               gameController.getView().initiateGridComponents();
+                for (int i=0; i<Round-1;i++){
+                    String[] Read = bufferedReader.readLine().split(",", 4);
+                    System.out.println(i);
+                    if (Read.length!=4){JOptionPane.showMessageDialog(this,"坐标不够");break;}
+                    else if (isNotNumeric(Read[0]) || isNotNumeric(Read[1])) {
+                        JOptionPane.showMessageDialog(this, "坐标输入错误");
+                        judge = false;
+                        break;
+                    } else if (Integer.parseInt(Read[0]) > 8 || Integer.parseInt(Read[0]) < 0 || Integer.parseInt(Read[1]) > 6 || Integer.parseInt(Read[1]) < 0) {
+                        JOptionPane.showMessageDialog(this, "坐标输入错误");
+                        judge = false;
+                        break;
+                    }else if (isNotNumeric(Read[2]) || isNotNumeric(Read[3])) {
+                        JOptionPane.showMessageDialog(this, "坐标输入错误");
+                        judge = false;
+                        break;
+                    } else if (Integer.parseInt(Read[2]) > 8 || Integer.parseInt(Read[2]) < 0 || Integer.parseInt(Read[3]) > 6 || Integer.parseInt(Read[3]) < 0) {
+                        JOptionPane.showMessageDialog(this, "坐标输入错误");
+                        judge = false;
+                        break;
+                    }
+                    ChessboardPoint src=new ChessboardPoint(Integer.parseInt(Read[0]),Integer.parseInt(Read[1]));
+                    ChessboardPoint dest=new ChessboardPoint(Integer.parseInt(Read[2]),Integer.parseInt(Read[3]));
+                    if (gameController.getModel().getChessPieceAt(src).getOwner().equals(gameController.getCurrentPlayer())){
+                        if ( gameController.getModel().isValidMove(src,dest)&&gameController.getModel().getChessPieceAt(dest)==null){
+                            gameController.setSelectedPoint(src);
+
+                    }
+                        else if (gameController.getModel().getChessPieceAt(dest)!=null&&gameController.getModel().isValidMove(src,dest)&&gameController.getModel().isValidMove(src,dest)){
+                            gameController.setSelectedPoint(src);
+                        }
+                        else JOptionPane.showMessageDialog(this,"输入了非法移动");
+                    }else JOptionPane.showMessageDialog(this,"本回合行动棋子设置错误");
+                }
+                /*for (int i = 0; i < 9; i++) {
                     for (int j = 0; j < 7; j++) {
                         ChessboardPoint chessboardPoint = new ChessboardPoint(i, j);
                         if (gameController.getModel().getChessPieceAt(chessboardPoint) != null)
                             gameController.getModel().removeChessPiece(chessboardPoint);
                     }
                 }
-                boolean judge = true;
+
                 for (int i = 0; i < ValidNumber; i++) {
                     String[] Read = bufferedReader.readLine().split(",", 5);
                     if (Read.length != 5) {
@@ -220,7 +252,7 @@ public class ChessGameFrame extends JFrame {
                             break;
                         }
                     }
-                    if (isNumeric(Read[0]) || isNumeric(Read[1])) {
+                    if (isNotNumeric(Read[0]) || isNotNumeric(Read[1])) {
                         JOptionPane.showMessageDialog(this, "坐标输入错误");
                         judge = false;
                         break;
@@ -236,14 +268,14 @@ public class ChessGameFrame extends JFrame {
                         JOptionPane.showMessageDialog(this, "棋子名字设置错误");
                         judge = false;
                         break;
-                    } else if (isNumeric(Read[4]) || Integer.parseInt(Read[4]) > 8 || Integer.parseInt(Read[4]) < 0) {
+                    } else if (isNotNumeric(Read[4]) || Integer.parseInt(Read[4]) > 8 || Integer.parseInt(Read[4]) < 0) {
                         JOptionPane.showMessageDialog(this, "Rank输入错误");
                         judge = false;
                         break;
                     }
                     ChessboardPoint chessboardPoint = new ChessboardPoint(Read[0].equals("0") ? 0 : Integer.parseInt(Read[0]), Read[1].equals("0") ? 0 : Integer.parseInt(Read[1]));
                     gameController.getModel().setChessPiece(chessboardPoint, new ChessPiece(Read[2].equals("Red") ? PlayerColor.RED : PlayerColor.BLUE, Read[3], Integer.parseInt(Read[4])));
-                }
+                }*/
                 if (judge) {
                     gameController.getView().initiateChessComponent(gameController.getModel());
                     gameController.initialize();

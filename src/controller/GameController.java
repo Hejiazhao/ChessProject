@@ -40,13 +40,30 @@ public class GameController implements GameListener {
     private ChessboardPoint selectedPoint;
     private ChessboardPoint RedDen = new ChessboardPoint(0, 3);
     private ChessboardPoint BlueDen = new ChessboardPoint(8, 3);
+
+    public void setValidRedChess(int validRedChess) {
+        ValidRedChess = validRedChess;
+    }
+
     private int ValidRedChess = 8;
+
+    public void setValidBlueChess(int validBlueChess) {
+        ValidBlueChess = validBlueChess;
+    }
+
     private int ValidBlueChess = 8;
     private ArrayList<ChessboardPoint> BeforeMove;
     private ArrayList<ChessboardPoint> AfterMove;
     private ArrayList<ChessPiece> ChessBeforeMove;
     private ArrayList<ChessPiece> ChessAfterMove;
+
+    public ArrayList<ChessPiece> getChessAfterMove() {
+        return ChessAfterMove;
+    }
+
     private ArrayList<AnimalChessComponent> ateAnimal;
+
+    public ArrayList<AnimalChessComponent> getAteAnimal(){return ateAnimal;}
     private boolean canUndo = false;
     private boolean PlayEffect = false;
 
@@ -61,6 +78,16 @@ public class GameController implements GameListener {
     }
 
     private AnimalChessComponent selectedComponent;
+
+    public int getCount() {
+        return Count;
+    }
+
+    public void setCount(int count) {
+        Count = count;
+    }
+
+    private int Count=1;
 
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
@@ -131,23 +158,18 @@ public class GameController implements GameListener {
         }
     }
 
-    public ChessboardPoint getBeforeMove() {
-        return BeforeMove.get(BeforeMove.size() - 1);
+    public ArrayList<ChessPiece> getChessBeforeMove() {
+        return ChessBeforeMove;
     }
 
-    public ChessboardPoint getAfterMove() {
-        return AfterMove.get(BeforeMove.size() - 1);
+    public ArrayList<ChessboardPoint> getAfterMove() {
+        return AfterMove;
     }
 
-    public ChessPiece getChessBeforeMove() {
-        return ChessBeforeMove.get(BeforeMove.size() - 1);
+    public ArrayList<ChessboardPoint> getBeforeMove() {
+        return BeforeMove;
     }
 
-    public ChessPiece getChessAfterMove() {return ChessAfterMove.get(BeforeMove.size() - 1);}
-
-    public AnimalChessComponent getAteAnimal() {
-        return ateAnimal.get(BeforeMove.size() - 1);
-    }
 
     public void setModel(Chessboard model) {
         this.model = model;
@@ -171,7 +193,7 @@ public class GameController implements GameListener {
     }
 
     // after a valid move swap the player
-    private void swapColor() {
+    public void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
     }
 
@@ -215,14 +237,14 @@ public class GameController implements GameListener {
             view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
             selectedPoint = null;
             swapColor();
-
             view.repaint();
             ifWin();
+            Count++;
             // TODO: if the chess enter Dens or Traps and so on
         }
     }
 
-    private void ifWin() {
+    public void ifWin() {
         String RedWin = "红方获胜";
         String BlueWin = "蓝方获胜";
         if (Objects.equals(win(), PlayerColor.BLUE)) {
@@ -243,6 +265,7 @@ public class GameController implements GameListener {
         this.view.initiateChessComponent(chessboard);
         this.view.repaint();
         initialize();
+        Count=1;
         canUndo = false;
     }
 
@@ -281,7 +304,7 @@ public class GameController implements GameListener {
         } else JOptionPane.showMessageDialog(null, "现在不能悔棋！");
     }
 
-    private void beforeMove(ChessboardPoint selectedPoint, ChessboardPoint point) {
+    public void beforeMove(ChessboardPoint selectedPoint, ChessboardPoint point) {
         canUndo = true;
         BeforeMove.add(selectedPoint);
         AfterMove.add(point);
@@ -344,6 +367,7 @@ public class GameController implements GameListener {
             ifWin();
             swapColor();
             view.repaint();
+            Count++;
         }
 
         // TODO: Implement capture function；
