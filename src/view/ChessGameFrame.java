@@ -28,11 +28,12 @@ public class ChessGameFrame extends JFrame {
     private final int ONE_CHESS_SIZE;
 
     private String SaveName;
-    private String[]Animal=new String[]{"Elephant","Cat","Leopard","Mouse","Lion","Tiger","Wolf","Dog"};
-
+    private String[] Animal = new String[]{"Elephant", "Cat", "Leopard", "Mouse", "Lion", "Tiger", "Wolf", "Dog"};
+    private JPanel jPanel = new JPanel(new GridLayout(7, 1));
 
 
     private ChessboardComponent chessboardComponent;
+
     public ChessGameFrame(int width, int height) {
         setTitle("斗兽棋Demo"); //设置标题
         this.WIDTH = width;
@@ -43,6 +44,8 @@ public class ChessGameFrame extends JFrame {
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //设置程序关闭按键，如果点击右上方的叉就游戏全部关闭了
+
+
         setLayout(null);
         setBackground();
 
@@ -52,7 +55,7 @@ public class ChessGameFrame extends JFrame {
     }
 
 
-    public String getName(){
+    public String getName() {
         return SaveName;
     }
 
@@ -75,25 +78,25 @@ public class ChessGameFrame extends JFrame {
     }
 
 
-
     /**
      * 在游戏面板中添加标签
      */
     private void addLabel() {
         JLabel statusLabel = new JLabel();
-        statusLabel.setLocation(HEIGHT+12, HEIGHT /20);
-        ImageIcon image= new ImageIcon("resource/原神图标.jpg");
-        statusLabel.setSize(image.getIconWidth(), image.getIconHeight()/2);
+        statusLabel.setLocation(HEIGHT + 12, HEIGHT / 20);
+        ImageIcon image = new ImageIcon("resource/原神图标.jpg");
+        statusLabel.setSize(image.getIconWidth(), image.getIconHeight() / 2);
         statusLabel.setIcon(image);
         add(statusLabel);
     }
-    private void setBackground(){
-        ImageIcon icon = new ImageIcon ("resource/背景最终版.gif"); // 创建一个图标对象，使用缩放后的图片
-        JLabel background = new JLabel (icon); // 创建一个标签对象，使用图标对象
-        background.setLayout (null); // 给标签对象设置一个布局管理器
-        background.setSize(WIDTH,HEIGHT);
+
+    private void setBackground() {
+        ImageIcon icon = new ImageIcon("resource/背景最终版.gif"); // 创建一个图标对象，使用缩放后的图片
+        JLabel background = new JLabel(icon); // 创建一个标签对象，使用图标对象
+        background.setLayout(null); // 给标签对象设置一个布局管理器
+        background.setSize(WIDTH, HEIGHT);
 // 您可以将JFrame的内容面板设置为标签对象，并继续正常工作，向JFrame添加组件
-        setContentPane (background);
+        setContentPane(background);
 // 或者，直接向标签对象添加组件，就像其他容器一样
 
     }
@@ -107,129 +110,160 @@ public class ChessGameFrame extends JFrame {
     public void addUndoButton(GameController gameController) {
         JButton button = new JButton("悔棋");
         button.addActionListener((e) -> {
-            int value=JOptionPane.showConfirmDialog(this,"是否悔棋");
-            switch (value){
+            int value = JOptionPane.showConfirmDialog(this, "是否悔棋");
+            switch (value) {
                 case JOptionPane.YES_OPTION -> gameController.UndoMove();
-                case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION,JOptionPane.CANCEL_OPTION ->JOptionPane.showMessageDialog(this,"取消悔棋");
+                case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION, JOptionPane.CANCEL_OPTION ->
+                        JOptionPane.showMessageDialog(this, "取消悔棋");
 
             }
         });
         button.setLocation(HEIGHT, HEIGHT / 10 + 120);
         button.setSize(200, 60);
-        button.setFont(new Font("宋体", Font.BOLD, 20));
+        button.setFont(new Font("宋体", Font.PLAIN, 20));
         add(button);
     }
 
     public void addRestartButton(GameController gameController) {
         JButton button = new JButton("重新开始");
         button.addActionListener((e) -> {
-            int value=JOptionPane.showConfirmDialog(this,"是否重新开始");
-            switch (value){
+            int value = JOptionPane.showConfirmDialog(this, "是否重新开始");
+            switch (value) {
                 case JOptionPane.YES_OPTION -> gameController.restartGame();
-                case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION,JOptionPane.CANCEL_OPTION ->JOptionPane.showMessageDialog(this,"游戏继续");
+                case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION, JOptionPane.CANCEL_OPTION ->
+                        JOptionPane.showMessageDialog(this, "游戏继续");
 
             }
         });
-        button.setLocation(HEIGHT, 2*HEIGHT/11 +120);
+        button.setLocation(HEIGHT, 2 * HEIGHT / 11 + 120);
         button.setSize(200, 60);
-        button.setFont(new Font("宋体", Font.BOLD, 20));
+        button.setFont(new Font("宋体", Font.PLAIN, 20));
         add(button);
     }
 
-    private void Save(GameController gameController,String name){
+    private void Save(GameController gameController, String name) {
         try {
 
-            File newFile = new File("Save/"+name+".txt");
-            if (newFile.createNewFile()){
+            File newFile = new File("Save/" + name + ".txt");
+            if (newFile.createNewFile()) {
                 FileWriter fileWriter = new FileWriter(newFile);
-                BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                 if (newFile.exists()) {
-                    int ValidChess=gameController.getValidBlueChess()+gameController.getValidRedChess();
-                    bufferedWriter.write(ValidChess+"\n");
+                    int ValidChess = gameController.getValidBlueChess() + gameController.getValidRedChess();
+                    bufferedWriter.write(ValidChess + "\n");
                     for (int i = 0; i < 9; i++) {
                         for (int j = 0; j < 7; j++) {
                             Cell cell = gameController.getModel().getGrid()[i][j];
-                            if (cell.getPiece() !=null) {
-                                bufferedWriter.write(i+"," + j +"," + (cell.getPiece().getOwner().equals(PlayerColor.BLUE) ?  "Blue":"Red" ) + "," + cell.getPiece().getName() + "," + cell.getPiece().getRank() + "\n");
+                            if (cell.getPiece() != null) {
+                                bufferedWriter.write(i + "," + j + "," + (cell.getPiece().getOwner().equals(PlayerColor.BLUE) ? "Blue" : "Red") + "," + cell.getPiece().getName() + "," + cell.getPiece().getRank() + "\n");
                             }
                         }
                     }
-                    bufferedWriter.write(gameController.getCurrentPlayer().equals(PlayerColor.BLUE)?"Blue":"Red");
-                    if (gameController.getBeforeMove()!=null) bufferedWriter.write("\n" + gameController.getBeforeMove().getRow()+","+gameController.getBeforeMove().getCol()+","+gameController.getAfterMove().getRow()+","+gameController.getAfterMove().getCol()+","+(gameController.getAteAnimal()==null?null:gameController.getAteAnimal().getName())+","+(gameController.getChessAfterMove()==null?null:gameController.getChessAfterMove().getOwner()));
+                    bufferedWriter.write(gameController.getCurrentPlayer().equals(PlayerColor.BLUE) ? "Blue" : "Red");
+                    if (gameController.getBeforeMove() != null)
+                        bufferedWriter.write("\n" + gameController.getBeforeMove().getRow() + "," + gameController.getBeforeMove().getCol() + "," + gameController.getAfterMove().getRow() + "," + gameController.getAfterMove().getCol() + "," + (gameController.getAteAnimal() == null ? null : gameController.getAteAnimal().getName()) + "," + (gameController.getChessAfterMove() == null ? null : gameController.getChessAfterMove().getOwner()));
                     bufferedWriter.close();
-                    JOptionPane.showMessageDialog(null,"存档成功");
+                    JOptionPane.showMessageDialog(null, "存档成功");
                 }
-            }
-            else JOptionPane.showMessageDialog(this,"文件名已存在");
+            } else JOptionPane.showMessageDialog(this, "文件名已存在");
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
 
-   public void addSaveButton(GameController gameController) {
+    public void addSaveButton(GameController gameController) {
         JButton button = new JButton("存档");
         button.addActionListener((e) -> {
             JOptionPane.showMessageDialog(this, "游戏已暂停");
-            this.SaveName =JOptionPane.showInputDialog("请输入文件名");
-            if (this.SaveName==null){JOptionPane.showMessageDialog(this,"文件名不能为空");}
-            else Save(gameController,this.SaveName);
+            this.SaveName = JOptionPane.showInputDialog("请输入文件名");
+            if (this.SaveName == null) {
+                JOptionPane.showMessageDialog(this, "文件名不能为空");
+            } else Save(gameController, this.SaveName);
         });
         button.setLocation(HEIGHT, HEIGHT / 50 + 120);
         button.setSize(200, 60);
-        button.setFont(new Font("宋体", Font.BOLD, 20));
+        button.setFont(new Font("宋体", Font.PLAIN, 20));
         add(button);
     }
-    public boolean isNumeric(String string){
+
+    public boolean isNumeric(String string) {
         Pattern pattern = Pattern.compile("[0-9]*");
         return !pattern.matcher(string).matches();
     }
-    public void Read(GameController gameController){
-        File ReadFile=chooseFile();
-        if (ReadFile!=null){try {
-                FileReader fileReader=new FileReader(ReadFile);
-                BufferedReader bufferedReader=new BufferedReader(fileReader);
-                int ValidNumber= Integer.parseInt(bufferedReader.readLine());
-                for (int i=0;i<9;i++){
-                    for (int j=0;j<7;j++){
-                        ChessboardPoint chessboardPoint=new ChessboardPoint(i,j);
-                        if (gameController.getModel().getChessPieceAt(chessboardPoint)!=null) gameController.getModel().removeChessPiece(chessboardPoint);
+
+    public void Read(GameController gameController) {
+        File ReadFile = chooseFile();
+        if (ReadFile != null) {
+            try {
+                FileReader fileReader = new FileReader(ReadFile);
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                int ValidNumber = Integer.parseInt(bufferedReader.readLine());
+                for (int i = 0; i < 9; i++) {
+                    for (int j = 0; j < 7; j++) {
+                        ChessboardPoint chessboardPoint = new ChessboardPoint(i, j);
+                        if (gameController.getModel().getChessPieceAt(chessboardPoint) != null)
+                            gameController.getModel().removeChessPiece(chessboardPoint);
                     }
                 }
-                boolean judge=true;
-            for(int i=0;i<ValidNumber;i++){
-                    String[]Read=bufferedReader.readLine().split(",",5);
-                    if (Read.length!=5){JOptionPane.showMessageDialog(this,"间隔符录入错误");judge=false;break;}
-                    boolean NameJudge=false;
-                    for (String s:Animal){
+                boolean judge = true;
+                for (int i = 0; i < ValidNumber; i++) {
+                    String[] Read = bufferedReader.readLine().split(",", 5);
+                    if (Read.length != 5) {
+                        JOptionPane.showMessageDialog(this, "间隔符录入错误或录入数据不足");
+                        judge = false;
+                        break;
+                    }
+                    boolean NameJudge = false;
+                    for (String s : Animal) {
                         if (s.equals(Read[3])) {
                             NameJudge = true;
                             break;
                         }
                     }
-                    if (isNumeric(Read[0]) || isNumeric(Read[1])){JOptionPane.showMessageDialog(this,"坐标输入错误");judge=false;break;}
-                    else if (Integer.parseInt(Read[0])>8||Integer.parseInt(Read[0])<0||Integer.parseInt(Read[1])>6||Integer.parseInt(Read[1])<0){JOptionPane.showMessageDialog(this,"坐标输入错误");judge=false;break;}
-                    else if (!Read[2].equals("Blue")&&!Read[2].equals("Red")){JOptionPane.showMessageDialog(this,"棋子颜色设置错误");judge=false;break;}
-                    else if (!NameJudge){JOptionPane.showMessageDialog(this,"棋子名字设置错误");judge=false;break;}
-                    else if (isNumeric(Read[4]) ||Integer.parseInt(Read[4])>8||Integer.parseInt(Read[4])<0){JOptionPane.showMessageDialog(this,"Rank输入错误");judge=false;break;}
-                    ChessboardPoint chessboardPoint=new ChessboardPoint(Read[0].equals("0")?0:Integer.parseInt(Read[0]),Read[1].equals("0")?0:Integer.parseInt(Read[1]));
-                    gameController.getModel().setChessPiece(chessboardPoint,new ChessPiece(Read[2].equals("Red")?PlayerColor.RED:PlayerColor.BLUE,Read[3],Integer.parseInt(Read[4])));
+                    if (isNumeric(Read[0]) || isNumeric(Read[1])) {
+                        JOptionPane.showMessageDialog(this, "坐标输入错误");
+                        judge = false;
+                        break;
+                    } else if (Integer.parseInt(Read[0]) > 8 || Integer.parseInt(Read[0]) < 0 || Integer.parseInt(Read[1]) > 6 || Integer.parseInt(Read[1]) < 0) {
+                        JOptionPane.showMessageDialog(this, "坐标输入错误");
+                        judge = false;
+                        break;
+                    } else if (!Read[2].equals("Blue") && !Read[2].equals("Red")) {
+                        JOptionPane.showMessageDialog(this, "棋子颜色设置错误");
+                        judge = false;
+                        break;
+                    } else if (!NameJudge) {
+                        JOptionPane.showMessageDialog(this, "棋子名字设置错误");
+                        judge = false;
+                        break;
+                    } else if (isNumeric(Read[4]) || Integer.parseInt(Read[4]) > 8 || Integer.parseInt(Read[4]) < 0) {
+                        JOptionPane.showMessageDialog(this, "Rank输入错误");
+                        judge = false;
+                        break;
+                    }
+                    ChessboardPoint chessboardPoint = new ChessboardPoint(Read[0].equals("0") ? 0 : Integer.parseInt(Read[0]), Read[1].equals("0") ? 0 : Integer.parseInt(Read[1]));
+                    gameController.getModel().setChessPiece(chessboardPoint, new ChessPiece(Read[2].equals("Red") ? PlayerColor.RED : PlayerColor.BLUE, Read[3], Integer.parseInt(Read[4])));
                 }
-                if (judge){gameController.getView().initiateChessComponent(gameController.getModel());
-                gameController.initialize();
-                gameController.getView().repaint();
-            String color=bufferedReader.readLine();
-            if (color.equals("Red")) gameController.setCurrentPlayer(PlayerColor.RED);
-            else if (color.equals("Blue"))gameController.setCurrentPlayer(PlayerColor.BLUE);
-            else {JOptionPane.showMessageDialog(this,"行动方未指定");
-            judge=false;}
-            bufferedReader.close();}
-                if (judge)JOptionPane.showMessageDialog(null,"读档成功！");
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-        }
-        else JOptionPane.showMessageDialog(null,"读档取消");
+                if (judge) {
+                    gameController.getView().initiateChessComponent(gameController.getModel());
+                    gameController.initialize();
+                    gameController.getView().repaint();
+                    String color = bufferedReader.readLine();
+                    if (color.equals("Red")) gameController.setCurrentPlayer(PlayerColor.RED);
+                    else if (color.equals("Blue")) gameController.setCurrentPlayer(PlayerColor.BLUE);
+                    else {
+                        JOptionPane.showMessageDialog(this, "行动方未指定");
+                        judge = false;
+                    }
+                    bufferedReader.close();
+                }
+                if (judge) JOptionPane.showMessageDialog(null, "读档成功！");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } else JOptionPane.showMessageDialog(null, "读档取消");
     }
+
     public File chooseFile() {
         // 创建一个JFileChooser对象
         JFileChooser fileChooser = new JFileChooser();
@@ -239,12 +273,12 @@ public class ChessGameFrame extends JFrame {
         fileChooser.setCurrentDirectory(new File("Save/"));
         // 设置文件选择器的选择模式，只能选择文件
         fileChooser.setAcceptAllFileFilterUsed(false);
-       //设置不能全选
+        //设置不能全选
         fileChooser.setMultiSelectionEnabled(false);
         //禁止多选
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         // 弹出文件选择器对话框，并获取用户的操作结果
-        fileChooser.setFileFilter(new FileNameExtensionFilter("*.txt","txt"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("*.txt", "txt"));
         //设置可选文件
         int result = fileChooser.showOpenDialog(null);
         // 如果用户点击了确定按钮
@@ -257,6 +291,7 @@ public class ChessGameFrame extends JFrame {
             return null;
         }
     }
+
     public File chooseMusicFile() {
         // 创建一个JFileChooser对象
         JFileChooser fileChooser = new JFileChooser();
@@ -271,7 +306,7 @@ public class ChessGameFrame extends JFrame {
         //禁止多选
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         // 弹出文件选择器对话框，并获取用户的操作结果
-        fileChooser.setFileFilter(new FileNameExtensionFilter("*.wav","wav"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("*.wav", "wav"));
         //设置可选文件
         int result = fileChooser.showOpenDialog(null);
         // 如果用户点击了确定按钮
@@ -287,30 +322,29 @@ public class ChessGameFrame extends JFrame {
 
 
     public void addReadButton(GameController gameController) {
-        JButton button = new JButton("读档" );
+        JButton button = new JButton("读档");
         button.addActionListener((e) -> {
-            int Confirm= JOptionPane.showConfirmDialog(this, "读档后将丢失当前进度，是否读档？");
-            switch (Confirm){
-                case JOptionPane.YES_OPTION ->  Read(gameController);
-                case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION,JOptionPane.CANCEL_OPTION-> JOptionPane.showMessageDialog(this,"读档取消");
+            int Confirm = JOptionPane.showConfirmDialog(this, "读档后将丢失当前进度，是否读档？");
+            switch (Confirm) {
+                case JOptionPane.YES_OPTION -> Read(gameController);
+                case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION, JOptionPane.CANCEL_OPTION ->
+                        JOptionPane.showMessageDialog(this, "读档取消");
             }
         });
-        button.setLocation(HEIGHT, 15*HEIGHT /56+120);
+        button.setLocation(HEIGHT, 15 * HEIGHT / 56 + 120);
         button.setSize(200, 60);
-        button.setFont(new Font("宋体", Font.BOLD, 20));
+        button.setFont(new Font("宋体", Font.PLAIN, 20));
         add(button);
     }
+
     private Clip clip;
-    
-
-
 
 
     public void actionPerformed(GameController ignoredGameController) {
         try {
             if (clip == null || !clip.isOpen()) {
-                int choose=JOptionPane.showConfirmDialog(this,"是否手动选择");
-                File newfile= new File("resource/刘德华-吴京-细水长流.wav");
+                int choose = JOptionPane.showConfirmDialog(this, "是否手动选择");
+                File newfile = new File("resource/刘德华-吴京-细水长流.wav");
                 if (choose == JOptionPane.YES_OPTION) {
                     newfile = chooseMusicFile();
                 }
@@ -320,10 +354,11 @@ public class ChessGameFrame extends JFrame {
                 clip = AudioSystem.getClip();
                 clip.open(ais);
                 clip.addLineListener(event -> {
-                    if(event.getType()==LineEvent.Type.STOP){
+                    if (event.getType() == LineEvent.Type.STOP) {
                         clip.close();
-                        clip=null;
-                }});
+                        clip = null;
+                    }
+                });
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
                 clip.start();
             } else {
@@ -337,45 +372,70 @@ public class ChessGameFrame extends JFrame {
     public void addMusicButton(GameController gameController) {
         JButton MusicButton = new JButton("音乐");
         MusicButton.addActionListener((e) -> actionPerformed(gameController));
-        MusicButton.setLocation(HEIGHT, 31*HEIGHT /80+160);
+        MusicButton.setLocation(HEIGHT, 31 * HEIGHT / 80 + 160);
         MusicButton.setSize(200, 60);
-        MusicButton.setFont(new Font("宋体", Font.BOLD, 20));
+        MusicButton.setFont(new Font("宋体", Font.PLAIN, 20));
         add(MusicButton);
     }
-    public void addMusicEffectButton(GameController gameController){
+
+    public void addMusicEffectButton(GameController gameController) {
         JButton MusicButton = new JButton("音效");
-        MusicButton.addActionListener((ActionEvent e) ->{
-            if (gameController.isPlayEffect()){ gameController.setPlayEffect(false);JOptionPane.showMessageDialog(this,"音效关闭");}
-            else {gameController.setPlayEffect(true);JOptionPane.showMessageDialog(this,"音效开启");}
+        MusicButton.addActionListener((ActionEvent e) -> {
+            if (gameController.isPlayEffect()) {
+                gameController.setPlayEffect(false);
+                JOptionPane.showMessageDialog(this, "音效关闭");
+            } else {
+                gameController.setPlayEffect(true);
+                JOptionPane.showMessageDialog(this, "音效开启");
+            }
         });
-        MusicButton.setLocation(HEIGHT, 3*HEIGHT /10+160);
+        MusicButton.setLocation(HEIGHT, 3 * HEIGHT / 10 + 160);
         MusicButton.setSize(200, 60);
-        MusicButton.setFont(new Font("宋体", Font.BOLD, 20));
+        MusicButton.setFont(new Font("宋体", Font.PLAIN, 20));
         add(MusicButton);
     }
-    public void addButton(GameController gameController){
+
+    public void addExitButton(GameController gameController) {
+        ImageIcon imageIcon = new ImageIcon("resource/老师图片2.gif");
+        JButton ExitButton = new JButton("退出", imageIcon);
+        ExitButton.addActionListener((ActionEvent e) -> {
+            int choose = JOptionPane.showConfirmDialog(this, "是否退出");
+            switch (choose) {
+                case JOptionPane.YES_OPTION -> {
+                    int judge = JOptionPane.showConfirmDialog(this, "是否存档");
+                    if (judge == JOptionPane.YES_OPTION) {
+                        this.SaveName = JOptionPane.showInputDialog("请输入文件名");
+                        if (this.SaveName == null) {
+                            JOptionPane.showMessageDialog(this, "文件名不能为空");
+                        } else Save(gameController, this.SaveName);
+                    }
+                    this.dispose();
+                }
+                case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION, JOptionPane.CANCEL_OPTION ->
+                        JOptionPane.showMessageDialog(this, "游戏继续");
+                default -> throw new IllegalStateException("Unexpected value: " + choose);
+            }
+        });
+        ExitButton.setLocation(HEIGHT, 21 * HEIGHT / 40 + 120);
+        ExitButton.setSize(200, 60);
+        ExitButton.setHorizontalTextPosition(JButton.CENTER);
+        ExitButton.setVerticalTextPosition(JButton.CENTER);
+        ExitButton.setFont(new Font("宋体", Font.PLAIN, 20));
+        add(ExitButton);
+    }
+
+    public void addButton(GameController gameController) {
         addSaveButton(gameController);
         addUndoButton(gameController);
         addRestartButton(gameController);
         addReadButton(gameController);
         addMusicButton(gameController);
         addMusicEffectButton(gameController);
+        addExitButton(gameController);
     }
 
 
-
-
-
-
-
-
-
 }
-
-
-
-
-
 
 
 //    private void addLoadButton() {

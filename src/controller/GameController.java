@@ -42,11 +42,11 @@ public class GameController implements GameListener {
     private ChessboardPoint BlueDen = new ChessboardPoint(8, 3);
     private int ValidRedChess = 8;
     private int ValidBlueChess = 8;
-    private ChessboardPoint BeforeMove;
-    private ChessboardPoint AfterMove;
-    private ChessPiece ChessBeforeMove;
-    private ChessPiece ChessAfterMove;
-    private AnimalChessComponent ateAnimal;
+    private ArrayList<ChessboardPoint> BeforeMove;
+    private ArrayList<ChessboardPoint> AfterMove;
+    private ArrayList<ChessPiece> ChessBeforeMove;
+    private ArrayList<ChessPiece> ChessAfterMove;
+    private ArrayList<AnimalChessComponent> ateAnimal;
     private boolean canUndo = false;
     private boolean PlayEffect = false;
 
@@ -66,6 +66,11 @@ public class GameController implements GameListener {
         this.view = view;
         this.model = model;
         this.currentPlayer = PlayerColor.BLUE;
+        this.BeforeMove = new ArrayList<>();
+        this.ateAnimal = new ArrayList<>();
+        this.AfterMove = new ArrayList<>();
+        this.ChessAfterMove = new ArrayList<>();
+        this.ChessBeforeMove = new ArrayList<>();
         view.registerController(this);
         view.initiateChessComponent(model);
         initialize();
@@ -127,23 +132,21 @@ public class GameController implements GameListener {
     }
 
     public ChessboardPoint getBeforeMove() {
-        return BeforeMove;
+        return BeforeMove.get(BeforeMove.size() - 1);
     }
 
     public ChessboardPoint getAfterMove() {
-        return AfterMove;
+        return AfterMove.get(BeforeMove.size() - 1);
     }
 
     public ChessPiece getChessBeforeMove() {
-        return ChessBeforeMove;
+        return ChessBeforeMove.get(BeforeMove.size() - 1);
     }
 
-    public ChessPiece getChessAfterMove() {
-        return ChessAfterMove;
-    }
+    public ChessPiece getChessAfterMove() {return ChessAfterMove.get(BeforeMove.size() - 1);}
 
     public AnimalChessComponent getAteAnimal() {
-        return ateAnimal;
+        return ateAnimal.get(BeforeMove.size() - 1);
     }
 
     public void setModel(Chessboard model) {
@@ -245,24 +248,33 @@ public class GameController implements GameListener {
 
     public void UndoMove() {
         if (canUndo) {
-            canUndo = false;
-            if (ateAnimal != null) {
-                AnimalChessComponent animalChessComponent1 = view.removeChessComponentAtGrid(AfterMove);
-                view.setChessComponentAtGrid(BeforeMove, animalChessComponent1);
-                view.setChessComponentAtGrid(AfterMove, ateAnimal);
-                model.setChessPiece(AfterMove, ChessAfterMove);
-                model.setChessPiece(BeforeMove, ChessBeforeMove);
+
+            int i = AfterMove.size() - 1;
+            if (i == 0) canUndo = false;
+            if (ateAnimal.get(i) != null) {
+                AnimalChessComponent animalChessComponent1 = view.removeChessComponentAtGrid(AfterMove.get(i));
+                view.setChessComponentAtGrid(BeforeMove.get(i), animalChessComponent1);
+                view.setChessComponentAtGrid(AfterMove.get(i), ateAnimal.get(i));
+                model.setChessPiece(AfterMove.get(i), ChessAfterMove.get(i));
+                model.setChessPiece(BeforeMove.get(i), ChessBeforeMove.get(i));
                 animalChessComponent1.setSelected(false);
-                System.out.println(ateAnimal.getOwner()==PlayerColor.BLUE?"Blue":"Red");
-                switch (ateAnimal.getOwner()) {
+                System.out.println(ateAnimal.get(i).getOwner() == PlayerColor.BLUE ? "Blue" : "Red");
+                switch (ateAnimal.get(i).getOwner()) {
                     case RED -> ValidBlueChess++;
-                    case BLUE-> ValidRedChess++;
-              }
-                System.out.println("BLUE: "+ValidBlueChess+"RED: "+ValidRedChess);
+                    case BLUE -> ValidRedChess++;
+                }
+                System.out.println("BLUE: " + ValidBlueChess + "RED: " + ValidRedChess);
+
             } else {
-                model.moveChessPiece(AfterMove, BeforeMove);
-                view.setChessComponentAtGrid(BeforeMove, view.removeChessComponentAtGrid(AfterMove));
+                System.out.println(AfterMove.size() + " " + BeforeMove.size());
+                model.moveChessPiece(AfterMove.get(i), BeforeMove.get(i));
+                view.setChessComponentAtGrid(BeforeMove.get(i), view.removeChessComponentAtGrid(AfterMove.get(i)));
             }
+            AfterMove.remove(i);
+            BeforeMove.remove(i);
+            ChessBeforeMove.remove(i);
+            ChessAfterMove.remove(i);
+            ateAnimal.remove(i);
             swapColor();
             selectedPoint = null;
             view.repaint();
@@ -271,11 +283,11 @@ public class GameController implements GameListener {
 
     private void beforeMove(ChessboardPoint selectedPoint, ChessboardPoint point) {
         canUndo = true;
-        BeforeMove = selectedPoint;
-        AfterMove = point;
-        ChessBeforeMove = model.getChessPieceAt(selectedPoint);
-        ChessAfterMove = model.getChessPieceAt(point);
-        if (model.getChessPieceAt(point) == null) ateAnimal = null;
+        BeforeMove.add(selectedPoint);
+        AfterMove.add(point);
+        ChessBeforeMove.add(model.getChessPieceAt(selectedPoint));
+        ChessAfterMove.add(model.getChessPieceAt(point));
+        if (model.getChessPieceAt(point) == null) ateAnimal.add(null);
         view.repaint();
     }
 
@@ -323,7 +335,7 @@ public class GameController implements GameListener {
             model.captureChessPiece(selectedPoint, point);
             if (model.getChessPieceOwner(point).equals(PlayerColor.BLUE)) ValidBlueChess--;
             else if (model.getChessPieceOwner(point).equals(PlayerColor.RED)) ValidRedChess--;
-            ateAnimal = view.removeChessComponentAtGrid(point);
+            ateAnimal.add(view.removeChessComponentAtGrid(point));
             AnimalChessComponent component1 = view.removeChessComponentAtGrid(selectedPoint);
             view.setChessComponentAtGrid(point, component1);
             component1.setSelected(false);
@@ -332,7 +344,6 @@ public class GameController implements GameListener {
             ifWin();
             swapColor();
             view.repaint();
-
         }
 
         // TODO: Implement capture function；
