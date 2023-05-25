@@ -86,6 +86,7 @@ public class GameController implements GameListener {
     public void setCount(int count) {
         Count = count;
     }
+    private ArrayList<ChessboardPoint> ValidMove;
 
     private int Count=1;
 
@@ -232,6 +233,7 @@ public class GameController implements GameListener {
     @Override
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
         if (selectedPoint != null && model.isValidMove(selectedPoint, point)) {
+            closeValidMove(ValidMove);
             beforeMove(selectedPoint, point);
             model.moveChessPiece(selectedPoint, point);
             view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
@@ -328,6 +330,21 @@ public class GameController implements GameListener {
         }
         return chessboardPointArrayList;
     }
+    public void showLegalMove(ArrayList<ChessboardPoint> legalMove){
+        for (ChessboardPoint e: legalMove){
+            CellComponent component = view.getGridComponentAt(e);
+            component.setSeeUI(true);
+            component.repaint();
+        }
+    }
+    public void closeValidMove(ArrayList<ChessboardPoint> legalMove){
+        for (ChessboardPoint e:legalMove){
+            CellComponent component = view.getGridComponentAt(e);
+            component.setSeeUI(false);
+            component.repaint();
+        }
+    }
+
 
 
     // click a cell with a chess
@@ -340,6 +357,9 @@ public class GameController implements GameListener {
                 component.setSelected(true);
                 component.repaint();
                 setSelectedComponent(component);
+                if (ValidMove !=null) closeValidMove(ValidMove);
+                ValidMove =showValidMove();
+                showLegalMove(ValidMove);
             }
         } else if (!selectedPoint.equals(point) && currentPlayer.equals(model.getChessPieceOwner(point))) {
             selectedPoint = point;
@@ -348,11 +368,16 @@ public class GameController implements GameListener {
             getSelectedComponent().repaint();
             component.repaint();
             setSelectedComponent(component);
+            if (ValidMove !=null) closeValidMove(ValidMove);
+            ValidMove =showValidMove();
+            showLegalMove(ValidMove);
         } else if (selectedPoint.equals(point)) {
             selectedPoint = null;
             component.setSelected(false);
             component.repaint();
+            closeValidMove(ValidMove);
         } else if (model.isValidCapture(selectedPoint, point) && model.getChessPieceOwner(selectedPoint).equals(currentPlayer) && model.isValidMove(selectedPoint, point)) {
+            closeValidMove(ValidMove);
             beforeMove(selectedPoint, point);
             model.captureChessPiece(selectedPoint, point);
             if (model.getChessPieceOwner(point).equals(PlayerColor.BLUE)) ValidRedChess--;
