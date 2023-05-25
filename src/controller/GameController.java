@@ -327,7 +327,6 @@ public class GameController implements GameListener {
             }
         }
         return chessboardPointArrayList;
-
     }
 
 
@@ -356,8 +355,9 @@ public class GameController implements GameListener {
         } else if (model.isValidCapture(selectedPoint, point) && model.getChessPieceOwner(selectedPoint).equals(currentPlayer) && model.isValidMove(selectedPoint, point)) {
             beforeMove(selectedPoint, point);
             model.captureChessPiece(selectedPoint, point);
-            if (model.getChessPieceOwner(point).equals(PlayerColor.BLUE)) ValidBlueChess--;
-            else if (model.getChessPieceOwner(point).equals(PlayerColor.RED)) ValidRedChess--;
+            if (model.getChessPieceOwner(point).equals(PlayerColor.BLUE)) ValidRedChess--;
+            else if (model.getChessPieceOwner(point).equals(PlayerColor.RED)) ValidBlueChess--;
+            System.out.println("blue: "+ValidBlueChess+" Red:"+ValidRedChess);
             ateAnimal.add(view.removeChessComponentAtGrid(point));
             AnimalChessComponent component1 = view.removeChessComponentAtGrid(selectedPoint);
             view.setChessComponentAtGrid(point, component1);

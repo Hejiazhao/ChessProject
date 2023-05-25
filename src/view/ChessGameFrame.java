@@ -157,7 +157,6 @@ public class ChessGameFrame extends JFrame {
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                 if (newFile.exists()) {
                     bufferedWriter.write(gameController.getCount()+"\n");
-                    bufferedWriter.write( gameController.getValidBlueChess()+"," + gameController.getValidRedChess()+ "\n");
                     for (int i = 0; i < gameController.getBeforeMove().size(); i++) {
                                 bufferedWriter.write(gameController.getBeforeMove().get(i).getRow()+","+gameController.getBeforeMove().get(i).getCol()+","+gameController.getAfterMove().get(i).getRow()+","+gameController.getAfterMove().get(i).getCol()+"\n");
                     }
@@ -198,18 +197,17 @@ public class ChessGameFrame extends JFrame {
                 FileReader fileReader = new FileReader(ReadFile);
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
                 int Round = Integer.parseInt(bufferedReader.readLine());
-                String []validNumber=bufferedReader.readLine().split(",",2);
-                if (validNumber.length!=2){
-                    JOptionPane.showMessageDialog(this,"存活数量未指定或分隔符错误");
-                }
                 boolean judge = true;
                gameController.restartGame();
                 for (int i=0; i<Round-1;i++){
-
                     System.out.println(i);
                     String[] Read = bufferedReader.readLine().split(",", 4);
                     System.out.println(i);
-                    if (Read.length!=4){JOptionPane.showMessageDialog(this,"坐标不够");break;}
+                    if (Read.length!=4){
+                        if (Read.length==1&&(Read[0].equals("Blue")||Read[0].equals("Red")))JOptionPane.showMessageDialog(this,"输入轮数错误");
+                        else JOptionPane.showMessageDialog(this,"坐标不够");
+                        break;
+                    }
                     else if (isNotNumeric(Read[0]) || isNotNumeric(Read[1])) {
                         JOptionPane.showMessageDialog(this, "坐标输入错误");
                         judge = false;
