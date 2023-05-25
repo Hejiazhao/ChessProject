@@ -21,7 +21,7 @@ public class CellComponent extends JPanel {
         super.paintComponent(g);
         String File=null;
         switch (FileName){
-            case "Green"->File="resource/绿色棋格.jpg";
+            case "Green"->File="resource/绿色动图.gif";
             case "BlueTrap"->File="resource/红色陷阱.jpg";
             case "RedTrap"->File="resource/蓝色陷阱.jpg";
             case "RedDen","BlueDen"->File="resource/兽穴.png";
