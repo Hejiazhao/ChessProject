@@ -15,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.regex.Pattern;
 
+import static java.lang.Thread.sleep;
+
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
  */
@@ -100,7 +102,7 @@ public class ChessGameFrame extends JFrame {
     }
     public static void waitFor(long milliseconds) {
         try {
-            Thread.sleep(milliseconds);
+            sleep(milliseconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -202,8 +204,6 @@ public class ChessGameFrame extends JFrame {
                 }
                 boolean judge = true;
                gameController.restartGame();
-
-
                 for (int i=0; i<Round-1;i++){
 
                     System.out.println(i);
@@ -232,25 +232,32 @@ public class ChessGameFrame extends JFrame {
                     if (gameController.getModel().getChessPieceAt(src).getOwner().equals(gameController.getCurrentPlayer())){
                         if ( gameController.getModel().isValidMove(src,dest)&&gameController.getModel().getChessPieceAt(dest)==null){
                             System.out.println("OK");
+
                             gameController.beforeMove(src, dest);
                             gameController.setSelectedPoint(src);
                             gameController.getModel().setChessPiece(dest,gameController.getModel().getChessPieceAt(src));
                             gameController.getModel().removeChessPiece(src);
                             gameController.getView().initiateChessComponent(gameController.getModel());
-                            gameController.initialize();
-                            gameController.getView().repaint();
                             gameController.setSelectedPoint(null);
                             gameController.swapColor();
+
                     }
                         else if (gameController.getModel().getChessPieceAt(dest)!=null&&gameController.getModel().isValidMove(src,dest)&&gameController.getModel().isValidMove(src,dest)){
                             gameController.setSelectedPoint(src);
                             AnimalChessComponent component1 = gameController.getView().removeChessComponentAtGrid(dest);
                             gameController.getView().setChessComponentAtGrid(dest, component1);
                             gameController.onPlayerClickChessPiece(dest, component1);
+                            gameController.getView().initiateChessComponent(gameController.getModel());
                             gameController.setSelectedPoint(null);
                         }
                         else {JOptionPane.showMessageDialog(this,"输入了非法移动");break;}
                     }else {JOptionPane.showMessageDialog(this,"本回合行动棋子设置错误");break;}
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    gameController.getView().paintImmediately(0, 0, gameController.getView().getWidth(), gameController.getView().getHeight());
                 }
 
                 if (judge) {
@@ -442,6 +449,27 @@ public class ChessGameFrame extends JFrame {
 
 
 }
+/*class ReadThread extends Thread{
+    private GameController gameController;
+    public ReadThread(GameController gameController){
+          this.gameController=gameController;
+    }
+    public ReadThread(String name,GameController gameController){
+        super(name);
+        this.gameController=gameController;
+    }
+    @Override
+    public void run(){
+        try {
+            System.out.println(7);
+            sleep(300);
+            gameController.getView().repaint();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+}
+}*/
 
 
 //    private void addLoadButton() {
