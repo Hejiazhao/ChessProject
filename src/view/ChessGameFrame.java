@@ -100,6 +100,7 @@ public class ChessGameFrame extends JFrame {
 // 或者，直接向标签对象添加组件，就像其他容器一样
 
     }
+
     public static void waitFor(long milliseconds) {
         try {
             sleep(milliseconds);
@@ -156,9 +157,9 @@ public class ChessGameFrame extends JFrame {
                 FileWriter fileWriter = new FileWriter(newFile);
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                 if (newFile.exists()) {
-                    bufferedWriter.write(gameController.getCount()+"\n");
+                    bufferedWriter.write(gameController.getCount() + "\n");
                     for (int i = 0; i < gameController.getBeforeMove().size(); i++) {
-                                bufferedWriter.write(gameController.getBeforeMove().get(i).getRow()+","+gameController.getBeforeMove().get(i).getCol()+","+gameController.getAfterMove().get(i).getRow()+","+gameController.getAfterMove().get(i).getCol()+"\n");
+                        bufferedWriter.write(gameController.getBeforeMove().get(i).getRow() + "," + gameController.getBeforeMove().get(i).getCol() + "," + gameController.getAfterMove().get(i).getRow() + "," + gameController.getAfterMove().get(i).getCol() + "\n");
                     }
                     bufferedWriter.write(gameController.getCurrentPlayer().equals(PlayerColor.BLUE) ? "Blue" : "Red");
                     bufferedWriter.close();
@@ -198,17 +199,17 @@ public class ChessGameFrame extends JFrame {
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
                 int Round = Integer.parseInt(bufferedReader.readLine());
                 boolean judge = true;
-               gameController.restartGame();
-                for (int i=0; i<Round-1;i++){
-                    System.out.println(i);
+                gameController.restartGame();
+                for (int i = 0; i < Round - 1; i++) {
+
                     String[] Read = bufferedReader.readLine().split(",", 4);
-                    System.out.println(i);
-                    if (Read.length!=4){
-                        if (Read.length==1&&(Read[0].equals("Blue")||Read[0].equals("Red")))JOptionPane.showMessageDialog(this,"输入轮数错误");
-                        else JOptionPane.showMessageDialog(this,"坐标不够");
+
+                    if (Read.length != 4) {
+                        if (Read.length == 1 && (Read[0].equals("Blue") || Read[0].equals("Red")))
+                            JOptionPane.showMessageDialog(this, "输入轮数错误");
+                        else JOptionPane.showMessageDialog(this, "坐标不够");
                         break;
-                    }
-                    else if (isNotNumeric(Read[0]) || isNotNumeric(Read[1])) {
+                    } else if (isNotNumeric(Read[0]) || isNotNumeric(Read[1])) {
                         JOptionPane.showMessageDialog(this, "坐标输入错误");
                         judge = false;
                         break;
@@ -216,7 +217,7 @@ public class ChessGameFrame extends JFrame {
                         JOptionPane.showMessageDialog(this, "坐标输入错误");
                         judge = false;
                         break;
-                    }else if (isNotNumeric(Read[2]) || isNotNumeric(Read[3])) {
+                    } else if (isNotNumeric(Read[2]) || isNotNumeric(Read[3])) {
                         JOptionPane.showMessageDialog(this, "坐标输入错误");
                         judge = false;
                         break;
@@ -225,31 +226,35 @@ public class ChessGameFrame extends JFrame {
                         judge = false;
                         break;
                     }
-                    ChessboardPoint src=new ChessboardPoint(Integer.parseInt(Read[0]),Integer.parseInt(Read[1]));
-                    ChessboardPoint dest=new ChessboardPoint(Integer.parseInt(Read[2]),Integer.parseInt(Read[3]));
-                    if (gameController.getModel().getChessPieceAt(src).getOwner().equals(gameController.getCurrentPlayer())){
-                        if ( gameController.getModel().isValidMove(src,dest)&&gameController.getModel().getChessPieceAt(dest)==null){
-                            System.out.println("OK");
+                    ChessboardPoint src = new ChessboardPoint(Integer.parseInt(Read[0]), Integer.parseInt(Read[1]));
+                    ChessboardPoint dest = new ChessboardPoint(Integer.parseInt(Read[2]), Integer.parseInt(Read[3]));
+                    if (gameController.getModel().getChessPieceAt(src).getOwner().equals(gameController.getCurrentPlayer())) {
+                        if (gameController.getModel().isValidMove(src, dest) && gameController.getModel().getChessPieceAt(dest) == null) {
+
 
                             gameController.beforeMove(src, dest);
                             gameController.setSelectedPoint(src);
-                            gameController.getModel().setChessPiece(dest,gameController.getModel().getChessPieceAt(src));
+                            gameController.getModel().setChessPiece(dest, gameController.getModel().getChessPieceAt(src));
                             gameController.getModel().removeChessPiece(src);
                             gameController.getView().initiateChessComponent(gameController.getModel());
                             gameController.setSelectedPoint(null);
                             gameController.swapColor();
 
-                    }
-                        else if (gameController.getModel().getChessPieceAt(dest)!=null&&gameController.getModel().isValidMove(src,dest)&&gameController.getModel().isValidMove(src,dest)){
+                        } else if (gameController.getModel().getChessPieceAt(dest) != null && gameController.getModel().isValidMove(src, dest) && gameController.getModel().isValidMove(src, dest)) {
                             gameController.setSelectedPoint(src);
                             AnimalChessComponent component1 = gameController.getView().removeChessComponentAtGrid(dest);
                             gameController.getView().setChessComponentAtGrid(dest, component1);
                             gameController.onPlayerClickChessPiece(dest, component1);
                             gameController.getView().initiateChessComponent(gameController.getModel());
                             gameController.setSelectedPoint(null);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "输入了非法移动");
+                            break;
                         }
-                        else {JOptionPane.showMessageDialog(this,"输入了非法移动");break;}
-                    }else {JOptionPane.showMessageDialog(this,"本回合行动棋子设置错误");break;}
+                    } else {
+                        JOptionPane.showMessageDialog(this, "本回合行动棋子设置错误");
+                        break;
+                    }
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {

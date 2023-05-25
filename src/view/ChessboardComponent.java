@@ -123,27 +123,27 @@ public class ChessboardComponent extends JComponent {
                 ChessboardPoint temp = new ChessboardPoint(i, j);
                 CellComponent cell;
                 if (riverCell.contains(temp)) {
-                    cell = new CellComponent(Color.CYAN, calculatePoint(i, j), CHESS_SIZE);
+                    cell = new CellComponent("River", calculatePoint(i, j), CHESS_SIZE);
                     this.add(cell);
                 }
                 else if (RedTrap.contains(temp)) {
-                    cell=new CellComponent(new Color(0, 102, 204),calculatePoint(i,j),CHESS_SIZE);
+                    cell=new CellComponent("RedTrap",calculatePoint(i,j),CHESS_SIZE);
                     this.add(cell);
                 }
                 else if (BlueTrap.contains(temp)) {
-                    cell=new CellComponent(Color.orange,calculatePoint(i,j),CHESS_SIZE);
+                    cell=new CellComponent("BlueTrap",calculatePoint(i,j),CHESS_SIZE);
                     this.add(cell);
                 }
                 else if (temp.equals(BlueDen)){
-                    cell=new CellComponent(new Color(255,209,204),calculatePoint(i,j),CHESS_SIZE);
+                    cell=new CellComponent("BlueDen",calculatePoint(i,j),CHESS_SIZE);
                     this.add(cell);
                 }
                 else if (temp.equals(RedDen)){
-                    cell=new CellComponent(new Color(204, 229, 255),calculatePoint(i,j),CHESS_SIZE);
+                    cell=new CellComponent("RedDen",calculatePoint(i,j),CHESS_SIZE);
                     this.add(cell);
                 }
                 else {
-                    cell = new CellComponent(Color.LIGHT_GRAY, calculatePoint(i, j), CHESS_SIZE);
+                    cell = new CellComponent("Green", calculatePoint(i, j), CHESS_SIZE);
                     this.add(cell);
                 }
                 gridComponents[i][j] = cell;
