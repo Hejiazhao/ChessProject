@@ -177,7 +177,7 @@ public class Chessboard {
 
         else if (riverCell.contains(dest) && getChessPieceAt(src).getRank() != 1) return false;
         else if (aroundRiverCell(src, dest)) {return true;}
-       else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest)))return true;
+       else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest))&&calculateDistance(src,dest)==1)return true;
         return calculateDistance(src, dest) == 1;
 
     }

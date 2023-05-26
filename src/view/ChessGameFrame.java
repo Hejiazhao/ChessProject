@@ -94,10 +94,12 @@ public class ChessGameFrame extends JFrame {
         button.addActionListener(e -> {
             if (hide){
                 jPanel.setVisible(true);
+                button.setText("隐藏");
                 hide=false;
             }
             else {
                 jPanel.setVisible(false);
+                button.setText("展开");
                 hide=true;
             }
         });
@@ -312,7 +314,33 @@ public class ChessGameFrame extends JFrame {
             return null;
         }
     }
-
+    public File chooseBackgroundFile() {
+        // 创建一个JFileChooser对象
+        JFileChooser fileChooser = new JFileChooser();
+        // 设置文件选择器的标题
+        fileChooser.setDialogTitle("请选择一个文件");
+        // 设置文件选择器的当前目录，可以根据需要更改
+        fileChooser.setCurrentDirectory(new File("resource/"));
+        // 设置文件选择器的选择模式，只能选择文件
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        //设置不能全选
+        fileChooser.setMultiSelectionEnabled(false);
+        //禁止多选
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        // 弹出文件选择器对话框，并获取用户的操作结果
+        fileChooser.setFileFilter(new FileNameExtensionFilter("image(*.jpg,*.png,*.gif)", "jpg","gif","png"));
+        //设置可选文件
+        int result = fileChooser.showOpenDialog(null);
+        // 如果用户点击了确定按钮
+        if (result == JFileChooser.APPROVE_OPTION) {
+            // 获取用户选择的文件，并返回
+            return fileChooser.getSelectedFile();
+        }
+        // 否则，返回null
+        else {
+            return null;
+        }
+    }
     public File chooseMusicFile() {
         // 创建一个JFileChooser对象
         JFileChooser fileChooser = new JFileChooser();
@@ -393,14 +421,20 @@ public class ChessGameFrame extends JFrame {
     public void addMusicButton(GameController gameController) {
         JButton MusicButton = new JButton("音乐");
         MusicButton.addActionListener((e) -> actionPerformed(gameController));
-
+        ImageIcon icon=new ImageIcon("resource/音乐.jpg");
+        MusicButton.setIcon(icon);
+        MusicButton.setHorizontalTextPosition(JButton.CENTER);
+        MusicButton.setVerticalTextPosition(JButton.CENTER);
         MusicButton.setSize(200, 60);
+        MusicButton.setForeground(Color.RED);
         MusicButton.setFont(new Font("宋体", Font.PLAIN, 20));
         jPanel.add(MusicButton);
     }
 
     public void addMusicEffectButton(GameController gameController) {
         JButton MusicButton = new JButton("音效");
+        ImageIcon icon=new ImageIcon("resource/音效.jpg");
+        MusicButton.setIcon(icon);
         MusicButton.addActionListener((ActionEvent e) -> {
             if (gameController.isPlayEffect()) {
                 gameController.setPlayEffect(false);
@@ -412,12 +446,16 @@ public class ChessGameFrame extends JFrame {
         });
 
         MusicButton.setSize(200, 60);
+        MusicButton.setHorizontalTextPosition(JButton.CENTER);
+        MusicButton.setVerticalTextPosition(JButton.CENTER);
         MusicButton.setFont(new Font("宋体", Font.PLAIN, 20));
+        MusicButton.setForeground(Color.GREEN);
         jPanel.add(MusicButton);
     }
 
     public void addExitButton(GameController gameController) {
         ImageIcon imageIcon = new ImageIcon("resource/老师图片2.gif");
+
         JButton ExitButton = new JButton("退出", imageIcon);
         ExitButton.addActionListener((ActionEvent e) -> {
             int choose = JOptionPane.showConfirmDialog(this, "是否退出");
