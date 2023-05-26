@@ -273,7 +273,6 @@ public class GameController implements GameListener {
 
     public void UndoMove() {
         if (canUndo) {
-
             int i = AfterMove.size() - 1;
             if (i == 0) canUndo = false;
             if (ateAnimal.get(i) != null) {
@@ -301,7 +300,11 @@ public class GameController implements GameListener {
             ChessAfterMove.remove(i);
             ateAnimal.remove(i);
             swapColor();
-            selectedPoint = null;
+            closeValidMove(ValidMove);
+            if (selectedPoint!=null){selectedPoint = null;
+                selectedComponent.setSelected(false);
+            }
+
             view.repaint();
         } else JOptionPane.showMessageDialog(null, "现在不能悔棋！");
     }

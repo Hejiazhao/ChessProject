@@ -21,8 +21,11 @@ public class CellComponent extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         String File=null;
-        if (seeUI)File="resource/绿色动图.gif";
+        if (seeUI){File="resource/绿色动图.gif";
+
+        }
         else {
+
         switch (FileName){
             case "Green"->File="resource/星空.jpg";
             case "BlueTrap"->File="resource/红色陷阱.jpg";

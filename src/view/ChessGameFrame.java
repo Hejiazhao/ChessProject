@@ -15,8 +15,6 @@ import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.regex.Pattern;
 
-import static java.lang.Thread.sleep;
-
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
  */
@@ -29,10 +27,11 @@ public class ChessGameFrame extends JFrame {
 
     private String SaveName;
     private String[] Animal = new String[]{"Elephant", "Cat", "Leopard", "Mouse", "Lion", "Tiger", "Wolf", "Dog"};
-    private JPanel jPanel = new JPanel(new GridLayout(7, 1));
-
+    private JPanel jPanel=new JPanel() ;
+    private boolean hide=false;
 
     private ChessboardComponent chessboardComponent;
+    private GameController gameController;
 
     public ChessGameFrame(int width, int height) {
         setTitle("斗兽棋Demo"); //设置标题
@@ -44,12 +43,10 @@ public class ChessGameFrame extends JFrame {
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //设置程序关闭按键，如果点击右上方的叉就游戏全部关闭了
-
-
         setLayout(null);
         setBackground();
 
-
+        addJPanel();
         addChessboard();
         addLabel();
     }
@@ -67,7 +64,14 @@ public class ChessGameFrame extends JFrame {
         this.chessboardComponent = chessboardComponent;
     }
 
-
+    private void addJPanel(){
+        jPanel.setLayout( new GridLayout(7, 1,0,10));
+        jPanel.setLocation(HEIGHT,HEIGHT / 10 + 100);
+        jPanel.setOpaque(false);
+        jPanel.setSize(200,500);
+        System.out.println(jPanel.getSize());
+        this.add(jPanel);
+    }
     /**
      * 在游戏面板中添加棋盘
      */
@@ -84,9 +88,26 @@ public class ChessGameFrame extends JFrame {
     private void addLabel() {
         JLabel statusLabel = new JLabel();
         statusLabel.setLocation(HEIGHT + 12, HEIGHT / 20);
+        statusLabel.setLayout(new GridLayout(1,1));
+        JButton button=new JButton("隐藏");
+        button.setFont(new Font("宋体", Font.PLAIN, 20));
+        button.addActionListener(e -> {
+            if (hide){
+                jPanel.setVisible(true);
+                hide=false;
+            }
+            else {
+                jPanel.setVisible(false);
+                hide=true;
+            }
+        });
+        statusLabel.add(button);
         ImageIcon image = new ImageIcon("resource/原神图标.jpg");
         statusLabel.setSize(image.getIconWidth(), image.getIconHeight() / 2);
-        statusLabel.setIcon(image);
+        button.setIcon(image);
+        button.setSize(image.getIconWidth(), image.getIconHeight() / 2);
+        button.setHorizontalTextPosition(JButton.CENTER);
+        button.setVerticalTextPosition(JButton.CENTER);
         add(statusLabel);
     }
 
@@ -95,24 +116,9 @@ public class ChessGameFrame extends JFrame {
         JLabel background = new JLabel(icon); // 创建一个标签对象，使用图标对象
         background.setLayout(null); // 给标签对象设置一个布局管理器
         background.setSize(WIDTH, HEIGHT);
-// 您可以将JFrame的内容面板设置为标签对象，并继续正常工作，向JFrame添加组件
+// 将JFrame的内容面板设置为标签对象，并继续正常工作，向JFrame添加组件
         setContentPane(background);
-// 或者，直接向标签对象添加组件，就像其他容器一样
-
     }
-
-    public static void waitFor(long milliseconds) {
-        try {
-            sleep(milliseconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
-     */
 
 
     public void addUndoButton(GameController gameController) {
@@ -126,10 +132,9 @@ public class ChessGameFrame extends JFrame {
 
             }
         });
-        button.setLocation(HEIGHT, HEIGHT / 10 + 120);
         button.setSize(200, 60);
         button.setFont(new Font("宋体", Font.PLAIN, 20));
-        add(button);
+        jPanel.add(button);
     }
 
     public void addRestartButton(GameController gameController) {
@@ -143,10 +148,10 @@ public class ChessGameFrame extends JFrame {
 
             }
         });
-        button.setLocation(HEIGHT, 2 * HEIGHT / 11 + 120);
+        System.out.println("restart");
         button.setSize(200, 60);
         button.setFont(new Font("宋体", Font.PLAIN, 20));
-        add(button);
+        jPanel.add(button);
     }
 
     private void Save(GameController gameController, String name) {
@@ -180,10 +185,10 @@ public class ChessGameFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "文件名不能为空");
             } else Save(gameController, this.SaveName);
         });
-        button.setLocation(HEIGHT, HEIGHT / 50 + 120);
+
         button.setSize(200, 60);
         button.setFont(new Font("宋体", Font.PLAIN, 20));
-        add(button);
+        jPanel.add(button);
     }
 
     public boolean isNotNumeric(String string) {
@@ -347,10 +352,10 @@ public class ChessGameFrame extends JFrame {
                         JOptionPane.showMessageDialog(this, "读档取消");
             }
         });
-        button.setLocation(HEIGHT, 15 * HEIGHT / 56 + 120);
+
         button.setSize(200, 60);
         button.setFont(new Font("宋体", Font.PLAIN, 20));
-        add(button);
+        jPanel.add(button);
     }
 
     private Clip clip;
@@ -388,10 +393,10 @@ public class ChessGameFrame extends JFrame {
     public void addMusicButton(GameController gameController) {
         JButton MusicButton = new JButton("音乐");
         MusicButton.addActionListener((e) -> actionPerformed(gameController));
-        MusicButton.setLocation(HEIGHT, 31 * HEIGHT / 80 + 160);
+
         MusicButton.setSize(200, 60);
         MusicButton.setFont(new Font("宋体", Font.PLAIN, 20));
-        add(MusicButton);
+        jPanel.add(MusicButton);
     }
 
     public void addMusicEffectButton(GameController gameController) {
@@ -405,10 +410,10 @@ public class ChessGameFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "音效开启");
             }
         });
-        MusicButton.setLocation(HEIGHT, 3 * HEIGHT / 10 + 160);
+
         MusicButton.setSize(200, 60);
         MusicButton.setFont(new Font("宋体", Font.PLAIN, 20));
-        add(MusicButton);
+        jPanel.add(MusicButton);
     }
 
     public void addExitButton(GameController gameController) {
@@ -432,12 +437,12 @@ public class ChessGameFrame extends JFrame {
                 default -> throw new IllegalStateException("Unexpected value: " + choose);
             }
         });
-        ExitButton.setLocation(HEIGHT, 21 * HEIGHT / 40 + 120);
+
         ExitButton.setSize(200, 60);
         ExitButton.setHorizontalTextPosition(JButton.CENTER);
         ExitButton.setVerticalTextPosition(JButton.CENTER);
         ExitButton.setFont(new Font("宋体", Font.PLAIN, 20));
-        add(ExitButton);
+        jPanel.add(ExitButton);
     }
 
     public void addButton(GameController gameController) {
@@ -448,6 +453,9 @@ public class ChessGameFrame extends JFrame {
         addMusicButton(gameController);
         addMusicEffectButton(gameController);
         addExitButton(gameController);
+
+        this.gameController=gameController;
+
     }
 
 

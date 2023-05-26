@@ -151,6 +151,7 @@ public class ChessboardComponent extends JComponent {
         }
     }
 
+
     public void registerController(GameController gameController) {
         this.gameController = gameController;
     }
