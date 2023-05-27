@@ -7,8 +7,6 @@ import model.PlayerColor;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -19,8 +17,7 @@ import java.util.regex.Pattern;
 public class MainFrame extends JFrame {
 
     private ChessGameFrame chessGameFrame;
-    private GameController gameController;
-    private JPanel jPanel;
+    //private JPanel jPanel;
     private void setBackground() {
         ImageIcon icon = new ImageIcon("resource/背景最终版.gif"); // 创建一个图标对象，使用缩放后的图片
         JLabel background = new JLabel(icon); // 创建一个标签对象，使用图标对象
@@ -172,38 +169,38 @@ public class MainFrame extends JFrame {
         return chessGameFrame;
     }
 
-    private int i;
-    private int i1;
 
-    public MainFrame(int i, int i1) {
-//this.setTitle("斗兽棋Demo"); //设置标题
-        this.setSize(i, i1);
+    public MainFrame(int width, int height) {
+        this.setTitle("斗兽棋Demo"); //设置标题
+        this.setSize(width,height);
 
         this.setLocationRelativeTo(null); // Center the window.
         this.setLayout(null);
-        //this.setResizable(false);
-        //this.setVisible(true);
+        this.setResizable(false);
+        this.setVisible(true);
         setBackground();
     }
 
 
 
-    public void addstartButton(GameController GameController) {
+    public void addstartButton(GameController ignoredGameController) {
         JButton startbutton = new JButton("开始游戏");
-        startbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();//关闭主界面
-                getChessGameFrame().setVisible(true);
-            }
+        startbutton.addActionListener(e -> {
+            //if(e.getSource()==startbutton){
+             //this.setContentPane(chessGameFrame);
+             //this.setFocusable(true);
+             //this.setVisible(true);
+            //}
+            dispose();//关闭主界面
+            getChessGameFrame().setVisible(true);
         });
         setVisible(true);
         startbutton.setLocation(450,320);
         startbutton.setSize(200, 60);
         startbutton.setFont(new Font("宋体", Font.BOLD, 20));
         add(startbutton);
+        //pack();
 
-//pack();
 
     }
 
