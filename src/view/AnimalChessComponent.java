@@ -4,6 +4,7 @@ package view;
 import model.PlayerColor;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * This is the equivalent of the ChessPiece class,
@@ -41,6 +42,15 @@ public class AnimalChessComponent extends JComponent {
         this.selected = selected;
     }
     public AnimalType getAnimalType(){return animalType;}
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(owner.getColor());
+        g.drawRoundRect(0,0,72,72,16,16);
+
+    }
 
 
 

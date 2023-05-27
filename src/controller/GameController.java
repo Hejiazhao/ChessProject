@@ -269,6 +269,7 @@ public class GameController implements GameListener {
         initialize();
         Count=1;
         canUndo = false;
+        view.revalidate();
     }
 
     public void UndoMove() {
