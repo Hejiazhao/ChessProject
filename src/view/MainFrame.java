@@ -156,7 +156,7 @@ public class MainFrame extends JFrame {
         button.addActionListener((e) -> {
             int Confirm = JOptionPane.showConfirmDialog(this, "读档后将丢失当前进度，是否读档？");
             switch (Confirm) {
-                case JOptionPane.YES_OPTION -> Read(gameController);
+                case JOptionPane.YES_OPTION -> {Read(gameController);this.dispose();}
                 case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION, JOptionPane.CANCEL_OPTION ->
                         JOptionPane.showMessageDialog(this, "读档取消");
             }
