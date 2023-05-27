@@ -269,6 +269,7 @@ public class GameController implements GameListener {
         initialize();
         Count=1;
         canUndo = false;
+        view.revalidate();
     }
 
     public void UndoMove() {
@@ -341,7 +342,7 @@ public class GameController implements GameListener {
         }
     }
     public void closeValidMove(ArrayList<ChessboardPoint> legalMove){
-        for (ChessboardPoint e:legalMove){
+        if (legalMove!=null)for (ChessboardPoint e:legalMove){
             CellComponent component = view.getGridComponentAt(e);
             component.setSeeUI(false);
             component.repaint();
