@@ -99,6 +99,7 @@ public class GameController implements GameListener {
         this.AfterMove = new ArrayList<>();
         this.ChessAfterMove = new ArrayList<>();
         this.ChessBeforeMove = new ArrayList<>();
+        Count=2;
         view.registerController(this);
         view.initiateChessComponent(model);
         initialize();

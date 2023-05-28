@@ -11,10 +11,14 @@ import java.awt.*;
 public class CellComponent extends JPanel {
     private String FileName;
     private boolean seeUI;
+    private int size;
     public CellComponent(String FileName,Point location,int size){
         setLayout(new GridLayout(1,1));
         setLocation(location);
         setSize(size,size);
+        this.size=size;
+        setPreferredSize(new Dimension(size, size));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         this.FileName=FileName;
     }
     @Override
@@ -35,7 +39,7 @@ public class CellComponent extends JPanel {
         }}
         ImageIcon icon=new ImageIcon(File);
         g.setColor(new Color(0,0,0));
-        g.drawImage(icon.getImage(),0,0,72,72,null);
+        g.drawImage(icon.getImage(),0,0,size,size,null);
     }
 
     public void setSeeUI(boolean seeUI) {

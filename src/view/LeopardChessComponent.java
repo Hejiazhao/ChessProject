@@ -29,6 +29,7 @@ public class LeopardChessComponent extends AnimalChessComponent{
             g.setColor(owner.getColor());
             g.drawOval(0, 0, getWidth() , getHeight());
         }
+        revalidate();
     }
 
 }

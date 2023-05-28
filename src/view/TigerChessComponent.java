@@ -21,15 +21,13 @@ public class TigerChessComponent extends AnimalChessComponent{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
         if (owner.equals(PlayerColor.BLUE)) g2.drawImage(tigerImage1,5,5,62,62,null);
         else g2.drawImage(tigerImage2,5,5,62,62,null);
-
-
         if (isSelected()) { // Highlights the model if selected.
             g.setColor(owner.getColor());
             g.drawOval(0, 0, getWidth() , getHeight());
-        }
+        }revalidate();
+
     }
 
 }
