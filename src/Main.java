@@ -16,7 +16,7 @@ public class Main {
             MainFrame mainFrame1=new MainFrame(1100,810);
             mainFrame1.setVisible(true);
             mainFrame1.addReadButton(gameController);
-            mainFrame1.addstartButton(gameController);
+            mainFrame1.addStartButton(gameController);
         });
     }
 }

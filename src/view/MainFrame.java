@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 
 public class MainFrame extends JFrame {
 
-    private ChessGameFrame chessGameFrame;
     //private JPanel jPanel;
     private void setBackground() {
         ImageIcon icon = new ImageIcon("resource/背景最终版.gif"); // 创建一个图标对象，使用缩放后的图片
@@ -165,9 +164,7 @@ public class MainFrame extends JFrame {
         button.setLocation(450,400);
     }
 
-    public ChessGameFrame getChessGameFrame() {
-        return chessGameFrame;
-    }
+
 
 
     public MainFrame(int width, int height) {
@@ -183,22 +180,22 @@ public class MainFrame extends JFrame {
 
 
 
-    public void addstartButton(GameController ignoredGameController) {
-        JButton startbutton = new JButton("开始游戏");
-        startbutton.addActionListener(e -> {
-            //if(e.getSource()==startbutton){
+    public void addStartButton(GameController ignoredGameController) {
+        JButton startButton = new JButton("开始游戏");
+        startButton.addActionListener(e -> {
+            //if(e.getSource()==startButton){
              //this.setContentPane(chessGameFrame);
              //this.setFocusable(true);
              //this.setVisible(true);
             //}
             dispose();//关闭主界面
-            getChessGameFrame().setVisible(true);
+
         });
         setVisible(true);
-        startbutton.setLocation(450,320);
-        startbutton.setSize(200, 60);
-        startbutton.setFont(new Font("宋体", Font.BOLD, 20));
-        add(startbutton);
+        startButton.setLocation(450,320);
+        startButton.setSize(200, 60);
+        startButton.setFont(new Font("宋体", Font.BOLD, 20));
+        add(startButton);
         //pack();
 
 

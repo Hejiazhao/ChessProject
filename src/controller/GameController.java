@@ -267,7 +267,7 @@ public class GameController implements GameListener {
         this.view.initiateChessComponent(chessboard);
         this.view.repaint();
         initialize();
-        Count=1;
+        Count=2;
         canUndo = false;
         view.revalidate();
     }
