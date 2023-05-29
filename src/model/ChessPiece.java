@@ -14,14 +14,17 @@ public class ChessPiece {
         this.name = name;
         this.rank = rank;
     }
-    public int getRank(){ return rank;}
+
+    public int getRank() {
+        return rank;
+    }
 
 
     public boolean canCapture(ChessPiece target) {
         // TODO: Finish this method!
-        if (this.rank==1&&target.rank==8&&this.getOwner()!=target.getOwner() )   return true;
-        else if (target.rank==1&&this.rank==8&&this.getOwner()!=target.getOwner()) return false;
-        else return (this.rank>=target.rank)&&(this.getOwner()!=target.getOwner());
+        if (this.rank == 1 && target.rank == 8 && this.getOwner() != target.getOwner()) return true;
+        else if (target.rank == 1 && this.rank == 8 && this.getOwner() != target.getOwner()) return false;
+        else return (this.rank >= target.rank) && (this.getOwner() != target.getOwner());
         //已完成
     }
 

@@ -24,50 +24,61 @@ public class GameController implements GameListener {
 
 
     private Chessboard model;
-
-    public Chessboard getModel() {
-        return model;
-    }
-
     private ChessboardComponent view;
     private PlayerColor currentPlayer;
-
-    public void setSelectedPoint(ChessboardPoint selectedPoint) {
-        this.selectedPoint = selectedPoint;
-    }
-
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
     private ChessboardPoint RedDen = new ChessboardPoint(0, 3);
     private ChessboardPoint BlueDen = new ChessboardPoint(8, 3);
-
-    public void setValidRedChess(int validRedChess) {
-        ValidRedChess = validRedChess;
-    }
-
     private int ValidRedChess = 8;
-
-    public void setValidBlueChess(int validBlueChess) {
-        ValidBlueChess = validBlueChess;
-    }
-
     private int ValidBlueChess = 8;
     private ArrayList<ChessboardPoint> BeforeMove;
     private ArrayList<ChessboardPoint> AfterMove;
     private ArrayList<ChessPiece> ChessBeforeMove;
     private ArrayList<ChessPiece> ChessAfterMove;
+    private ArrayList<AnimalChessComponent> ateAnimal;
+    private boolean canUndo = false;
+    private boolean PlayEffect = false;
+    private Clip clip;
+    private AnimalChessComponent selectedComponent;
+    private ArrayList<ChessboardPoint> ValidMove;
+    private int Count = 1;
+
+    public GameController(ChessboardComponent view, Chessboard model) {
+        this.view = view;
+        this.model = model;
+        this.currentPlayer = PlayerColor.BLUE;
+        this.BeforeMove = new ArrayList<>();
+        this.ateAnimal = new ArrayList<>();
+        this.AfterMove = new ArrayList<>();
+        this.ChessAfterMove = new ArrayList<>();
+        this.ChessBeforeMove = new ArrayList<>();
+        Count = 2;
+        view.registerController(this);
+        view.initiateChessComponent(model);
+        initialize();
+        view.repaint();
+    }
+
+    public Chessboard getModel() {
+        return model;
+    }
+
+    public void setModel(Chessboard model) {
+        this.model = model;
+    }
+
+    public void setSelectedPoint(ChessboardPoint selectedPoint) {
+        this.selectedPoint = selectedPoint;
+    }
 
     public ArrayList<ChessPiece> getChessAfterMove() {
         return ChessAfterMove;
     }
 
-    private ArrayList<AnimalChessComponent> ateAnimal;
-
-    public ArrayList<AnimalChessComponent> getAteAnimal(){return ateAnimal;}
-    private boolean canUndo = false;
-    private boolean PlayEffect = false;
-
-    private Clip clip;
+    public ArrayList<AnimalChessComponent> getAteAnimal() {
+        return ateAnimal;
+    }
 
     public AnimalChessComponent getSelectedComponent() {
         return selectedComponent;
@@ -76,8 +87,6 @@ public class GameController implements GameListener {
     public void setSelectedComponent(AnimalChessComponent selectedComponent) {
         this.selectedComponent = selectedComponent;
     }
-
-    private AnimalChessComponent selectedComponent;
 
     public int getCount() {
         return Count;
@@ -93,26 +102,6 @@ public class GameController implements GameListener {
 
     public void setValidMove(ArrayList<ChessboardPoint> validMove) {
         ValidMove = validMove;
-    }
-
-    private ArrayList<ChessboardPoint> ValidMove;
-
-    private int Count=1;
-
-    public GameController(ChessboardComponent view, Chessboard model) {
-        this.view = view;
-        this.model = model;
-        this.currentPlayer = PlayerColor.BLUE;
-        this.BeforeMove = new ArrayList<>();
-        this.ateAnimal = new ArrayList<>();
-        this.AfterMove = new ArrayList<>();
-        this.ChessAfterMove = new ArrayList<>();
-        this.ChessBeforeMove = new ArrayList<>();
-        Count=2;
-        view.registerController(this);
-        view.initiateChessComponent(model);
-        initialize();
-        view.repaint();
     }
 
     public void PlayEat() {
@@ -181,19 +170,13 @@ public class GameController implements GameListener {
         return BeforeMove;
     }
 
-
-    public void setModel(Chessboard model) {
-        this.model = model;
+    public ChessboardComponent getView() {
+        return view;
     }
 
     public void setView(ChessboardComponent view) {
         this.view = view;
     }
-
-    public ChessboardComponent getView() {
-        return view;
-    }
-
 
     public void initialize() {
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
@@ -221,7 +204,6 @@ public class GameController implements GameListener {
 
     }
 
-
     public PlayerColor getCurrentPlayer() {
         return currentPlayer;
     }
@@ -234,10 +216,17 @@ public class GameController implements GameListener {
         return ValidRedChess;
     }
 
+    public void setValidRedChess(int validRedChess) {
+        ValidRedChess = validRedChess;
+    }
+
     public int getValidBlueChess() {
         return ValidBlueChess;
     }
 
+    public void setValidBlueChess(int validBlueChess) {
+        ValidBlueChess = validBlueChess;
+    }
 
     // click an empty cell
     @Override
@@ -278,7 +267,7 @@ public class GameController implements GameListener {
         this.view.initiateChessComponent(chessboard);
         this.view.repaint();
         initialize();
-        Count=2;
+        Count = 2;
         canUndo = false;
         view.revalidate();
     }
@@ -314,7 +303,8 @@ public class GameController implements GameListener {
             swapColor();
             closeValidMove(ValidMove);
             Count--;
-            if (selectedPoint!=null){selectedPoint = null;
+            if (selectedPoint != null) {
+                selectedPoint = null;
                 selectedComponent.setSelected(false);
             }
 
@@ -346,21 +336,22 @@ public class GameController implements GameListener {
         }
         return chessboardPointArrayList;
     }
-    public void showLegalMove(ArrayList<ChessboardPoint> legalMove){
-        for (ChessboardPoint e: legalMove){
+
+    public void showLegalMove(ArrayList<ChessboardPoint> legalMove) {
+        for (ChessboardPoint e : legalMove) {
             CellComponent component = view.getGridComponentAt(e);
             component.setSeeUI(true);
             component.repaint();
         }
     }
-    public void closeValidMove(ArrayList<ChessboardPoint> legalMove){
-        if (legalMove!=null)for (ChessboardPoint e:legalMove){
+
+    public void closeValidMove(ArrayList<ChessboardPoint> legalMove) {
+        if (legalMove != null) for (ChessboardPoint e : legalMove) {
             CellComponent component = view.getGridComponentAt(e);
             component.setSeeUI(false);
             component.repaint();
         }
     }
-
 
 
     // click a cell with a chess
@@ -373,8 +364,8 @@ public class GameController implements GameListener {
                 component.setSelected(true);
                 component.repaint();
                 setSelectedComponent(component);
-                if (ValidMove !=null) closeValidMove(ValidMove);
-                ValidMove =showValidMove();
+                if (ValidMove != null) closeValidMove(ValidMove);
+                ValidMove = showValidMove();
                 showLegalMove(ValidMove);
             }
         } else if (!selectedPoint.equals(point) && currentPlayer.equals(model.getChessPieceOwner(point))) {
@@ -384,8 +375,8 @@ public class GameController implements GameListener {
             getSelectedComponent().repaint();
             component.repaint();
             setSelectedComponent(component);
-            if (ValidMove !=null) closeValidMove(ValidMove);
-            ValidMove =showValidMove();
+            if (ValidMove != null) closeValidMove(ValidMove);
+            ValidMove = showValidMove();
             showLegalMove(ValidMove);
         } else if (selectedPoint.equals(point)) {
             selectedPoint = null;
@@ -398,7 +389,7 @@ public class GameController implements GameListener {
             model.captureChessPiece(selectedPoint, point);
             if (model.getChessPieceOwner(point).equals(PlayerColor.BLUE)) ValidRedChess--;
             else if (model.getChessPieceOwner(point).equals(PlayerColor.RED)) ValidBlueChess--;
-            System.out.println("blue: "+ValidBlueChess+" Red:"+ValidRedChess);
+            System.out.println("blue: " + ValidBlueChess + " Red:" + ValidRedChess);
             ateAnimal.add(view.removeChessComponentAtGrid(point));
             AnimalChessComponent component1 = view.removeChessComponentAtGrid(selectedPoint);
             view.setChessComponentAtGrid(point, component1);

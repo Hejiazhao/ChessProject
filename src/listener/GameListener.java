@@ -1,8 +1,8 @@
 package listener;
 
 import model.ChessboardPoint;
-import view.CellComponent;
 import view.AnimalChessComponent;
+import view.CellComponent;
 
 
 public interface GameListener {

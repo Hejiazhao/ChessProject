@@ -14,7 +14,6 @@ public class ChessboardPoint {
     }
 
 
-
     public int getRow() {
         return row;
     }
@@ -41,6 +40,6 @@ public class ChessboardPoint {
 
     @Override
     public String toString() {
-        return "("+row + ","+col+") " + "on the chessboard is clicked!";
+        return "(" + row + "," + col + ") " + "on the chessboard is clicked!";
     }
 }

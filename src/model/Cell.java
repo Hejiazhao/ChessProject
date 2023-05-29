@@ -2,8 +2,8 @@ package model;
 
 /**
  * This class describe the slot for Chess in Chessboard
- * */
-public class Cell  {
+ */
+public class Cell {
     // the position for chess
     private ChessPiece piece;
 

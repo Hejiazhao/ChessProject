@@ -19,21 +19,22 @@ import java.util.regex.Pattern;
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
  */
 public class ChessGameFrame extends JFrame {
+    final int[] timeLeft = {3000};
     //    public final Dimension FRAME_SIZE ;
     private final int WIDTH;
     private final int HEIGHT;
-    final int[] timeLeft = {3000};
-
     private int ONE_CHESS_SIZE;
 
     private String SaveName;
     private String[] Animal = new String[]{"Elephant", "Cat", "Leopard", "Mouse", "Lion", "Tiger", "Wolf", "Dog"};
-    private JPanel jPanel=new JPanel() ;
-    private boolean hide=false;
+    private JPanel jPanel = new JPanel();
+    private boolean hide = false;
 
     private ChessboardComponent chessboardComponent;
     private GameController gameController;
-    private int count=2;
+    private int count = 2;
+    private Clip clip;
+
 
     public ChessGameFrame(int width, int height) {
         setTitle("斗兽棋Demo"); //设置标题
@@ -52,9 +53,6 @@ public class ChessGameFrame extends JFrame {
         //addRoundLable();
     }
 
-
-
-
     public String getName() {
         return SaveName;
     }
@@ -67,14 +65,15 @@ public class ChessGameFrame extends JFrame {
         this.chessboardComponent = chessboardComponent;
     }
 
-    private void addJPanel(){
-        jPanel.setLayout( new GridLayout(9, 1,0,10));
-        jPanel.setLocation(HEIGHT,HEIGHT / 10 + 100);
+    private void addJPanel() {
+        jPanel.setLayout(new GridLayout(9, 1, 0, 10));
+        jPanel.setLocation(HEIGHT, HEIGHT / 10 + 100);
         jPanel.setOpaque(false);
-        jPanel.setSize(200,500);
+        jPanel.setSize(200, 500);
         System.out.println(jPanel.getSize());
         this.add(jPanel);
     }
+
     /**
      * 在游戏面板中添加棋盘
      */
@@ -84,28 +83,24 @@ public class ChessGameFrame extends JFrame {
         add(chessboardComponent);
     }
 
-
-
-
     /**
      * 在游戏面板中添加标签
      */
     private void addLabel() {
         JLabel statusLabel = new JLabel();
         statusLabel.setLocation(HEIGHT + 12, HEIGHT / 20);
-        statusLabel.setLayout(new GridLayout(1,1));
-        JButton button=new JButton("隐藏");
+        statusLabel.setLayout(new GridLayout(1, 1));
+        JButton button = new JButton("隐藏");
         button.setFont(new Font("宋体", Font.PLAIN, 20));
         button.addActionListener(e -> {
-            if (hide){
+            if (hide) {
                 jPanel.setVisible(true);
                 button.setText("隐藏");
-                hide=false;
-            }
-            else {
+                hide = false;
+            } else {
                 jPanel.setVisible(false);
                 button.setText("展开");
-                hide=true;
+                hide = true;
             }
         });
         statusLabel.add(button);
@@ -127,10 +122,9 @@ public class ChessGameFrame extends JFrame {
         setContentPane(background);
     }
 
-
     public void addUndoButton(GameController gameController) {
-        ImageIcon icon=new ImageIcon("resource/悔棋.jpg");
-        JButton button = new JButton("悔棋",icon);
+        ImageIcon icon = new ImageIcon("resource/悔棋.jpg");
+        JButton button = new JButton("悔棋", icon);
         button.setHorizontalTextPosition(JButton.CENTER);
         button.setVerticalTextPosition(JButton.CENTER);
         button.addActionListener((e) -> {
@@ -148,11 +142,11 @@ public class ChessGameFrame extends JFrame {
     }
 
     public void addRestartButton(GameController gameController) {
-        ImageIcon icon=new ImageIcon("resource/restart.jpg");
-        JButton button = new JButton("重新开始",icon);
+        ImageIcon icon = new ImageIcon("resource/restart.jpg");
+        JButton button = new JButton("重新开始", icon);
         button.setHorizontalTextPosition(JButton.CENTER);
         button.setVerticalTextPosition(JButton.CENTER);
-        timeLeft[0]=3000;
+        timeLeft[0] = 3000;
         button.addActionListener((e) -> {
             int value = JOptionPane.showConfirmDialog(this, "是否重新开始");
             switch (value) {
@@ -193,7 +187,7 @@ public class ChessGameFrame extends JFrame {
 
     public void addSaveButton(GameController gameController) {
 
-        ImageIcon icon=new ImageIcon("resource/保存.jpg");
+        ImageIcon icon = new ImageIcon("resource/保存.jpg");
         JButton button = new JButton(icon);
         button.addActionListener((e) -> {
             JOptionPane.showMessageDialog(this, "游戏已暂停");
@@ -207,11 +201,6 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("宋体", Font.PLAIN, 20));
         jPanel.add(button);
     }
-
-
-
-
-
 
     public File chooseBackgroundFile() {
         // 创建一个JFileChooser对象
@@ -227,7 +216,7 @@ public class ChessGameFrame extends JFrame {
         //禁止多选
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         // 弹出文件选择器对话框，并获取用户的操作结果
-        fileChooser.setFileFilter(new FileNameExtensionFilter("image(*.jpg,*.png,*.gif)", "jpg","gif","png"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("image(*.jpg,*.png,*.gif)", "jpg", "gif", "png"));
         //设置可选文件
         int result = fileChooser.showOpenDialog(null);
         // 如果用户点击了确定按钮
@@ -240,6 +229,7 @@ public class ChessGameFrame extends JFrame {
             return null;
         }
     }
+
     public File chooseMusicFile() {
         // 创建一个JFileChooser对象
         JFileChooser fileChooser = new JFileChooser();
@@ -267,11 +257,6 @@ public class ChessGameFrame extends JFrame {
             return null;
         }
     }
-
-
-
-    private Clip clip;
-
 
     public void musicPerformed(GameController ignoredGameController) {
         try {
@@ -305,7 +290,7 @@ public class ChessGameFrame extends JFrame {
     public void addMusicButton(GameController gameController) {
         JButton MusicButton = new JButton("音乐");
         MusicButton.addActionListener((e) -> musicPerformed(gameController));
-        ImageIcon icon=new ImageIcon("resource/音乐.jpg");
+        ImageIcon icon = new ImageIcon("resource/音乐.jpg");
         MusicButton.setIcon(icon);
         MusicButton.setHorizontalTextPosition(JButton.CENTER);
         MusicButton.setVerticalTextPosition(JButton.CENTER);
@@ -317,7 +302,7 @@ public class ChessGameFrame extends JFrame {
 
     public void addMusicEffectButton(GameController gameController) {
         JButton MusicButton = new JButton("音效");
-        ImageIcon icon=new ImageIcon("resource/音效.jpg");
+        ImageIcon icon = new ImageIcon("resource/音效.jpg");
         MusicButton.setIcon(icon);
         MusicButton.addActionListener((ActionEvent e) -> {
             if (gameController.isPlayEffect()) {
@@ -366,6 +351,7 @@ public class ChessGameFrame extends JFrame {
         ExitButton.setFont(new Font("宋体", Font.PLAIN, 20));
         jPanel.add(ExitButton);
     }
+
     public boolean isNotNumeric(String string) {
         Pattern pattern = Pattern.compile("[0-9]*");
         return !pattern.matcher(string).matches();
@@ -415,7 +401,7 @@ public class ChessGameFrame extends JFrame {
                             gameController.getModel().setChessPiece(dest, gameController.getModel().getChessPieceAt(src));
                             gameController.getModel().removeChessPiece(src);
                             gameController.getView().initiateChessComponent(gameController.getModel());
-                            gameController.setCount(gameController.getCount()+1);
+                            gameController.setCount(gameController.getCount() + 1);
                             gameController.setSelectedPoint(null);
                             gameController.swapColor();
 
@@ -452,7 +438,7 @@ public class ChessGameFrame extends JFrame {
                         judge = false;
                     }
                     bufferedReader.close();
-                    timeLeft[0]=3000;
+                    timeLeft[0] = 3000;
                 }
                 if (judge) JOptionPane.showMessageDialog(null, "读档成功！");
             } catch (IOException ex) {
@@ -488,8 +474,9 @@ public class ChessGameFrame extends JFrame {
             return null;
         }
     }
+
     public void addReadButton(GameController gameController) {
-        ImageIcon icon=new ImageIcon("resource/读取.jpg");
+        ImageIcon icon = new ImageIcon("resource/读取.jpg");
         JButton button = new JButton(icon);
         button.addActionListener((e) -> {
             int Confirm = JOptionPane.showConfirmDialog(this, "读档后将丢失当前进度，是否读档？");
@@ -515,63 +502,62 @@ public class ChessGameFrame extends JFrame {
         addExitButton(gameController);
         addTimeLabel(gameController);
         addRoundLabel(gameController);
-        this.gameController=gameController;
+        this.gameController = gameController;
     }
-public void addRoundLabel(GameController gameController){
-        JLabel roundLabel=new JLabel();
-    final int[] count = {gameController.getCount() / 2};
-    final int[]Left={gameController.getCount()%2};jPanel.add(roundLabel);
-    Timer timer = new Timer(10, e -> {
-        count[0] = gameController.getCount() / 2;
-        Left[0]=gameController.getCount()%2;
-        roundLabel.setText("轮次： "+ count[0] + " 玩家 "+(gameController.getCount()%2==1?"红方":"蓝方"));
-        roundLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-        roundLabel.setForeground(Left[0]==1?Color.RED:Color.BLUE);
-        roundLabel.setBackground(new Color(30,30,30));
-    });
-    timer.start();
+
+    public void addRoundLabel(GameController gameController) {
+        JLabel roundLabel = new JLabel();
+        final int[] count = {gameController.getCount() / 2};
+        final int[] Left = {gameController.getCount() % 2};
+        jPanel.add(roundLabel);
+        Timer timer = new Timer(10, e -> {
+            count[0] = gameController.getCount() / 2;
+            Left[0] = gameController.getCount() % 2;
+            roundLabel.setText("轮次： " + count[0] + " 玩家 " + (gameController.getCount() % 2 == 1 ? "红方" : "蓝方"));
+            roundLabel.setFont(new Font("宋体", Font.PLAIN, 20));
+            roundLabel.setForeground(Left[0] == 1 ? Color.RED : Color.BLUE);
+            roundLabel.setBackground(new Color(30, 30, 30));
+        });
+        timer.start();
 
 
-        }
+    }
 
 
-
-
-
-    public void addTimeLabel(GameController gameController){
-    //倒计时时间，单位秒
-    JLabel timeLabel = new JLabel("Time Left: " + timeLeft[0]);
-    jPanel.add(timeLabel);
-  Timer timer = new Timer(100, e -> {
-        timeLeft[0]--;
-        timeLabel.setText("Time Left: " + timeLeft[0]/10);
-      timeLabel.setSize(200,60);
-      timeLabel.setForeground(gameController.getCurrentPlayer().getColor());
-      timeLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-      timeLabel.setBackground(new Color(30,30,30));
-        if (timeLeft[0] <= 0) {
-            timeLeft[0]=3000;
-            timeLabel.setText("Time Left: " + timeLeft[0]/10);
+    public void addTimeLabel(GameController gameController) {
+        //倒计时时间，单位秒
+        JLabel timeLabel = new JLabel("Time Left: " + timeLeft[0]);
+        jPanel.add(timeLabel);
+        Timer timer = new Timer(100, e -> {
+            timeLeft[0]--;
+            timeLabel.setText("Time Left: " + timeLeft[0] / 10);
+            timeLabel.setSize(200, 60);
             timeLabel.setForeground(gameController.getCurrentPlayer().getColor());
-            gameController.swapColor();
-            gameController.setSelectedComponent(null);
-            gameController.setSelectedComponent(null);
-            if (gameController.getValidMove() !=null) gameController.closeValidMove(gameController.getValidMove());
-            gameController.setCount(gameController.getCount()+1);
+            timeLabel.setFont(new Font("宋体", Font.PLAIN, 20));
+            timeLabel.setBackground(new Color(30, 30, 30));
+            if (timeLeft[0] <= 0) {
+                timeLeft[0] = 3000;
+                timeLabel.setText("Time Left: " + timeLeft[0] / 10);
+                timeLabel.setForeground(gameController.getCurrentPlayer().getColor());
+                gameController.swapColor();
+                gameController.setSelectedComponent(null);
+                gameController.setSelectedComponent(null);
+                if (gameController.getValidMove() != null) gameController.closeValidMove(gameController.getValidMove());
+                gameController.setCount(gameController.getCount() + 1);
 
-        }
-        else if (gameController.getCount()!=count){
-            timeLeft[0]=3000;
-            timeLabel.setText("Time Left: " + timeLeft[0]/10);
-            timeLabel.setForeground(gameController.getCurrentPlayer().getColor());
-        }
-        count=gameController.getCount();
+            } else if (gameController.getCount() != count) {
+                timeLeft[0] = 3000;
+                timeLabel.setText("Time Left: " + timeLeft[0] / 10);
+                timeLabel.setForeground(gameController.getCurrentPlayer().getColor());
+            }
+            count = gameController.getCount();
 
 
-    });
-    timer.start();
+        });
+        timer.start();
 
-}}
+    }
+}
 /*class ReadThread extends Thread{
     private GameController gameController;
     public ReadThread(GameController gameController){

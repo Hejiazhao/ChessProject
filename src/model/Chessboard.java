@@ -9,13 +9,13 @@ import java.util.Set;
  * The Chessboard has 9*7 cells, and each cell has a position for chess
  */
 public class Chessboard {
-    private Cell[][] grid;
     private final Set<ChessboardPoint> riverCell = new HashSet<>();
     private final Set<ChessboardPoint> BlueTrap = new HashSet<>();
     private final Set<ChessboardPoint> RedTrap = new HashSet<>();
     private final Set<ChessboardPoint[]> AroundRiverCell = new HashSet<>();
-    private ChessboardPoint RedDen=new ChessboardPoint(0,3);
-    private ChessboardPoint BlueDen=new ChessboardPoint(8,3);
+    private Cell[][] grid;
+    private ChessboardPoint RedDen = new ChessboardPoint(0, 3);
+    private ChessboardPoint BlueDen = new ChessboardPoint(8, 3);
 
     public Chessboard() {
         this.grid =
@@ -146,7 +146,8 @@ public class Chessboard {
                     if (C[0].getRow() == C[1].getRow()) {
                         judge = true;
                         for (ChessboardPoint D : riverCell) {
-                            if (D.getRow() == C[0].getRow() && getChessPieceAt(D) != null&&(((D.getCol()<C[0].getCol())&&(D.getCol()>C[1].getCol()))||((D.getCol()>C[0].getCol())&&(D.getCol()<C[1].getCol())))) judge = false;
+                            if (D.getRow() == C[0].getRow() && getChessPieceAt(D) != null && (((D.getCol() < C[0].getCol()) && (D.getCol() > C[1].getCol())) || ((D.getCol() > C[0].getCol()) && (D.getCol() < C[1].getCol()))))
+                                judge = false;
                         }
                     }
                     if (C[0].getCol() == C[1].getCol()) {
@@ -167,17 +168,17 @@ public class Chessboard {
 
         if (getChessPieceAt(src) == null) {
             return false;
-        }
-        else if ((dest.equals(RedDen)&&getChessPieceAt(src).getOwner().equals(PlayerColor.RED))||(dest.equals(BlueDen)&&getChessPieceAt(src).getOwner().equals(PlayerColor.BLUE))) return false;
+        } else if ((dest.equals(RedDen) && getChessPieceAt(src).getOwner().equals(PlayerColor.RED)) || (dest.equals(BlueDen) && getChessPieceAt(src).getOwner().equals(PlayerColor.BLUE)))
+            return false;
 
-        //添加了&&后的判断
+            //添加了&&后的判断
         else if ((getChessPieceAt(dest) != null) && !isValidCapture(src, dest)) {
             return false;
-        }
-
-        else if (riverCell.contains(dest) && getChessPieceAt(src).getRank() != 1) return false;
-        else if (aroundRiverCell(src, dest)) {return true;}
-       else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest))&&calculateDistance(src,dest)==1)return true;
+        } else if (riverCell.contains(dest) && getChessPieceAt(src).getRank() != 1) return false;
+        else if (aroundRiverCell(src, dest)) {
+            return true;
+        } else if (getChessPieceAt(dest) != null && inTrap(getChessPieceAt(dest)) && calculateDistance(src, dest) == 1)
+            return true;
         return calculateDistance(src, dest) == 1;
 
     }
@@ -205,10 +206,18 @@ public class Chessboard {
 
 
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
-      if (getChessPieceAt(dest)!=null&&(!inTrap(getChessPieceAt(dest))&&!inRiverCell(getChessPieceAt(dest)))) return getChessPieceAt(src).canCapture(getChessPieceAt(dest));
-      else if (getChessPieceAt(dest)!=null&&inTrap(getChessPieceAt(dest))){return true;}
-      else if (inRiverCell(getChessPieceAt(dest))&&getChessPieceAt(dest).getRank()==1&&getChessPieceAt(src).getRank()!=1)return false;
-      else return inRiverCell(getChessPieceAt(dest)) && getChessPieceAt(dest).getRank() == 1 && getChessPieceAt(src).getRank() == 1;
+        if (getChessPieceAt(dest) != null && (!inTrap(getChessPieceAt(dest)) && !inRiverCell(getChessPieceAt(dest)))){
+            if (inRiverCell(getChessPieceAt(src))&&getChessPieceAt(src).getRank()==1&&getChessPieceAt(dest).getRank()==8){return false;}
+            else return getChessPieceAt(src).canCapture(getChessPieceAt(dest));}
+        else if (getChessPieceAt(dest) != null && inTrap(getChessPieceAt(dest))) {
+            return true;
+
+        }
+
+        else if (inRiverCell(getChessPieceAt(dest)) && getChessPieceAt(dest).getRank() == 1 && getChessPieceAt(src).getRank() != 1)
+            return false;
+        else
+            return inRiverCell(getChessPieceAt(dest)) && getChessPieceAt(dest).getRank() == 1 && getChessPieceAt(src).getRank() == 1;
 
         //捕捉功能还没做好
         // TODO:Fix this method；

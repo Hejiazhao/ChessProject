@@ -16,6 +16,17 @@ import java.util.regex.Pattern;
 
 public class MainFrame extends JFrame {
 
+    public MainFrame(int width, int height) {
+        this.setTitle("斗兽棋Demo"); //设置标题
+        this.setSize(width, height);
+
+        this.setLocationRelativeTo(null); // Center the window.
+        this.setLayout(null);
+        this.setResizable(false);
+        this.setVisible(true);
+        setBackground();
+    }
+
     //private JPanel jPanel;
     private void setBackground() {
         ImageIcon icon = new ImageIcon("resource/背景最终版.gif"); // 创建一个图标对象，使用缩放后的图片
@@ -25,6 +36,7 @@ public class MainFrame extends JFrame {
 // 将JFrame的内容面板设置为标签对象，并继续正常工作，向JFrame添加组件
         setContentPane(background);
     }
+
     public boolean isNotNumeric(String string) {
         Pattern pattern = Pattern.compile("[0-9]*");
         return !pattern.matcher(string).matches();
@@ -77,7 +89,7 @@ public class MainFrame extends JFrame {
                             gameController.getModel().removeChessPiece(src);
                             gameController.getView().initiateChessComponent(gameController.getModel());
                             gameController.setSelectedPoint(null);
-                            gameController.setCount(gameController.getCount()+1);
+                            gameController.setCount(gameController.getCount() + 1);
                             gameController.swapColor();
 
                         } else if (gameController.getModel().getChessPieceAt(dest) != null && gameController.getModel().isValidMove(src, dest) && gameController.getModel().isValidMove(src, dest)) {
@@ -148,13 +160,15 @@ public class MainFrame extends JFrame {
         }
     }
 
-
     public void addReadButton(GameController gameController) {
         JButton button = new JButton("读档");
         button.addActionListener((e) -> {
             int Confirm = JOptionPane.showConfirmDialog(this, "读档后将丢失当前进度，是否读档？");
             switch (Confirm) {
-                case JOptionPane.YES_OPTION -> {this.dispose();Read(gameController);}
+                case JOptionPane.YES_OPTION -> {
+                    this.dispose();
+                    Read(gameController);
+                }
                 case JOptionPane.CLOSED_OPTION, JOptionPane.NO_OPTION, JOptionPane.CANCEL_OPTION ->
                         JOptionPane.showMessageDialog(this, "读档取消");
             }
@@ -163,38 +177,23 @@ public class MainFrame extends JFrame {
         button.setSize(200, 60);
         button.setFont(new Font("宋体", Font.PLAIN, 20));
         add(button);
-        button.setLocation(450,400);
+        button.setLocation(450, 400);
     }
-
-
-
-
-    public MainFrame(int width, int height) {
-        this.setTitle("斗兽棋Demo"); //设置标题
-        this.setSize(width,height);
-
-        this.setLocationRelativeTo(null); // Center the window.
-        this.setLayout(null);
-        this.setResizable(false);
-        this.setVisible(true);
-        setBackground();
-    }
-
-
 
     public void addStartButton(GameController ignoredGameController) {
         JButton startButton = new JButton("开始游戏");
         startButton.addActionListener(e -> {
             //if(e.getSource()==startButton){
-             //this.setContentPane(chessGameFrame);
-             //this.setFocusable(true);
-             //this.setVisible(true);
+            //this.setContentPane(chessGameFrame);
+            //this.setFocusable(true);
+            //this.setVisible(true);
             //}
+            ignoredGameController.restartGame();
             dispose();//关闭主界面
 
         });
         setVisible(true);
-        startButton.setLocation(450,320);
+        startButton.setLocation(450, 320);
         startButton.setSize(200, 60);
         startButton.setFont(new Font("宋体", Font.BOLD, 20));
         add(startButton);
