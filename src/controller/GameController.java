@@ -44,6 +44,16 @@ public class GameController implements GameListener {
     private ArrayList<ChessboardPoint> ValidMove;
     private int Count = 1;
 
+    public boolean isRestart() {
+        return restart;
+    }
+
+    public void setRestart(boolean restart) {
+        this.restart = restart;
+    }
+
+    private boolean restart=true;
+
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
         this.model = model;
@@ -266,10 +276,13 @@ public class GameController implements GameListener {
         this.model = chessboard;
         this.view.initiateChessComponent(chessboard);
         this.view.repaint();
+        ValidRedChess=8;
+        ValidBlueChess=8;
         initialize();
         Count = 2;
         canUndo = false;
         view.revalidate();
+        restart=false;
     }
 
     public void UndoMove() {
@@ -400,6 +413,7 @@ public class GameController implements GameListener {
             swapColor();
             view.repaint();
             Count++;
+            System.out.println(ValidBlueChess+" "+ValidRedChess);
         }
 
         // TODO: Implement capture function；
