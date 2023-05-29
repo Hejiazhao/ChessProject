@@ -29,5 +29,6 @@ public class MouseChessComponent extends AnimalChessComponent{
             g.setColor(owner.getColor());
             g.drawOval(0, 0, getWidth() , getHeight());
         }
+        revalidate();
     }
 }

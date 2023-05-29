@@ -39,8 +39,6 @@ public class ChessGameFrame extends JFrame {
         this.WIDTH = width;
         this.HEIGHT = height;
         this.ONE_CHESS_SIZE = (HEIGHT * 4 / 5) / 9;
-
-
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //设置程序关闭按键，如果点击右上方的叉就游戏全部关闭了
@@ -54,10 +52,7 @@ public class ChessGameFrame extends JFrame {
         addtimeLable();
     }
 
-    public ChessGameFrame() {
-        WIDTH = 0;
-        HEIGHT = 0;
-    }
+
 
 
     public String getName() {
@@ -88,6 +83,8 @@ public class ChessGameFrame extends JFrame {
         chessboardComponent.setLocation(HEIGHT / 5, HEIGHT / 10);
         add(chessboardComponent);
     }
+
+
 
 
     /**
@@ -132,7 +129,10 @@ public class ChessGameFrame extends JFrame {
 
 
     public void addUndoButton(GameController gameController) {
-        JButton button = new JButton("悔棋");
+        ImageIcon icon=new ImageIcon("resource/悔棋.jpg");
+        JButton button = new JButton("悔棋",icon);
+        button.setHorizontalTextPosition(JButton.CENTER);
+        button.setVerticalTextPosition(JButton.CENTER);
         button.addActionListener((e) -> {
             int value = JOptionPane.showConfirmDialog(this, "是否悔棋");
             switch (value) {
@@ -148,7 +148,10 @@ public class ChessGameFrame extends JFrame {
     }
 
     public void addRestartButton(GameController gameController) {
-        JButton button = new JButton("重新开始");
+        ImageIcon icon=new ImageIcon("resource/restart.jpg");
+        JButton button = new JButton("重新开始",icon);
+        button.setHorizontalTextPosition(JButton.CENTER);
+        button.setVerticalTextPosition(JButton.CENTER);
         button.addActionListener((e) -> {
             int value = JOptionPane.showConfirmDialog(this, "是否重新开始");
             switch (value) {
@@ -161,6 +164,7 @@ public class ChessGameFrame extends JFrame {
         System.out.println("restart");
         button.setSize(200, 60);
         button.setFont(new Font("宋体", Font.PLAIN, 20));
+        button.setForeground(Color.green);
         jPanel.add(button);
     }
 
@@ -187,7 +191,9 @@ public class ChessGameFrame extends JFrame {
     }
 
     public void addSaveButton(GameController gameController) {
-        JButton button = new JButton("存档");
+
+        ImageIcon icon=new ImageIcon("resource/保存.jpg");
+        JButton button = new JButton(icon);
         button.addActionListener((e) -> {
             JOptionPane.showMessageDialog(this, "游戏已暂停");
             this.SaveName = JOptionPane.showInputDialog("请输入文件名");
@@ -482,7 +488,8 @@ public class ChessGameFrame extends JFrame {
         }
     }
     public void addReadButton(GameController gameController) {
-        JButton button = new JButton("读档");
+        ImageIcon icon=new ImageIcon("resource/读取.jpg");
+        JButton button = new JButton(icon);
         button.addActionListener((e) -> {
             int Confirm = JOptionPane.showConfirmDialog(this, "读档后将丢失当前进度，是否读档？");
             switch (Confirm) {
@@ -499,9 +506,9 @@ public class ChessGameFrame extends JFrame {
 
     public void addButton(GameController gameController) {
         addSaveButton(gameController);
+        addReadButton(gameController);
         addUndoButton(gameController);
         addRestartButton(gameController);
-        addReadButton(gameController);
         addMusicButton(gameController);
         addMusicEffectButton(gameController);
         addExitButton(gameController);

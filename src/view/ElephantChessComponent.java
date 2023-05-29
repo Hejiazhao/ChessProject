@@ -30,6 +30,7 @@ protected void paintComponent(Graphics g){
         g.setColor(owner.getColor());
         g.drawOval(0, 0, getWidth() , getHeight());
     }
+    revalidate();
 }
 
 }
