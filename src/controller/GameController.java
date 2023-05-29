@@ -86,6 +86,15 @@ public class GameController implements GameListener {
     public void setCount(int count) {
         Count = count;
     }
+
+    public ArrayList<ChessboardPoint> getValidMove() {
+        return ValidMove;
+    }
+
+    public void setValidMove(ArrayList<ChessboardPoint> validMove) {
+        ValidMove = validMove;
+    }
+
     private ArrayList<ChessboardPoint> ValidMove;
 
     private int Count=1;
@@ -199,7 +208,7 @@ public class GameController implements GameListener {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
     }
 
-    private PlayerColor win() {
+    public PlayerColor win() {
         // TODO: Check the board if there is a winner
         if (model.getChessPieceAt(RedDen) != null && Objects.equals(PlayerColor.BLUE, model.getChessPieceAt(RedDen).getOwner())) {
             System.out.println("Blue");
