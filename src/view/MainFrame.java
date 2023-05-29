@@ -77,6 +77,7 @@ public class MainFrame extends JFrame {
                             gameController.getModel().removeChessPiece(src);
                             gameController.getView().initiateChessComponent(gameController.getModel());
                             gameController.setSelectedPoint(null);
+                            gameController.setCount(gameController.getCount()+1);
                             gameController.swapColor();
 
                         } else if (gameController.getModel().getChessPieceAt(dest) != null && gameController.getModel().isValidMove(src, dest) && gameController.getModel().isValidMove(src, dest)) {
