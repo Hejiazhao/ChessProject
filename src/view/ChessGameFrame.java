@@ -410,8 +410,6 @@ public class ChessGameFrame extends JFrame {
                     ChessboardPoint dest = new ChessboardPoint(Integer.parseInt(Read[2]), Integer.parseInt(Read[3]));
                     if (gameController.getModel().getChessPieceAt(src).getOwner().equals(gameController.getCurrentPlayer())) {
                         if (gameController.getModel().isValidMove(src, dest) && gameController.getModel().getChessPieceAt(dest) == null) {
-
-
                             gameController.beforeMove(src, dest);
                             gameController.setSelectedPoint(src);
                             gameController.getModel().setChessPiece(dest, gameController.getModel().getChessPieceAt(src));
@@ -454,6 +452,7 @@ public class ChessGameFrame extends JFrame {
                         judge = false;
                     }
                     bufferedReader.close();
+                    timeLeft[0]=3000;
                 }
                 if (judge) JOptionPane.showMessageDialog(null, "读档成功！");
             } catch (IOException ex) {
@@ -544,7 +543,6 @@ public void addRoundLabel(GameController gameController){
     JLabel timeLabel = new JLabel("Time Left: " + timeLeft[0]);
     jPanel.add(timeLabel);
   Timer timer = new Timer(100, e -> {
-
         timeLeft[0]--;
         timeLabel.setText("Time Left: " + timeLeft[0]/10);
       timeLabel.setSize(200,60);

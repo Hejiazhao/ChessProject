@@ -313,6 +313,7 @@ public class GameController implements GameListener {
             ateAnimal.remove(i);
             swapColor();
             closeValidMove(ValidMove);
+            Count--;
             if (selectedPoint!=null){selectedPoint = null;
                 selectedComponent.setSelected(false);
             }
