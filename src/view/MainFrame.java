@@ -29,6 +29,7 @@ public class MainFrame extends JFrame {
         Pattern pattern = Pattern.compile("[0-9]*");
         return !pattern.matcher(string).matches();
     }
+
     public void Read(GameController gameController) {
         File ReadFile = chooseFile();
         if (ReadFile != null) {
