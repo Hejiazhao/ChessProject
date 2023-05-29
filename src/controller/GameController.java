@@ -258,6 +258,7 @@ public class GameController implements GameListener {
             restartGame();
             PlayWin();
         }
+
     }
 
     public void restartGame() {

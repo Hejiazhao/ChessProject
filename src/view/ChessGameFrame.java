@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.regex.Pattern;
 
@@ -49,6 +50,8 @@ public class ChessGameFrame extends JFrame {
         addJPanel();
         addChessboard();
         addLabel();
+        //addRoundLable();
+        addtimeLable();
     }
 
     public ChessGameFrame() {
@@ -505,9 +508,33 @@ public class ChessGameFrame extends JFrame {
         this.gameController=gameController;
 
     }
+public void addRoundLable(){
+        JLabel roundLable=new JLabel("Round:1");
+        int count=gameController.getCount();
+        gameController.setCount(count+1);
+        if (!gameController.ifWin()){
+            roundLable.setText("Round:"+count);}
+            gameController.setCount(-1);
+        }
 
+public void addtimeLable(){
+    final int[] timeLeft = {30}; //倒计时时间，单位秒
+    JLabel timeLabel = new JLabel("Time Left: " + timeLeft[0]);
+    timeLabel.setLocation(700,900);
+    jPanel.add(timeLabel);
+    
+    Timer timer = new Timer(1000, e -> {
+        timeLeft[0]--;
+        timeLabel.setText("Time Left: " + timeLeft[0]);
+        if (timeLeft[0] == 0) {
+            gameController.swapColor();
+        } else if (timeLeft[0]>=0&&) {
+            
+        }
+    });
+    timer.start();
 
-}
+}}
 /*class ReadThread extends Thread{
     private GameController gameController;
     public ReadThread(GameController gameController){
