@@ -510,11 +510,13 @@ public class ChessGameFrame extends JFrame {
         final int[] count = {gameController.getCount() / 2};
         final int[] Left = {gameController.getCount() % 2};
         jPanel.add(roundLabel);
-        Timer timer = new Timer(10, e -> {
+        Timer timer = new Timer(100, e -> {
             if (!gameController.isRestart()){
                 gameController.setCount(2);
                 gameController.setRestart(true);
+                gameController.setCurrentPlayer(PlayerColor.BLUE);
             }
+            System.out.println(gameController.getCount());
             count[0] = gameController.getCount() / 2;
             Left[0] = gameController.getCount() % 2;
             roundLabel.setText("轮次： " + count[0] + " 玩家 " + (gameController.getCount() % 2 == 1 ? "红方" : "蓝方"));
